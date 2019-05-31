@@ -72,5 +72,22 @@
   font-size: 350%;
 }
 
+.footer{
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:70px;
+   width:100%;
+}
+
+.login{
+  width: 1000px;
+  position: absolute;;
+  left: 35%;
+  margin-left: 600px;
+  
+}
+
+
 
 
