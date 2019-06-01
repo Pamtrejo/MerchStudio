@@ -1,4 +1,3 @@
-
 <?php
 require_once('../../core/helpers/commerce.php');
 Commerce::headerTemplate('MerchStudio');
@@ -7,7 +6,10 @@ Commerce::headerTemplate('MerchStudio');
    <br><br><br><br><br><br><br><br>
     <!--se crea el buscador-->
     <div class="container">
-    <input class="form-control mr-sm-2" type="search" placeholder="Buscar">
+    <button type="button" class="btn btn-primary">Ver todas las sucursales</button>
+    <button type="button" onclick="cargarTabla(1)" class="btn btn-primary">San Benito</button>
+    <button type="button" onclick="cargarTabla(2)" class="btn btn-primary">Galerias</button>
+    <button type="button" onclick="cargarTabla(3)" class="btn btn-primary">Plaza Mundo</button>
     <br>
     <!--se crea la tabla-->
     <div class="table-responsive">
@@ -25,54 +27,7 @@ Commerce::headerTemplate('MerchStudio');
       <th scope="col"></th>
     </tr>
   </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>1</td>
-      <td>@mdo</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td><button type="button" class="btn btn-outline-primary">Eliminar</button></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>2</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td><button type="button" class="btn btn-outline-primary">Eliminar</button></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>3</td>
-      <td>@twitter</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td><button type="button" class="btn btn-outline-primary">Eliminar</button></td>
-    </tr>
-
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>1</td>
-      <td>@mdo</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      <td>@fat</td>
-      
-      <td><button type="button" class="btn btn-outline-primary">Eliminar</button></td>
-    </tr>
-  </tbody>
+  <tbody id="tbody-inventario"></tbody>
 </table>
 
   </tbody>
