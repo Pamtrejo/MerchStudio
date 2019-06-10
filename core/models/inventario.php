@@ -16,11 +16,12 @@ class Inventario extends Validator
 	//Metodos para manejar el CRUD
 	public function cargarCamisetasSucursal()
 	{
-		$sql = 'SELECT IdProductoxSucursal, producto.Diseno, producto.Descripcion, producto.Precio, tallas.Talla, sucursal.NomSucursal, cantidad
-        FROM productoxsucursal INNER JOIN producto ON productoxsucursal.IdProducto = producto.IdProducto
-        INNER JOIN tallas ON productoxsucursal.IdTalla = tallas.IdTalla
-        INNER JOIN sucursal ON productoxsucursal.IdSucursal = sucursal.IdSucursal
-        WHERE productoxsucursal.IdSucursal = ?';
+		$sql = "SELECT productoxsucursal.IdProductoxSucursal, producto.idproducto, producto.Diseno, producto.Descripcion, producto.Precio, tallas.Talla, sucursal.NomSucursal, cantidad
+		from producto LEFT JOIN productoxsucursal ON productoxsucursal.IdProducto = producto.IdProducto
+		AND productoxsucursal.IdSucursal = ?
+		LEFT JOIN tallas ON productoxsucursal.IdTalla = tallas.IdTalla
+		LEFT JOIN sucursal ON productoxsucursal.IdSucursal = sucursal.IdSucursal
+		order BY producto.idproducto asc";
 		$params = array($this->idSucursal);
 		return Database::getRows($sql, $params);
 	}

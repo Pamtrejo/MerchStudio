@@ -43,7 +43,7 @@ class Commerce
                         <a class="nav-link text-dark" href="contacto.php">CONTACTO</a>
                         <a class="nav-link text-dark" href="inventario.php">INVENTARIO</a>
                         <a class="nav-link text-dark" href="crear.php">CREAR DISEÑO</a>
-                        <a class="nav-link text-dark" href="#">FACTURACION</a>
+                        <a class="nav-link text-dark" href="factura.php">FACTURACION</a>
                     </ul>
                 </div>
 
@@ -61,7 +61,7 @@ class Commerce
 	{
 		print('
 		</main>
-		<footer class="footer">
+		<footer >
         <div class=" bg-dark">
             <ul class="nav ">
                 <li class="nav-item">

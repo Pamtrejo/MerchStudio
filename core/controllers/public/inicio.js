@@ -23,6 +23,7 @@ const apiInventario = '../../core/api/inventario.php?site=dashboard&action=';
 
 //Función para obtener y mostrar los registros disponibles
 const cargarTabla = async (idSucursal) => {
+    //Con el id que tenés de sucursal, consultar el nombre, lo guardas en una variable y lo imprimis en la tabla
     const response = await $.ajax({
         url: apiInventario + 'cargarCamisetasSucursal',
         type: 'post',
@@ -41,18 +42,19 @@ const cargarTabla = async (idSucursal) => {
             //Item es cada elemento del arreglo
             result.dataset.map( item => {
                 //Por cada nombre del campo, saco una variable constante
-                const { IdProductoxSucursal, Diseno, Descripcion, Precio, Talla, NomSucursal, cantidad } = item
-                
+                const { IdProductoxSucursal, idproducto, Diseno, Descripcion, Precio, Talla, NomSucursal, cantidad } = item
+                console.log(Talla);
                 //Le agregamos una fila al contenido de la tabla
                 contenidoTabla += `
                 <tr id="${IdProductoxSucursal}">
-                    <th>${IdProductoxSucursal}</th>
+                    <th>${idproducto}</th>
                     <th>${Diseno}</th>
-                    <th>${Descripcion}</th>
+                    <th>${Talla === null?"N/A":Talla}</th>
                     <th>${Precio}</th>
-                    <th>${Talla}</th>
+                    <th>${Descripcion===null?"Sin descripción":Descripcion}</th>
+                    <th>Imagen</th>
                     <th>${NomSucursal}</th>
-                    <th>${cantidad}</th>
+                    <th>${cantidad===null?"0":cantidad}</th>
                     <td><button type="button" class="btn btn-outline-primary">Modificar</button></td>
                     <td><button type="button" class="btn btn-outline-primary">Eliminar</button></td>
                 </tr>

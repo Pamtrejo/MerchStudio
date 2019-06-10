@@ -20,10 +20,10 @@ Commerce::headerTemplate('MerchStudio');
       <th scope="col">Diseño</th>
       <th scope="col">Talla</th>
       <th scope="col">Precio</th>
-      <th scope="col">Descripcion producto </th>
       <th scope="col">Descripcion</th>
       <th scope="col">Imagen</th>
       <th scope="col">Sucursal</th>
+      <th scope="col">Cantidad</th>
       <th scope="col"></th>
     </tr>
   </thead>
