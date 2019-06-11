@@ -6,11 +6,19 @@ Commerce::headerTemplate('MerchStudio');
    <br><br><br><br><br><br><br><br>
     <!--se crea el buscador-->
     <div class="container">
-    <button type="button" class="btn btn-primary">Ver todas las sucursales</button>
-    <button type="button" onclick="cargarTabla(1)" class="btn btn-primary">San Benito</button>
-    <button type="button" onclick="cargarTabla(2)" class="btn btn-primary">Galerias</button>
-    <button type="button" onclick="cargarTabla(3)" class="btn btn-primary">Plaza Mundo</button>
+    <button type="button" class="btn btn-dark">Ver todas las sucursales</button>
+    <button type="button" onclick="cargarTabla(1)" class="btn btn-dark">San Benito</button>
+    <button type="button" onclick="cargarTabla(2)" class="btn btn-dark">Galerias</button>
+    <button type="button" onclick="cargarTabla(3)" class="btn btn-dark">Plaza Mundo</button>
     <br>
+    <br>
+    <input type="search" id="buscar"> <button type="submit" class="btn btn-dark">Buscar</button>
+    
+    
+    
+  <br><br>
+
+
     <!--se crea la tabla-->
     <div class="table-responsive">
     <table class="table">
@@ -38,5 +46,5 @@ Commerce::headerTemplate('MerchStudio');
 
 <br><br><br><br><br><br><br><br><br>
 <?php
-Commerce::footerTemplate('inicio.js');
+Commerce::footerTemplate('inventario.js');
 ?>

@@ -35,22 +35,22 @@ Commerce::headerTemplate('MerchStudio');
                 <div class="col">
                     <form class="needs-validation" novalidate>
                         <div class="col-md-6 mb-3">
-                            <label for="validationCustom03">Nombre</label>
-                            <input type="text" class="form-control" id="validationCustom03" placeholder="" required>
+                            <label for="">Nombre</label>
+                            <input type="text" class="form-control" id="" placeholder="" required>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="validationCustom03">Apellido</label>
-                            <input type="text" class="form-control" id="validationCustom03" placeholder="" required>
+                            <label for="">Apellido</label>
+                            <input type="text" class="form-control" id="" placeholder="" required>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="validationCustom03">Nombre usuario</label>
-                            <input type="text" class="form-control" id="validationCustom03" placeholder="" required>
+                            <label for="">Nombre usuario</label>
+                            <input type="text" class="form-control" id="" placeholder="" required>
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Preference</label>
+                            <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Rol</label>
                             <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
                                 <option selected>Rol</option>
                                 <option value="1">One</option>
@@ -60,8 +60,8 @@ Commerce::headerTemplate('MerchStudio');
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="validationCustom03">Correo electronico</label>
-                            <input type="text" class="form-control" id="validationCustom03" placeholder="" required>
+                            <label for="">Correo electronico</label>
+                            <input type="text" class="form-control" id="" placeholder="" required>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -110,8 +110,8 @@ Commerce::headerTemplate('MerchStudio');
       <div class="col">
         <form class="needs-validation" novalidate>
           <div class="col-md-6 mb-3">
-            <label for="validationCustom03">Nombre usuario</label>
-            <input type="text" class="form-control" id="validationCustom03" placeholder="" required>
+            <label for="">Nombre usuario</label>
+            <input type="text" class="form-control" id="" placeholder="" required>
           </div>
 
 
