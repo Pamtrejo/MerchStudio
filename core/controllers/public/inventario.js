@@ -1,6 +1,10 @@
+//Constante para establecer la ruta y parámetros de comunicación con la API
+const apiInventario = '../../core/api/inventario.php?site=dashboard&action=';
+
 //ESTE CODIGO SE EJECUTA CUANDO CARGA LA PAGINA 
 $(document).ready(() => {
     //CARGA LA INFORMACION DE LA API EN LA VISTA
+    fillSelect(apiInventario+'CategoriasLista','create_categoria',null);
 })
 
 function isJSONString(string)
@@ -16,9 +20,49 @@ function isJSONString(string)
         return false;
     }
 }
+function fillSelect(api, id, selected)
+{
+    $.ajax({
+        url: api,
+        type: 'post',
+        data: null,
+        datatype: 'json'
+    })
+    .done(function(response){
+        // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+        if (isJSONString(response)) {
+            const result = JSON.parse(response);
+            // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+            if (result.status) {
+                let content = '';
+                if (!selected) {
+                    content += '<option value="" disabled selected>Seleccione una opción</option>';
+                }
+                result.dataset.forEach(function(row){
+                    value = Object.values(row)[0];
+                    text = Object.values(row)[1];
+                    if (row.id_categoria != selected) {
+                        content += `<option value="${value}">${text}</option>`;
+                    } else {
+                        content += `<option value="${value}" selected>${text}</option>`;
+                    }
+                });
+                $('#' + id).html(content);
+            } else {
+                $('#' + id).html('<option value="">No hay opciones</option>');
+            }
+        } else {
+            console.log(response);
+        }
+    })
+    .fail(function(jqXHR){
+        // Se muestran en consola los posibles errores de la solicitud AJAX
+        console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+    });
+}
 
-//Constante para establecer la ruta y parámetros de comunicación con la API
-const apiInventario = '../../core/api/inventario.php?site=dashboard&action=';
+
+
 
 var sucursal;
 
@@ -72,8 +116,6 @@ const cargarTabla = async (idSucursal) => {
 }
 
 $(document).ready(function(){
-    console.log('jQuery esta trabajando');
-
     $('#buscar').keyup(function(e){
         let buscar= $('#buscar').val();
         buscar = buscar.replace(" ", "");
@@ -134,13 +176,11 @@ $('#form-crear').submit(function()
 {
     event.preventDefault();
     $.ajax({
+        
         url: apiInventario + 'createProducto',
         type: 'post',
-        data: new FormData($('#form-crear')[0]),
+        data: $('#form-crear').serialize(),
         datatype: 'json',
-        cache: false,
-        contentType: false,
-        processData: false
     })
     .done(function(response){
         // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
@@ -150,7 +190,7 @@ $('#form-crear').submit(function()
             if (result.status) {
                 $('#modal-crear').modal('close');
                 showTable();
-                sweetAlert(1, result.message, null);
+                sweetAlert(1, "Exitoso", null);
             } else {
                 sweetAlert(2, result.exception, null);
                 console.log(result);

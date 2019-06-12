@@ -24,33 +24,30 @@ if (isset($_GET['site']) && isset($_GET['action']) ) {
                     $result['exception'] = 'Codigo sucursal invalido';
                 }
                 break;
-            case 'crear':
-                $_POST= $inventario->valideForm($_POST);
-                if($inventario->fijarPrecio($_POST['create_precio'])){
-                    if(isset($_POST['create_categoria'])){
-                        if ($inventario->fijarCategoria($_POST['create_categoria'])){
+                case 'createProducto':
+                    if($inventario->fijarPrecio($_POST['create_precio'])){
+                        if($inventario->fijarCategoria($_POST['create_categoria'])){
                             if($inventario->fijarDiseno($_POST['create_diseno'])){
                                 if($inventario->fijarDescripcion($_POST['create_descripcion'])){
-                                    if($inventario->createProducto()){
-                                        $result['status']=1;
-                                    }else{
-                                        $result['exception']='No se puede realizar la operacion';
-                                    }
-                                }else{
-                                    $result['exception']='Descripcion incorrecta';
+                                    $inventario->createProducto();
+                                    $result['status']=1;
                                 }
-                            }else{
-                                $result['exception']='No ingreso diseno';
+                                else{
+                                    $result['exception']='Descripción incorrecta';
+                                }
                             }
-                        } else{
-                            $result['exception']='Categoria  incorrecta';
+                            else{
+                                $result['exception']='Diseño incorrecto';
+                            }
                         }
-                    }else{
-                        $result['exception']='Seleccione categoria';
+                        else{
+                            $result['excpetion']='No se ha seleccionado ninguna categoria';
+                        }
                     }
-                }else{
-                    $result['exception']='Precio incorrecto';
-                }break;
+                    else{
+                        $result['exception']='Precio incorrecto';
+                    }
+                break;
             
                 case 'obtener':
                 if($inventario->fijarIdProducto($_POST['IdProducto'])){
@@ -61,6 +58,14 @@ if (isset($_GET['site']) && isset($_GET['action']) ) {
                     }
                 }else{
                     $result['exception']='Producto incorrecto';
+                }
+                break;
+                case 'CategoriasLista':
+                if($result['dataset']=$inventario->ListaCategorias()){
+                    $result['status']=1;
+                }
+                else{
+                    $result['exception']='No se pudo obtener las categorias';
                 }
                 break;
             default:
@@ -89,4 +94,4 @@ else {
 	exit('Recurso denegado');
 }
 
-?>
+?>  

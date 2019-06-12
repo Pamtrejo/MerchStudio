@@ -123,8 +123,13 @@ class Inventario extends Validator
 	public function createProducto()
 	{
 		$sql = 'INSERT INTO producto(precio, idCategoria, diseno, descripcion) VALUES(?, ?, ?, ?)';
-		$params = array($this->precio, $this->categoria, $this->diseno, $this->descripcion);
+		$params = array($this->precio, $this->Categoria, $this->diseno, $this->descripcion);
 		return Database::executeRow($sql, $params);
+	}
+	public function ListaCategorias(){
+		$sql='SELECT * FROM categoria';
+		$params= array(null);
+		return Database::getRows($sql,$params);
 	}
 }
 ?>
