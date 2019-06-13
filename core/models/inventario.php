@@ -3,22 +3,22 @@ class Inventario extends Validator
 {
 	private $idSucursal = null;
 	private $idProducto = null;
-	private $Precio = null;
-	private $IdCategoria= null;
-	private $Diseno = null;
-	private $Descripcion = null;
-	
+	private $precio = null;
+	private $idCategoria = null;
+	private $diseno = null;
+	private $descripcion = null;
+
 	//Metodos get y set
-    public function establecerIdSucursal($id)
-    {
-        if ($this->validateId($id)) {
+	public function establecerIdSucursal($id)
+	{
+		if ($this->validateId($id)) {
 			$this->idSucursal = $id;
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public function fijarIdProducto($value)
 	{
 		if ($this->validateId($value)) {
@@ -31,7 +31,7 @@ class Inventario extends Validator
 
 	public function recibirIdProducto()
 	{
-		return $this->IdProducto;
+		return $this->idProducto;
 	}
 
 	public function fijarPrecio($value)
@@ -52,7 +52,7 @@ class Inventario extends Validator
 	public function fijarCategoria($value)
 	{
 		if ($this->validateId($value)) {
-			$this->Categoria= $value;
+			$this->idCategoria = $value;
 			return true;
 		} else {
 			return false;
@@ -61,7 +61,7 @@ class Inventario extends Validator
 
 	public function recibirIdCategoria()
 	{
-		return $this->Categoria;
+		return $this->categoria;
 	}
 
 	public function fijarDiseno($value)
@@ -116,26 +116,39 @@ class Inventario extends Validator
 		WHERE REPLACE(producto.Diseno, ' ', '') like ?
 		OR REPLACE(producto.Descripcion, ' ', '') like ?
 		order BY producto.idproducto asc";
-		$params = array($this->idSucursal, '%'.$buscar.'%', '%'.$buscar.'%');
+		$params = array($this->idSucursal, '%' . $buscar . '%', '%' . $buscar . '%');
 		return Database::getRows($sql, $params);
 	}
 
 	public function createProducto()
 	{
 		$sql = 'INSERT INTO producto(precio, idCategoria, diseno, descripcion) VALUES(?, ?, ?, ?)';
-		$params = array($this->precio, $this->Categoria, $this->diseno, $this->descripcion);
+		$params = array($this->precio, $this->idCategoria, $this->diseno, $this->descripcion);
 		return Database::executeRow($sql, $params);
 	}
-	public function ListaCategorias(){
-		$sql='SELECT * FROM categoria';
-		$params= array(null);
-		return Database::getRows($sql,$params);
+	public function getProducto()
+	{
+		$sql = 'SELECT idproducto, precio, idcategoria, diseno, descripcion FROM producto WHERE idproducto = ?';
+		$params = array($this->idProducto);
+		return Database::getRow($sql, $params);
+	}
+	public function ListaCategorias()
+	{
+		$sql = 'SELECT * FROM categoria';
+		$params = array(null);
+		return Database::getRows($sql, $params);
 	}
 	public function deleteProducto()
 	{
 		$sql = 'DELETE FROM producto WHERE idproducto = ?';
-		$params = array($this->id);
+		$params = array($this->idProducto);
+		return Database::executeRow($sql, $params);
+	}
+
+	public function updateProducto()
+	{
+		$sql = 'UPDATE producto SET precio = ?, idcategoria= ?, diseno = ?, descripcion = ? WHERE idproducto = ?';
+		$params = array($this->precio, $this->idCategoria, $this->diseno, $this->descripcion, $this->idProducto);
 		return Database::executeRow($sql, $params);
 	}
 }
-?>

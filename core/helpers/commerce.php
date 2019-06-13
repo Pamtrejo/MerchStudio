@@ -91,6 +91,8 @@ class Commerce
         <script src="../../resources/js/popper.min.js"></script>
         <script src="../../resources/js/bootstrap.min.js"></script>
         <script src="../../resources/js/all.js"></script>
+        <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
+        <script src="../../core/helpers/functions.js"></script>
         <script src="../../core/controllers/public/'.$controller.'"></script>
         </body>
 

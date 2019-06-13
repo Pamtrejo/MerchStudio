@@ -13,16 +13,16 @@ Commerce::headerTemplate('MerchStudio');
     <button type="button" onclick="cargarTabla(3)" class="btn btn-dark">Plaza Mundo</button>
     <br>
     <br>
-    <input type="search" id="buscar"> <button type="submit" class="btn btn-dark">Buscar</button>
+    <input type="search" id="buscar"> <a class=" text-dark" href="#"><i class="fas fa-search fa-lg"></i></a>
 
-    <!-- Modal para agregar un nuevo producto -->
+
+    <!-- Boton para abrir el modal-->
     <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleModalCenter">
-        Agregar
+        <a class=" text-white" href="#"><i class="fas fa-plus fa-lg"></i></a>
     </button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <!-- Modal  para poder agregar un nuevo producto-->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -36,13 +36,11 @@ Commerce::headerTemplate('MerchStudio');
                     <form method="post" id="form-crear" enctype="multipart/form-data">
                         <div class="row container">
                             <div class="input-field col s12 m6">
-                                <input id="create_precio" type="number" name="create_precio" class="validate"
-                                    max="999.99" min="0.01" step="any" required />
+                                <input id="create_precio" type="number" name="create_precio" class="validate" max="999.99" min="0.01" step="any" required />
                                 <label for="create_precio" class="float-left">Precio ($)</label>
                             </div>
                             <div class="input-field col s12 m6">
-                                <input id="create_descripcion" type="text" name="create_descripcion" class="validate"
-                                    required />
+                                <input id="create_descripcion" type="text" name="create_descripcion" class="validate" required />
                                 <label for="create_descripcion" class="float-left">Descripcion</label>
                             </div>
 
@@ -69,7 +67,55 @@ Commerce::headerTemplate('MerchStudio');
         </div>
     </div>
 
-    <br><br>
+    <!-- Modal  para poder agregar un nuevo producto-->
+    <div class="modal fade" id="modal-update" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Modificar producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <br>
+                <div class="modal-update" class="modal">
+                    <form method="post" id="form-update" enctype="multipart/form-data">
+                        <div class="row container">
+                            <div class="input-field col s12">
+                                <input id="idProducto" type="number" name="idProducto" class="validate" max="999.99" min="0.01" step="any" required />
+                                <label for="idProducto" class="float-left">Codigo</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <input id="update_precio" type="text" name="update_precio" class="validate" max="999.99" min="0.01" step="any" required />
+                                <label for="update_precio" class="float-left">Precio ($)</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <input id="update_descripcion" type="text" name="update_descripcion" class="validate" required />
+                                <label for="update_descripcion" class="float-left">Descripcion</label>
+                            </div>
+
+                            <div class="input-field col s12 m6">
+                                <input id="update_diseno" type="text" name="update_diseno" class="validate" required />
+                                <label for="update_diseno" class="float-left">Diseño</label>
+                            </div>
+
+                            <div class="input col s12 m6">
+                                <select id="update_categoria" name="update_categoria">
+                                </select>
+                                <label class="float-left">Categoría</label>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-dark" data-tooltip="crear">Agregar</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 
     <!--se crea la tabla-->
@@ -82,7 +128,6 @@ Commerce::headerTemplate('MerchStudio');
                     <th scope="col">Talla</th>
                     <th scope="col">Precio</th>
                     <th scope="col">Descripcion</th>
-                    <th scope="col">Imagen</th>
                     <th scope="col">Sucursal</th>
                     <th scope="col">Cantidad</th>
                     <th scope="col"></th>
@@ -100,5 +145,5 @@ Commerce::headerTemplate('MerchStudio');
 
     <br><br><br><br><br><br><br><br><br>
     <?php
-Commerce::footerTemplate('inventario.js');
-?>
+    Commerce::footerTemplate('inventario.js');
+    ?>
