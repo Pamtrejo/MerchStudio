@@ -131,5 +131,11 @@ class Inventario extends Validator
 		$params= array(null);
 		return Database::getRows($sql,$params);
 	}
+	public function deleteProducto()
+	{
+		$sql = 'DELETE FROM producto WHERE idproducto = ?';
+		$params = array($this->id);
+		return Database::executeRow($sql, $params);
+	}
 }
 ?>

@@ -4,6 +4,7 @@ Commerce::headerTemplate('MerchStudio');
 ?>
 
 <br><br><br><br><br><br><br><br>
+
 <!--se crea el buscador-->
 <div class="container">
     <button type="button" class="btn btn-dark">Ver todas las sucursales</button>
@@ -30,9 +31,10 @@ Commerce::headerTemplate('MerchStudio');
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <br>
                 <div class="modal-crear" class="modal">
                     <form method="post" id="form-crear" enctype="multipart/form-data">
-                        <div class="row">
+                        <div class="row container">
                             <div class="input-field col s12 m6">
                                 <input id="create_precio" type="number" name="create_precio" class="validate"
                                     max="999.99" min="0.01" step="any" required />
@@ -59,7 +61,7 @@ Commerce::headerTemplate('MerchStudio');
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary" data-tooltip="crear">Agregar</button>
+                    <button type="submit" class="btn btn-dark" data-tooltip="crear">Agregar</button>
                 </div>
                 </form>
 
@@ -83,6 +85,7 @@ Commerce::headerTemplate('MerchStudio');
                     <th scope="col">Imagen</th>
                     <th scope="col">Sucursal</th>
                     <th scope="col">Cantidad</th>
+                    <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
             </thead>

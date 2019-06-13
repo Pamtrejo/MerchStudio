@@ -101,8 +101,8 @@ const cargarTabla = async (idSucursal) => {
                     <th>Imagen</th>
                     <th>${NomSucursal}</th>
                     <th>${cantidad===null?"0":cantidad}</th>
-                    <td><button type="button" class="btn btn-outline-primary">Modificar</button></td>
-                    <td><button type="button" class="btn btn-outline-primary">Eliminar</button></td>
+                    <td><button type="button" class="btn btn-outline-dark">Modificar</button></td>
+                    <td><button  onclick="confirmDelete('${apiInventario}', ${IdProductoxSucursal})" type="button" class="btn btn-outline-dark">Eliminar</button></td>
                 </tr>
                 `
             })
@@ -151,8 +151,8 @@ $(document).ready(function(){
                                 <th>Imagen</th>
                                 <th>${NomSucursal}</th>
                                 <th>${cantidad===null?"0":cantidad}</th>
-                                <td><button type="button" class="btn btn-outline-primary">Modificar</button></td>
-                                <td><button type="button" class="btn btn-outline-primary">Eliminar</button></td>
+                                <td><button type="button" class="btn btn-outline-dark">Modificar</button></td>
+                                <td><button type="button" class="btn btn-outline-dark">Eliminar</button></td>
                             </tr>
                             `
                         })

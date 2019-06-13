@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-04-2019 a las 23:07:00
+-- Tiempo de generación: 12-06-2019 a las 15:36:59
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -17,8 +17,53 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `merch`
+-- Base de datos: `merchstudio`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ConsultSucursal` ()  NO SQL
+SELECT  NomSucursal FROM sucursal$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DUI_Cliente` (IN `cliente` VARCHAR(11))  NO SQL
+BEGIN
+SELECT cliente.Nombre
+FROM cliente
+WHERE DUI=cliente;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pamela` (IN `l` VARCHAR(50))  NO SQL
+SELECT producto.Descripcion, categoria.Categoria 
+FROM producto INNER JOIN categoria ON categoria.IdCategoria = producto.IdCategoria
+WHERE categoria.Categoria=@l$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ProductoxCategoria` (IN `p0` INT)  NO SQL
+SELECT Descripcion 
+FROM producto 
+WHERE IdCategoria=@p0$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `bitacora`
+--
+
+CREATE TABLE `bitacora` (
+  `IdBitacora` int(11) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Accion` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `bitacora`
+--
+
+INSERT INTO `bitacora` (`IdBitacora`, `Fecha`, `Accion`) VALUES
+(1, '2019-05-01', 'Se ingreso');
 
 -- --------------------------------------------------------
 
@@ -28,8 +73,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categoria` (
   `IdCategoria` int(11) NOT NULL,
-  `Categoria` varchar(100) NOT NULL,
-  `Descripcion` varchar(1000) NOT NULL
+  `Categoria` varchar(50) NOT NULL,
+  `Descripcion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -45,7 +90,10 @@ INSERT INTO `categoria` (`IdCategoria`, `Categoria`, `Descripcion`) VALUES
 (6, 'Yetis', 'No hay descripcion.'),
 (7, 'Perrito', 'Son camisas para perritos.'),
 (8, 'Gorras', 'No hay descripcion.'),
-(9, 'Camisa niño', 'No hay descripcion.');
+(9, 'Camisa niño', 'No hay descripcion.'),
+(10, 'Centro', 'No hay descripción.'),
+(11, 'Sudadera', 'No hay descripción.'),
+(12, 'Hoodie', 'No hay descripción.');
 
 -- --------------------------------------------------------
 
@@ -55,10 +103,36 @@ INSERT INTO `categoria` (`IdCategoria`, `Categoria`, `Descripcion`) VALUES
 
 CREATE TABLE `cliente` (
   `IdCliente` int(11) NOT NULL,
-  `Nombre` int(11) NOT NULL,
-  `DUI` int(11) DEFAULT NULL,
+  `Nombre` varchar(100) NOT NULL,
+  `DUI` varchar(11) DEFAULT NULL,
   `Direccion` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`IdCliente`, `Nombre`, `DUI`, `Direccion`) VALUES
+(1, 'ACIEN ZURUTA ROSA MARIA ', '09876754-4', 'CALLE AGUSTIN LARA NO. 69-B COL. EX-NORMAL TUXTEPEC'),
+(2, 'ALBUSAC TAMARGO DANIEL ', '12345456-7', 'AV. INDEPENDENCIA NO. 241 COL. CENTRO TUXTEPEC'),
+(3, 'ALONSO BECERRA JOSE', '09876543-3', 'AV. INDEPENDENCIA NO. 779	COL. CENTRO TUXTEPEC'),
+(4, 'AMAT MENA SUSANA ', '09876543-2', 'AV. 20 DE NOVIEMBRE NO.1024	COL.CENTRO'),
+(5, 'AMATE GARRIDO IRENE ', '29876543-1', 'CARRETERA A LOMA ALTA S/N.	LOMAS DEL PEDREGAL TUXTEPEC	'),
+(6, 'APARICIO GARCIA MAGDALENA ', '39876542-1', 'AV. 20 DE NOVIEMBRE NO. 1060	COL. CENTRO TUXTEPEC'),
+(7, 'BENAYAS PEREZ NATALIA', '49876532-1', 'CALLE ZARAGOZA NO. 1010	COL. LA PIRAGUA TUXTEPEC'),
+(8, 'BERNABE CASANOVA FRANCISCO CESAR', '59876432-1', 'CALLE MATAMOROS NO. 310	COL. CENTRO TUXTEPEC'),
+(9, 'BERNAL RUIZ ENCARNACION ', '69875432-1', 'AV. 20 DE NOVIEMBRE NO.859-B	COL. CENTRO'),
+(10, 'CACERES CONTRERAS MARIA DEL MAR', '79865432-1', 'AV. 20 DE NOVIEMBRE NO 1053	COL. CENTRO TUXTEPEC'),
+(11, 'CAMPOS VIQUE MARIA BELEN ', '89765432-1', 'BLVD. BENITO JUAREZ NO. 1466-A	FRACC. LOS ANGELES TUXTEPEC'),
+(12, 'CARREÑO NAVARRO MONICA ', '98765432-1', 'CALLE MATAMOROS NO.280	COL. CENTRO TUXTEPEC'),
+(13, 'CARRERA BENITEZ SUSANA ', '81234567-9', 'AV. INDEPENDENCIA NO. 545	COL. CENTRO TUXTEPEC'),
+(14, 'CASAS GARCIA MARIA ESPERANZA ', '71234568-9', 'AV. INDEPENDENCIA NO. 1282-A	COL.CENTRO TUXTEPEC'),
+(15, 'CASTELLS GALLEGO MARAI DEL TISCAR ', '61234578-9', 'CALLE MATAMOROS NO. 127	COL. CENTRO TUXTEPEC'),
+(16, 'CASTILLO ALARCON ISABEL', '51234678-9', 'AV.INDEPENDENCIA NO.1010	COL.CENTRO TUXTEPEC'),
+(17, 'CASTILLO GALDEANO ELENA MARIA ', '41235678-9', 'AV. 5 DE MAYO NO. 1652	LA PIRAGUA'),
+(18, 'CASTILLO OLLER FRANCISCO JAVIER ', '31245678-9', 'AV. 5 DE MAYO NO. 1108	COL.CENTRO TUXTEPEC'),
+(19, 'CONTRERAS CARREÑO ADOLFINA ', '21345678-9', 'AV. INDEPENDENCIA NO. 748	COL. CENTRO TUXTEPEC'),
+(20, 'CORDOBA PASCUAL DOLORES MARIA ', '12345678-9', 'AV. INDEPENDENCIA NO. 985-A	COL. CENTRO TUXTEPEC');
 
 -- --------------------------------------------------------
 
@@ -70,8 +144,17 @@ CREATE TABLE `crear` (
   `IdCrear` int(11) NOT NULL,
   `img` varchar(100) NOT NULL,
   `PosicionX` float NOT NULL,
-  `PosicioY` float NOT NULL
+  `PosicioY` float NOT NULL,
+  `Fecha` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `crear`
+--
+
+INSERT INTO `crear` (`IdCrear`, `img`, `PosicionX`, `PosicioY`, `Fecha`) VALUES
+(1, '', 12, 10, '2019-05-01'),
+(2, '', 20, 10, '2019-04-29');
 
 -- --------------------------------------------------------
 
@@ -89,6 +172,30 @@ CREATE TABLE `detalleventa` (
   `Venta` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `detalleventa`
+--
+
+INSERT INTO `detalleventa` (`IdDetalle`, `IdFactura`, `IdProductoxSucursal`, `IdCliente`, `IdVendedor`, `Cantidad`, `Venta`) VALUES
+(1, 1, 1, 1, 1, 1, ''),
+(2, 2, 1, 2, 1, 1, ''),
+(3, 3, 1, 3, 2, 1, ''),
+(4, 4, 2, 4, 3, 2, ''),
+(5, 5, 2, 5, 4, 2, ''),
+(6, 6, 2, 6, 5, 2, ''),
+(7, 7, 2, 7, 6, 3, ''),
+(8, 8, 3, 1, 7, 3, ''),
+(9, 9, 3, 2, 8, 3, ''),
+(10, 10, 1, 3, 7, 3, '');
+
+--
+-- Disparadores `detalleventa`
+--
+DELIMITER $$
+CREATE TRIGGER `Restar producto` AFTER INSERT ON `detalleventa` FOR EACH ROW UPDATE productoxsucursal SET Cantidad = Cantidad-New.Cantidad WHERE IdProductoxsucursal = new.IdProductoxsucursal
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -104,6 +211,26 @@ CREATE TABLE `factura` (
   `IdVendedor` int(11) NOT NULL,
   `IdPago` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `factura`
+--
+
+INSERT INTO `factura` (`IdFactura`, `Fecha`, `Iva`, `Total`, `TipoFactura`, `IdVendedor`, `IdPago`) VALUES
+(1, '2019-05-01', 10, 25, 'Credito', 1, 1),
+(2, '2019-05-02', 10, 25, 'Credito', 1, 1),
+(3, '2019-05-03', 10, 25, 'Credito', 1, 1),
+(4, '2019-05-04', 10, 25, 'Credito', 1, 1),
+(5, '2019-05-05', 10, 25, 'Credito', 1, 1),
+(6, '2019-05-06', 10, 25, 'Credito', 1, 1),
+(7, '2019-05-07', 10, 25, 'Credito', 4, 2),
+(8, '2019-05-08', 10, 25, 'Credito', 5, 2),
+(9, '2019-05-09', 10, 25, 'Credito', 6, 2),
+(10, '2019-05-10', 10, 25, 'Credito', 2, 2),
+(11, '2019-05-11', 10, 25, 'Credito', 2, 2),
+(12, '2019-05-12', 10, 25, 'Credito', 8, 1),
+(13, '2019-05-13', 10, 25, 'Credito', 10, 1),
+(14, '2019-05-14', 10, 25, 'Credito', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -139,6 +266,14 @@ CREATE TABLE `pago` (
   `IdPago` int(11) NOT NULL,
   `TipoPago` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `pago`
+--
+
+INSERT INTO `pago` (`IdPago`, `TipoPago`) VALUES
+(1, 'Tarjeta'),
+(2, 'Efectivo');
 
 -- --------------------------------------------------------
 
@@ -247,6 +382,14 @@ INSERT INTO `producto` (`IdProducto`, `Precio`, `IdCategoria`, `Diseno`, `Descri
 (86, '$0.25', 2, 'sticker soya', 'Stciker Soya City'),
 (87, '$0.25', 2, 'vinil', 'Vinil');
 
+--
+-- Disparadores `producto`
+--
+DELIMITER $$
+CREATE TRIGGER `llenar` AFTER INSERT ON `producto` FOR EACH ROW insert into bitacora values (null, (select now()),'Se ingreso un nuevo producto')
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -261,6 +404,32 @@ CREATE TABLE `productoxsucursal` (
   `Cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `productoxsucursal`
+--
+
+INSERT INTO `productoxsucursal` (`IdProductoxSucursal`, `IdProducto`, `IdTalla`, `IdSucursal`, `Cantidad`) VALUES
+(1, 86, 11, 1, 4),
+(2, 87, 12, 2, 1),
+(3, 73, 13, 3, 4),
+(4, 83, 14, 1, 10),
+(5, 78, 15, 2, 10),
+(6, 70, 16, 3, 10),
+(7, 84, 17, 1, 10),
+(8, 85, 10, 2, 10),
+(9, 77, 5, 3, 10),
+(10, 76, 4, 3, 0),
+(11, 79, 3, 1, 10),
+(12, 81, 8, 2, 10),
+(13, 80, 9, 3, 10),
+(14, 75, 6, 1, 10),
+(15, 74, 7, 3, 10),
+(16, 39, 1, 1, 10),
+(17, 38, 1, 3, 10),
+(18, 69, 7, 2, 10),
+(19, 71, 2, 1, 10),
+(20, 8, 6, 3, 10);
+
 -- --------------------------------------------------------
 
 --
@@ -272,6 +441,16 @@ CREATE TABLE `roles` (
   `TipoRol` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`IdRol`, `TipoRol`) VALUES
+(1, 'Administrador'),
+(2, 'Vendedor'),
+(3, 'Cliente'),
+(4, 'SuperUsuario');
+
 -- --------------------------------------------------------
 
 --
@@ -282,8 +461,17 @@ CREATE TABLE `sucursal` (
   `IdSucursal` int(11) NOT NULL,
   `NomSucursal` varchar(100) NOT NULL,
   `Direccion` varchar(1000) NOT NULL,
-  `Telefono` int(10) NOT NULL
+  `Telefono` int(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `sucursal`
+--
+
+INSERT INTO `sucursal` (`IdSucursal`, `NomSucursal`, `Direccion`, `Telefono`) VALUES
+(1, 'Merch San Benito', 'Col. San Benito, Av. La Revolución, #159A San Salvador, San Benito', 25630852),
+(2, 'Merch Galerias', 'Centro Comercial Galeria 2Do nivel, frente a Tigo y Capilla San Jose', 26609834),
+(3, 'Merch Plaza Mundo', 'Primera Etapa 2Do nivel, por multicinema', 23456534);
 
 -- --------------------------------------------------------
 
@@ -335,6 +523,22 @@ CREATE TABLE `usuario` (
   `Correo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`IdUsuario`, `IdRol`, `Nombre`, `Apellido`, `NomUsuario`, `Contrasena`, `Correo`) VALUES
+(1, 2, 'Maria', 0, 'Maca', '123', 'usua@gmail.com'),
+(2, 2, 'Fernanda', 0, 'Fer', '123', 'usua@gmail.com'),
+(3, 2, 'Pamela', 0, 'Pam', '123', 'usua@gmail.com'),
+(4, 2, 'Guillermo', 0, 'Guille', '123', 'usua@gmail.com'),
+(5, 2, 'Fabiola', 0, 'Fab', '123', 'usua@gmail.com'),
+(6, 2, 'Bryan', 0, 'Bryan', '123', 'usua@gmail.com'),
+(7, 2, 'Fabricio', 0, 'Fabri', '123', 'usua@gmail.com'),
+(8, 2, 'Azucena', 0, 'Azu', '123', 'usua@gmail.com'),
+(9, 2, 'Maria', 0, 'Mari', '123', 'usua@gmail.com'),
+(10, 2, 'Marcela', 0, 'Marce', '123', 'usua@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -344,12 +548,34 @@ CREATE TABLE `usuario` (
 CREATE TABLE `vendedor` (
   `IdVendedor` int(11) NOT NULL,
   `Nombre` varchar(50) NOT NULL,
-  `Telefono` int(11) NOT NULL
+  `Telefono` int(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `vendedor`
+--
+
+INSERT INTO `vendedor` (`IdVendedor`, `Nombre`, `Telefono`) VALUES
+(1, 'MATEO BENITEZ JUAN', 23351011),
+(2, 'JOSEFINA ENRIQUEZ PEÑA', 13004180),
+(3, 'Acevedo Mejía Enrique', 59876137),
+(4, 'Acevedo Ruiz Carolina', 69897927),
+(5, 'Acosta Gámez Celina', 88311123),
+(6, 'Aguilar ?orantes', 74783415),
+(7, 'María Ofelia', 72516285),
+(8, 'Loranca Marcela', 72335101),
+(9, 'Aguilar Pérez', 62130041),
+(10, 'Licona Salomon', 65598761);
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `bitacora`
+--
+ALTER TABLE `bitacora`
+  ADD PRIMARY KEY (`IdBitacora`);
 
 --
 -- Indices de la tabla `categoria`
@@ -361,7 +587,8 @@ ALTER TABLE `categoria`
 -- Indices de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`IdCliente`);
+  ADD PRIMARY KEY (`IdCliente`),
+  ADD UNIQUE KEY `DUI` (`DUI`);
 
 --
 -- Indices de la tabla `crear`
@@ -459,30 +686,35 @@ ALTER TABLE `vendedor`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `bitacora`
+--
+ALTER TABLE `bitacora`
+  MODIFY `IdBitacora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `IdCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `IdCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `crear`
 --
 ALTER TABLE `crear`
-  MODIFY `IdCrear` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdCrear` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `detalleventa`
 --
 ALTER TABLE `detalleventa`
-  MODIFY `IdDetalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `IdFactura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdFactura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `menu`
 --
@@ -497,27 +729,27 @@ ALTER TABLE `menuxrol`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `IdPago` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdPago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- AUTO_INCREMENT de la tabla `productoxsucursal`
 --
 ALTER TABLE `productoxsucursal`
-  MODIFY `IdProductoxSucursal` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdProductoxSucursal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `IdRol` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `sucursal`
 --
 ALTER TABLE `sucursal`
-  MODIFY `IdSucursal` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdSucursal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `tallas`
 --
@@ -527,12 +759,12 @@ ALTER TABLE `tallas`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT de la tabla `vendedor`
 --
 ALTER TABLE `vendedor`
-  MODIFY `IdVendedor` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdVendedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- Restricciones para tablas volcadas
 --
