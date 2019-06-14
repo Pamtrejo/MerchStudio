@@ -19,8 +19,8 @@ class Database
         // Credenciales para establecer la conexión con la base de datos.
         $server = 'localhost';
         $database = 'merchstudio';
-        $username = 'root';
-        $password = '';
+        $username = 'pame';
+        $password = '123';
         try {
             @self::$connection = new PDO('mysql:host='.$server.'; dbname='.$database.'; charset=utf8', $username, $password);
         } catch(PDOException $error) {
@@ -136,7 +136,7 @@ class Database
                 $message = 'Servidor desconocido';
                 break;
             default:
-                $message = 'Ocurrió un problema, contacte al administrador :('.$message;
+                $message = 'Ocurrió un problema, contacte al admin hey :('.$message;
         }
         return $message;
     }

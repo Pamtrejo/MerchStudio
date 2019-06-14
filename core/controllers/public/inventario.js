@@ -153,8 +153,13 @@ $(document).ready(function () {
                                 <th>Imagen</th>
                                 <th>${NomSucursal}</th>
                                 <th>${cantidad === null ? "0" : cantidad}</th>
-                                <td><button type="button" class="btn btn-outline-dark">Modificar</button></td>
-                                <td><button type="button" class="btn btn-outline-dark">Eliminar</button></td>
+                                <td>
+                                <a href="#" onclick="modalUpdate(${idproducto})" class="text-dark tooltipped" data-tooltip="Modificar"><i class="fas fa-pencil-alt fa-lg">
+                                </i></a>
+                                </td>
+                                <td>
+                                <a href="#" onclick="confirmDelete(${idproducto})" class="text-dark tooltipped" data-tooltip="Eliminar"><i class="fas fa-trash-alt fa-lg"></i></a>
+                                </td>
                             </tr>
                             `
                         })

@@ -15,12 +15,18 @@ Commerce::headerTemplate('MerchStudio');
     <br>
     <input type="search" id="buscar"> <a class=" text-dark" href="#"><i class="fas fa-search fa-lg"></i></a>
 
-
+    
     <!-- Boton para abrir el modal-->
     <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleModalCenter">
         <a class=" text-white" href="#"><i class="fas fa-plus fa-lg"></i></a>
     </button>
-
+    <br>
+    <br>
+    <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleModalCenter">
+        <a class=" text-white" href="#"><i class="fas fa-plus fa-lg"></i></a>
+    </button>
+    
+    
     <!-- Modal  para poder agregar un nuevo producto-->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -117,7 +123,8 @@ Commerce::headerTemplate('MerchStudio');
         </div>
     </div>
 
-
+<br>
+<br>
     <!--se crea la tabla-->
     <div class="table-responsive">
         <table class="table">
