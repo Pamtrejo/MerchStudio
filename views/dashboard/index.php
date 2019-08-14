@@ -1,5 +1,5 @@
 <?php
-require_once('../../core/helpers/commerce.php');
+require_once('../../core/helpers/dashboard/commerce.php');
 Commerce::headerTemplate('MerchStudio');
 ?>
 

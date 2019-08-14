@@ -6,7 +6,10 @@ class Inventario extends Validator
 	private $precio = null;
 	private $idCategoria = null;
 	private $diseno = null;
-	private $descripcion = null;
+	private $idtalla = null;
+	private $idproductoxsucursal = null;
+	private $cantidad = null;
+	
 
 	//Metodos get y set
 	public function establecerIdSucursal($id)
@@ -17,6 +20,21 @@ class Inventario extends Validator
 		} else {
 			return false;
 		}
+	}
+	
+	public function fijarIdProductoxSucursal($value)
+	{
+		if ($this->validateId($value)) {
+			$this->idproductoxsucursal = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function recibirIdProductoxSucursal()
+	{
+		return $this->idproductoxsucursal;
 	}
 
 	public function fijarIdProducto($value)
@@ -93,6 +111,37 @@ class Inventario extends Validator
 		return $this->descripcion;
 	}
 
+	public function fijarTalla($value)
+	{
+		if ($this->validateId($value)) {
+			
+			$this->idtalla = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function recibirIdTalla()
+	{
+		return $this->talla;
+	}
+
+	public function fijarCantidad($value)
+	{
+		if ($this->validateMoney($value)) {
+			$this->cantidad = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function recibirCantidad()
+	{
+		return $this->cantidad;
+	}
+
 	//Metodos para manejar el CRUD
 	public function cargarCamisetasSucursal()
 	{
@@ -149,6 +198,34 @@ class Inventario extends Validator
 	{
 		$sql = 'UPDATE producto SET precio = ?, idcategoria= ?, diseno = ?, descripcion = ? WHERE idproducto = ?';
 		$params = array($this->precio, $this->idCategoria, $this->diseno, $this->descripcion, $this->idProducto);
+		return Database::executeRow($sql, $params);
+	}
+
+	public function ListaProducto()
+	{
+		$sql = 'SELECT IdCategoria, Diseno FROM  producto';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function ListaTalla()
+	{
+		$sql = 'SELECT * FROM tallas';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function ListaSucursal()
+	{
+		$sql = 'SELECT * FROM sucursal';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function createProductoxSucursal()
+	{
+		$sql = 'INSERT INTO productoxsucursal(idproducto, IdTalla, idsucursal, cantidad) VALUES(?, ?, ?, ?)';
+		$params = array($this->idProducto, $this->idtalla, $this->idSucursal, $this->cantidad);
 		return Database::executeRow($sql, $params);
 	}
 }

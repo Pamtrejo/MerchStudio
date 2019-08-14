@@ -1,5 +1,5 @@
 <?php
-require_once('../../core/helpers/commerce.php');
+require_once('../../core/helpers/dashboard/commerce.php');
 Commerce::headerTemplate('MerchStudio');
 ?>
 
@@ -22,8 +22,9 @@ Commerce::headerTemplate('MerchStudio');
     </button>
     <br>
     <br>
-    <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleModalCenter">
-        <a class=" text-white" href="#"><i class="fas fa-plus fa-lg"></i></a>
+    <!-- Boton para abrir el modal de agregar un producto por sucursal-->
+    <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleCenter">
+        <a class=" text-white" href="#"><i class="fas fa-edit fa-lg"></i></a>
     </button>
     
     
@@ -73,7 +74,56 @@ Commerce::headerTemplate('MerchStudio');
         </div>
     </div>
 
-    <!-- Modal  para poder agregar un nuevo producto-->
+    <!-- Modal  para poder agregar un  producto por sucuarsal-->
+    <div class="modal fade" id="exampleCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Ingresar producto por sucursal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <br>
+                <div class="modal-producto" class="modal">
+                    <form method="post" id="form-producto" enctype="multipart/form-data">
+                        <div class="row container">
+
+                            <div class="input col ">
+                                <select id="create_producto" name="create_producto">
+                                </select>
+                                <label >Producto</label>
+                            </div>
+
+                            <div class="input col s12 m6">
+                                <select id="create_talla" name="create_talla">
+                                </select>
+                                <label class="float-left">Talla</label>
+                            </div>
+
+                            <div class="input col s12 m6">
+                                <select id="create_sucursal" name="create_sucursal">
+                                </select>
+                                <label class="float-left">Sucursal</label>
+                            </div>
+
+                            <div class="input-field col s12 m6">
+                                <input id="create_cantidad" type="text" name="create_cantidad" class="validate" required />
+                                <label for="create_cantidad" class="float-left">Cantidad</label>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-dark" data-tooltip="crear">Agregar</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal  para modificar un  producto-->
     <div class="modal fade" id="modal-update" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">

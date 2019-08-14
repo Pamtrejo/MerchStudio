@@ -44,7 +44,6 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     $result['exception'] = 'Precio incorrecto';
                 }
                 break;
-
             case 'obtener':
                 if ($inventario->fijarIdProducto($_POST['IdProducto'])) {
                     if ($result['dataset'] = $inventario->getProducto()) {
@@ -107,6 +106,47 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     }
                 } else {
                     $result['exception'] = 'Codigo incorrecta';
+                }
+                break;
+            case 'ProductoLista':
+                if ($result['dataset'] = $inventario->ListaProducto()) {
+                    $result['status'] =1 ;
+                } else {
+                    $result['exception'] = 'No se pudo obtener el producto';
+                }
+                break;
+            case 'TallaLista':
+                if ($result['dataset'] = $inventario->ListaTalla()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la talla';
+                }
+                break;
+            case 'SucursalLista':
+                if ($result['dataset'] = $inventario->ListaSucursal()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la sucursal';
+                }
+                break;
+            case 'createProductoxSucursal':
+                if ($inventario->fijarIdProducto($_POST['create_producto'])) {
+                    if ($inventario->fijarTalla($_POST['create_talla'])) {
+                        if ($inventario->establecerIdSucursal($_POST['create_sucursal'])) {
+                            if ($inventario->fijarCantidad($_POST['create_cantidad'])) {
+                                $inventario->createProductoxSucursal();
+                                $result['status'] = 1;
+                            } else {
+                                $result['exception'] = 'Ingrese una cantidad';
+                            }
+                        } else {
+                            $result['exception'] = 'No se ha seleccionado ninguna sucursal';
+                        }
+                    } else {
+                        $result['excpetion'] = 'No se ha seleccionado ninguna talla';
+                    }
+                } else {
+                    $result['exception'] = 'Producto incorrecto';
                 }
                 break;
             default:

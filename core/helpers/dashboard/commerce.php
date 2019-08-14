@@ -43,10 +43,11 @@ class Commerce
                     <br> <br>
                     <div class="container">
                         <ul class="navbar-nav container">
-                        <a class="nav-link  text-dark letrita" href="login.php">INICIAR SESION </a>
-                        <a class="nav-link text-dark letrita" href="contacto.php">CONTACTO</a>
-                        <a class="nav-link text-dark letrita" href="crear.php">CREAR DISEÑO</a>
-                        <a class="nav-link text-dark letrita" href="crear.php">REPORTES</a>
+                        <a class="nav-link  text-dark letrita" href="factura.php">FACTURA</a>
+                        <a class="nav-link text-dark letrita" href="inventario.php">INVENTARIO</a>
+                        <a class="nav-link text-dark letrita" href="sucursal.php">SUCURSAL</a>
+                        <a class="nav-link text-dark letrita" href="vendedor.php">VENDEDOR</a>
+                        <a class="nav-link text-dark letrita" href="graficos.php">ESTADISTICAS</a>
                         </ul>
                         
                     </div>
@@ -98,6 +99,7 @@ class Commerce
         <script src="../../libraries/jquery-3.2.1.min.js"></script>
         <script src="../../resources/js/popper.min.js"></script>
         <script src="../../resources/js/bootstrap.min.js"></script>
+        <script src="../../resources/js/chart.js"></script>
         <script src="../../resources/js/all.js"></script>
         <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
         <script src="../../core/helpers/functions.js"></script>

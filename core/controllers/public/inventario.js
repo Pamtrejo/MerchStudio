@@ -6,6 +6,9 @@ $(document).ready(() => {
     //CARGA LA INFORMACION DE LA API EN LA VISTA
     fillSelect(apiInventario + 'CategoriasLista', 'create_categoria', null);
     fillSelect(apiInventario + 'CategoriasLista', 'update_categoria', null);
+    fillSelecte(apiInventario + 'ProductoLista', 'create_producto', null);
+    fillSelect(apiInventario + 'TallaLista', 'create_talla', null);
+    fillSelect(apiInventario + 'SucursalLista', 'create_sucursal', null);
 })
 
 function isJSONString(string) {
@@ -41,7 +44,8 @@ function fillSelect(api, id, selected) {
                         value = Object.values(row)[0];
                         text = Object.values(row)[1];
                         if (row.id_categoria != selected) {
-                            content += `<option value="${value}">${text}</option>`;
+                            content += `<option value="${value}">${text}</option>`
+                            
                         } else {
                             content += `<option value="${value}" selected>${text}</option>`;
                         }
@@ -60,11 +64,46 @@ function fillSelect(api, id, selected) {
         });
 }
 
-
-
-
+function fillSelect(api, id, selected) {
+    $.ajax({
+        url: api,
+        type: 'post',
+        data: null,
+        datatype: 'json'
+    })
+        .done(function (response) {
+            // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+            if (isJSONString(response)) {
+                const result = JSON.parse(response);
+                // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+                if (result.status) {
+                    let content = '';
+                    if (!selected) {
+                        content += '<option value="" disabled selected>Seleccione otra opción</option>';
+                    }
+                    result.dataset.forEach(function (row) {
+                        value = Object.values(row)[0];
+                        text = Object.values(row)[1];
+                        if (row.idproducto != selected) {
+                            content += `<option value="${value}">${text}</option>`
+                            
+                        } else {
+                            content += `<option value="${value}" selected>${text}</option>`;
+                        }
+                    });
+                    $('#' + id).html(content);
+                } else {
+                    $('#' + id).html('<option value="">No hay opciones</option>');
+                }
+            } else {
+            }
+        })
+        .fail(function (jqXHR) {
+            // Se muestran en consola los posibles errores de la solicitud AJAX
+            console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+        });
+}
 var sucursal;
-
 //Función para obtener y mostrar los registros disponibles
 const cargarTabla = async (idSucursal) => {
     sucursal = idSucursal;
@@ -116,7 +155,7 @@ const cargarTabla = async (idSucursal) => {
         console.log(response);
     }
 }
-
+//funcion para buscar
 $(document).ready(function () {
     $('#buscar').keyup(function (e) {
         let buscar = $('#buscar').val();
@@ -150,7 +189,6 @@ $(document).ready(function () {
                                 <th>${Talla === null ? "N/A" : Talla}</th>
                                 <th>${Precio}</th>
                                 <th>${Descripcion === null ? "Sin descripción" : Descripcion}</th>
-                                <th>Imagen</th>
                                 <th>${NomSucursal}</th>
                                 <th>${cantidad === null ? "0" : cantidad}</th>
                                 <td>
@@ -210,7 +248,7 @@ $('#form-crear').submit(function () {
             console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
         });
 })
-
+//funcion para poder modificar un producto
 $('#form-update').submit(function () {
     event.preventDefault();
     $.ajax({
@@ -227,11 +265,11 @@ $('#form-update').submit(function () {
                 //Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
                 if (result.status) {
                     if (result.status == 1) {
-                        sweetAlert(1, 'Categoría modificada correctamente', null);
+                        sweetAlert(1, 'Producto modificado correctamente', null);
                     } else if (result.status == 2) {
-                        sweetAlert(3, 'Categoría modificada. ' + result.exception, null);
+                        sweetAlert(3, 'Producto modificado. ' + result.exception, null);
                     } else if (result.status == 3) {
-                        sweetAlert(1, 'Categoría modificada. ' + result.exception, null);
+                        sweetAlert(1, 'Producto modificado. ' + result.exception, null);
                     }
                     $('#modal-update').modal('hide');
                 } else {
@@ -327,3 +365,36 @@ function confirmDelete(idproducto) {
             }
         });
 }
+
+//Funcion para agregar producto por sucursal
+$('#form-producto').submit(function () {
+    event.preventDefault();
+    $.ajax({
+
+        url: apiInventario + 'createProductoxSucursal',
+        type: 'post',
+        data: $('#form-producto').serialize(),
+        datatype: 'json',
+    })
+        .done(function (response) {
+            // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+            if (isJSONString(response)) {
+                const result = JSON.parse(response);
+                // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+                if (result.status) {
+                    $('#modal-producto').modal('close');
+                    cargarTabla(1);
+                    sweetAlert(1, "Exitoso", null);
+                } else {
+                    sweetAlert(2, result.exception, null);
+                    console.log(result);
+                }
+            } else {
+                console.log(response);
+            }
+        })
+        .fail(function (jqXHR) {
+            // Se muestran en consola los posibles errores de la solicitud AJAX
+            console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+        });
+})
