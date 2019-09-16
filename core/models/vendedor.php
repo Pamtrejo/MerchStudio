@@ -91,5 +91,35 @@ class Vendedor extends Validator
 		$params = array($this->id);
 		return Database::executeRow($sql, $params);
 	}
+
+	public function VendedorLista()
+	{
+		$sql = 'SELECT * FROM vendedor';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function vendedor()
+	{
+		$sql = "SELECT C.Descripcion,cast(REPLACE(c.Precio,'$','') as decimal(3,2))*a.Cantidad venta FROM detalleventa a
+		inner join productoxsucursal b on  a.IdProductoxSucursal=b.IdProductoxSucursal
+		inner join producto c on b.IdProducto=c.IdProducto
+		WHERE a.IdVendedor=?";
+		$params = array($this->id);
+		return Database::getRows($sql, $params);
+	}
+
+	//reporte
+	public function reporteVendedorVentas()
+	{
+		$sql = 'SELECT vendedor.NombreVendedor,vendedor.Telefono, COUNT(factura.IdFactura) Cantidad
+		FROM vendedor, factura, detalleventa 
+		WHERE vendedor.IdVendedor = factura.IdVendedor and factura.IdFactura = detalleventa.IdFactura
+		GROUP BY vendedor.NombreVendedor
+		ORDER BY Cantidad DESC';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
 }
 ?>

@@ -4,18 +4,18 @@ require_once('../../core/helpers/validator.php');
 require_once('../../core/models/usuarios.php');
 
 //Se comprueba si existe una petición del sitio web y la acción a realizar, de lo contrario se muestra una página de error
-if (isset($_GET['action'])) {
+if (isset($_GET['site']) && isset($_GET['action'])) {
     session_start();
     $usuario = new Usuarios;
     $result = array('status' => 0, 'exception' => '');
     //Se verifica si existe una sesión iniciada como administrador para realizar las operaciones correspondientes
-    if (isset($_SESSION['idUsuario'])) {
+    if (isset($_SESSION['idUsuario']) && $_GET['site'] == 'dashboard') {
         switch ($_GET['action']) {
             case 'logout':
                 if (session_destroy()) {
-                    header('location: ../../views/public/login.php');
+                    header('location: ../../views/dashboard/');
                 } else {
-                    header('location: ../../views/public/index.php');
+                    header('location: ../../views/dashboard/main.php');
                 }
                 break;
             case 'readProfile':
@@ -65,8 +65,8 @@ if (isset($_GET['action'])) {
             case 'password':
                 if ($usuario->setId($_SESSION['idUsuario'])) {
                     $_POST = $usuario->validateForm($_POST);
-                    if ($_POST['clave_actual_1'] == $_POST['clave_actual_2']) {
-                        if ($usuario->setClave($_POST['clave_actual_1'])) {
+                    if ($_POST['contrasena'] == $_POST['confirmar']) {
+                        if ($usuario->setContrasena($_POST['contrasena'])) {
                             if ($usuario->checkPassword()) {
                                 if ($_POST['clave_nueva_1'] == $_POST['clave_nueva_2']) {
                                     if ($usuario->setClave($_POST['clave_nueva_1'])) {
@@ -115,19 +115,19 @@ if (isset($_GET['action'])) {
                 break;
             case 'create':
                 $_POST = $usuario->validateForm($_POST);
-                if ($usuario->setNombres($_POST['create_nombres'])) {
+                if ($usuario->setNombres($_POST['nombres'])) {
                     if ($usuario->setApellidos($_POST['create_apellidos'])) {
                         if ($usuario->setCorreo($_POST['create_correo'])) {
                             if ($usuario->setAlias($_POST['create_alias'])) {
-                                if ($_POST['create_clave1'] == $_POST['create_clave2']) {
-                                    if ($usuario->setClave($_POST['create_clave1'])) {
+                                if ($_POST['contrasena'] == $_POST['confirmar']) {
+                                    if ($usuario->setClave($_POST['contrasena'])) {
                                         if ($usuario->createUsuario()) {
                                             $result['status'] = 1;
                                         } else {
                                             $result['exception'] = 'Operación fallida';
                                         }
                                     } else {
-                                        $result['exception'] = 'Clave menor a 6 caracteres';
+                                        $result['exception'] = 'Clave menor a 8 caracteres';
                                     }
                                 } else {
                                     $result['exception'] = 'Claves diferentes';
@@ -208,9 +208,9 @@ if (isset($_GET['action'])) {
                 }
                 break;
             default:
-                exit('Acción no disponible');
+                exit('Acción no disponible login');
         }
-    } else {
+    } else if ($_GET['site'] == 'dashboard') {
         switch ($_GET['action']) {
             case 'read':
                 if ($usuario->readUsuarios()) {
@@ -223,68 +223,85 @@ if (isset($_GET['action'])) {
                 break;
             case 'register':
                 $_POST = $usuario->validateForm($_POST);
-                if ($usuario->setNombre($_POST['nombres'])) {
-                    if ($usuario->setApellido($_POST['apellidos'])) {
-                        if ($usuario->setCorreo($_POST['correo'])) {
-                            if ($usuario->setNomUsuario($_POST['alias'])) {
-                                if ($_POST['clave1'] == $_POST['clave2']) {
-                                    if ($usuario->setClave($_POST['clave1'])) {
-                                        if($usuario->setRol($_POST['create_rol'])){
-                                            if ($usuario->createUsuario()) {
-                                                $result['status'] = 1;
+                if ($usuario->setRol(1)) {
+                    if ($usuario->setNombres($_POST['nombres'])) {
+                        if ($usuario->setApellidos($_POST['apellidos'])) {
+                            if ($usuario->setCorreo($_POST['correo'])) {
+                                if ($usuario->setNomUsuario($_POST['usuario'])) {
+                                    if ($usuario->setVencimiento($_POST['fecha'])) {
+                                        if ($_POST['contrasena'] == $_POST['confirmar']) {
+                                            if ($usuario->setContrasena($_POST['contrasena'])) {
+                                                if ($usuario->createUsuario()) {
+                                                    $result['status'] = 1;
+                                                } else {
+                                                    $result['exception'] = 'Operación fallida';
+                                                }
                                             } else {
-                                                $result['exception'] = 'Operación fallida';
+                                                $result['exception'] = 'Clave menor a 8 caracteres';
                                             }
-                                        }else{
-                                            $result['exception']='Seleccione rol';
+                                        } else {
+                                            $result['exception'] = 'Claves diferentes';
                                         }
-                                        
                                     } else {
-                                        $result['exception'] = 'Clave menor a 6 caracteres';
+                                        $result['exception'] = 'Fecha incorrecta';
                                     }
                                 } else {
-                                    $result['exception'] = 'Claves diferentes';
+                                    $result['exception'] = 'Alias incorrecto';
                                 }
                             } else {
-                                $result['exception'] = 'Alias incorrecto';
+                                $result['exception'] = 'Correo incorrecto';
                             }
                         } else {
-                            $result['exception'] = 'Correo incorrecto';
+                            $result['exception'] = 'Apellidos incorrectos';
                         }
                     } else {
-                        $result['exception'] = 'Apellidos incorrectos';
+                        $result['exception'] = 'Nombres incorrectos';
                     }
                 } else {
-                    $result['exception'] = 'Nombres incorrectos';
+                    $result['exception'] = 'Rol incorrecto';
                 }
                 break;
-            case 'login':
+                case 'login':
                 $_POST = $usuario->validateForm($_POST);
-                if ($usuario->setAlias($_POST['alias'])) {
-                    if ($usuario->checkAlias()) {
-                        if ($usuario->setClave($_POST['clave'])) {
+                if ($usuario->setNomUsuario($_POST['alias'])) {
+                    if ($usuario->checkNomUsuario()) {
+                        if ($usuario->setContrasena($_POST['contrasena'])) {
                             if ($usuario->checkPassword()) {
-                                $_SESSION['idUsuario'] = $usuario->getId();
-                                $_SESSION['aliasUsuario'] = $usuario->getAlias();
+                                $_SESSION['IdUsuario'] = $usuario->getId();
+                                $_SESSION['usuario'] = $usuario->getNomUsuario();
                                 $result['status'] = 1;
+                                $_SESSION['tiempo'] = time();
                             } else {
-                                $result['exception'] = 'Clave inexistente';
+                                $contrasena='';
+                                       foreach  (array_keys($_POST) as $field) {
+                        // list($name, $type) = explode(':', $index);
+                        $contrasena=$contrasena.$field.' ' ;
+                    }
+                                $result['exception'] = 'Clave inexistente'.$contrasena;
                             }
                         } else {
-                            $result['exception'] = 'Clave menor a 6 caracteres';
+                            
+                            $result['exception'] = 'Contraseña menor a 8 caracteres';
                         }
                     } else {
-                        $result['exception'] = 'Alias inexistente';
+                        $result['exception'] = 'Nombre de usuario inexistente';
                     }
                 } else {
-                    $result['exception'] = 'Alias incorrecto';
+                    $Stringnombre='';
+                                       foreach  (array_keys($_POST) as $field) {
+                        // list($name, $type) = explode(':', $index);
+                        $Stringnombre=$Stringnombre.$field.' ' ;
+                    }
+                    $result['exception'] = 'Nombre de usuario incorrecto'.$Stringnombre;
                 }
                 break;
             default:
                 exit('Acción no disponible');
         }
+    } else {
+        exit('Acceso no disponible');
     }
-    print(json_encode($result));
+	print(json_encode($result));
 } else {
 	exit('Recurso denegado');
 }

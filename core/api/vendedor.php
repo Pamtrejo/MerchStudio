@@ -102,6 +102,21 @@ if (isset($_GET['action'])) {
 					$result['exception'] = 'Vendedor incorrecto';
 				}
         break;
+        case 'VendedorLista':
+                if ($result['dataset'] = $vendedor->VendedorLista()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener el vendedor';
+                }
+                break;
+        case 'vendedores':
+                $vendedor->setId($_POST['id']);
+                if ($result['dataset'] = $vendedor->vendedor()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la cantidad';
+                }
+                break;
         default:
 		exit('Acción no disponible');
 		}

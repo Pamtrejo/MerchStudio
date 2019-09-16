@@ -111,9 +111,26 @@ if (isset($_GET['action'])) {
 				} else {
 					$result['exception'] = 'Cliente incorrecto';
 				}
-            	break;
+                break;
+                //grafico
+            case 'ClienteLista':
+                if ($result['dataset'] = $cliente->ClienteLista()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la sucursal';
+                }
+                break;
+            case 'cliente':
+                $cliente->setId($_POST['id']);
+                if ($result['dataset'] = $cliente->cliente()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la cantidad';
+                }
+                break;
                 default:
-				exit('Acción no disponible');
+                exit('Acción no disponible');
+                
 		}
         print(json_encode($result));
     } else {

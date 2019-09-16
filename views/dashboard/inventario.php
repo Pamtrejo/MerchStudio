@@ -11,6 +11,8 @@ Commerce::headerTemplate('MerchStudio');
     <button type="button" onclick="cargarTabla(1)" class="btn btn-dark">San Benito</button>
     <button type="button" onclick="cargarTabla(2)" class="btn btn-dark">Galerias</button>
     <button type="button" onclick="cargarTabla(3)" class="btn btn-dark">Plaza Mundo</button>
+    <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#Modal4">Reporte1</button>
+
     <br>
     <br>
     <input type="search" id="buscar"> <a class=" text-dark" href="#"><i class="fas fa-search fa-lg"></i></a>
@@ -26,7 +28,36 @@ Commerce::headerTemplate('MerchStudio');
     <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleCenter">
         <a class=" text-white" href="#"><i class="fas fa-edit fa-lg"></i></a>
     </button>
-    
+    <!-- Modal del reporte-->
+    <div class="modal fade" id="Modal4" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Elegir la categoria</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-crear" class="modal">
+                <form method="post" id="form-crear" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="input col s12 m6">
+                                <select id="categoria" name="categoria">
+                                </select>
+                                <label class="float-left"> Categorias</label>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" onclick="reporteCategoria()" class="btn btn-primary" data-tooltip="form-crear">Abrir reporte</button>
+                </div>
+                </form>
+        </div>
+        </div>
+    </div>
+
     
     <!-- Modal  para poder agregar un nuevo producto-->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -198,6 +229,7 @@ Commerce::headerTemplate('MerchStudio');
         </table>
     </div>
     <br>
+
 
 
     <br><br><br><br><br><br><br><br><br>

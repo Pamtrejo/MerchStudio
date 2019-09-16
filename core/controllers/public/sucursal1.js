@@ -4,7 +4,13 @@ const apiSucursal = '../../core/api/sucursal.php?site=dashboard&action=';
 $(document).ready(() => {
     //CARGA LA INFORMACION DE LA API EN LA VISTA
     cargarTabla();
-    fillSelect(apiSucursal + 'SucursalLista', 'sucursal', null);
+    fillSelect5(apiSucursal + 'SucursalLista', 'sucursal', null);
+    fillSelect5(apiSucursal + 'CategoriaLista', 'categoria', null);
+    //reportes
+    fillSelect1(apiSucursal, 'tipoPago', null)
+    fillSelect2(apiSucursal,'talla',null)
+    fillSelect3(apiSucursal,'sucursal',null)
+    fillSelect4(apiSucursal,'sucursal1',null)
 })
 
 function isJSONString(string)
@@ -20,8 +26,8 @@ function isJSONString(string)
         return false;
     }
 }
-
-function fillSelect(api, id, selected) {
+//funcion para select sucursal
+function fillSelect5(api, id, selected) {
     $.ajax({
         url: api,
         type: 'post',
@@ -60,6 +66,8 @@ function fillSelect(api, id, selected) {
             console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
         });
 }
+
+
 var sucursal;
 //Función para obtener y mostrar los registros disponibles
 const cargarTabla = async (IdSucursal) => {
@@ -343,12 +351,18 @@ $('#form-sucursal').submit(function()
                 console.log(result.dataset);
                 var cantidad = [];
                 var categoria = []; 
+
+                result.dataset.forEach(function(data){
+                  cantidad.push(data.cantidad);
+                  categoria.push(data.Categoria);
+                });
+
+                
                 var color = ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)' ]
                 var bordercolor = ['rgba(255, 99, 132, 1)','rgba(255, 99, 132, 1)']
                  //Se verfica que el resultado sea en formato JSON
                   //Aqui es en donde se hace un push para que las variable ya declaradas anteriormente manden a llamar los campos de la base
-                    cantidad.push(result.dataset.Cantidad);
-                    categoria.push(result.dataset.categoria);
+                   
                   //En esta parte se mandan a llamar ya los valores establecidos y los inserta en la grafica
                  var chartdata = {
                      labels: categoria,
@@ -362,7 +376,6 @@ $('#form-sucursal').submit(function()
                              data: cantidad
                         }]
                  };  
-                 console.log(chartdata);
                  //Muestra el grafico y las diferentes opciones para modificarlo 
                  var mostrar = $("#chartsucursal");
                  var grafico = new Chart (mostrar,{
@@ -394,3 +407,267 @@ $('#form-sucursal').submit(function()
         console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
     });
 })
+
+$('#form-categoria').submit(function()
+{
+    event.preventDefault();
+    //Manda a llamar el id del combobox y las convierte en una variable mas
+    let categoria = $('#categoria').val();
+  $ .ajax({
+      url: apiSucursal + "Cantidad",
+      type: 'post',
+      data: {
+          id : categoria
+      },
+      datatype: 'json'
+  })
+  //Se establecen algunas variables que nos serviran mas adelante y en donde se mandaran a llamar los campos de la base
+  .done(function(data){
+          if(isJSONString(data)){
+            const result = JSON.parse(data);
+            if(result.status){
+                console.log(result.dataset);
+                var cantidad = [];
+                var sucursal = []; 
+                var total=[];
+                result.dataset.forEach(function(data){
+                  cantidad.push(data.Cantidad);
+                  sucursal.push(data.Sucursal);
+                  total.push(data.Total);
+                });
+
+                
+                var color = ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)' ]
+                var bordercolor = ['rgba(255, 99, 132, 1)','rgba(255, 99, 132, 1)']
+                 //Se verfica que el resultado sea en formato JSON
+                  //Aqui es en donde se hace un push para que las variable ya declaradas anteriormente manden a llamar los campos de la base
+                   
+                  //En esta parte se mandan a llamar ya los valores establecidos y los inserta en la grafica
+                 var chartdata = {
+                     labels: sucursal,
+                     datasets: [{
+                             label: 'Categoria por venta',
+                             backgroundColor: color,
+                             borderColor: bordercolor,
+                             borderWidth: 2,
+                             hoverBackgroundColor: color,
+                             hoverBorderColor: bordercolor,
+                             data: cantidad
+                        }]
+                 };  
+                 //Muestra el grafico y las diferentes opciones para modificarlo 
+                 var mostrar = $("#chartcategoria");
+                 var grafico = new Chart (mostrar,{
+                     type: 'bar',
+                     data: chartdata,
+                     options: {
+                         responsive: true,
+                         legend: {
+                          labels: {
+                           fontColor: "black",
+                           fontSize: 15
+                          }
+                         }
+                     }
+                 }); 
+     
+            }
+            else{
+                alert(result.exception);
+            }
+          }
+          else{
+            console.log(data);
+          }
+      })
+      //Si algo falla manda error
+      .fail(function(jqXHR){
+        //Se muestran en consola los posibles errores de la solicitud AJAX
+        console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+    });
+})
+
+//funcion para que cargue el combobox del reporte TipoPago
+function fillSelect1(api, id, selected)
+{
+    $.ajax({
+        url: api+'cargarTipoPago',
+        type: 'post',
+        data: null,
+        datatype: 'json'
+    })
+.done(function(response){
+    console.log(response);
+    // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+    if (isJSONString(response)) {
+        const result = JSON.parse(response);
+        // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+        if (result.status) {
+            let content = '';
+            if (!selected) {
+                content += '<option value="" disabled selected>Seleccione una opción</option>';
+            }
+            result.dataset.forEach(function(row){
+                value = Object.values(row)[0];
+                text = Object.values(row)[1];
+                if (row.id_categoria != selected) {
+                    content += `<option value="${value}">${text}</option>`;
+                } else {
+                    content += `<option value="${value}" selected>${text}</option>`;
+                }
+            });
+            $('#' + id).html(content);
+        } else {
+            $('#' + id).html('<option value="">No hay opciones</option>');
+        }
+    } else {
+        console.log(response);
+    }
+})
+}
+//funcion para pasar el dato del combobox al reporte
+function reportePagos(){
+    //se obtiene el valor elegido del combobox
+    let pago = $('#tipoPago').val(); 
+    //abre el reporte en otra pagina y manda a llamar el dato del combobox
+    window.open('../../core/reportes/ventasPago1.php?pago='+pago);
+}
+
+//funcion para que cargue el combobox del productosxTalla1
+function fillSelect2(api, id, selected)
+{
+    $.ajax({
+        url: api+'cargarTalla',
+        type: 'post',
+        data: null,
+        datatype: 'json'
+    })
+.done(function(response){
+    console.log(response);
+    // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+    if (isJSONString(response)) {
+        const result = JSON.parse(response);
+        // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+        if (result.status) {
+            let content = '';
+            if (!selected) {
+                content += '<option value="" disabled selected>Seleccione una opción</option>';
+            }
+            result.dataset.forEach(function(row){
+                value = Object.values(row)[0];
+                text = Object.values(row)[1];
+                if (row.id_categoria != selected) {
+                    content += `<option value="${value}">${text}</option>`;
+                } else {
+                    content += `<option value="${value}" selected>${text}</option>`;
+                }
+            });
+            $('#' + id).html(content);
+        } else {
+            $('#' + id).html('<option value="">No hay opciones</option>');
+        }
+    } else {
+        console.log(response);
+    }
+})
+}
+//funcion para pasar el dato del combobox al reporte productosxTalla
+function reporteproductosxTalla(){
+    //se obtiene el valor elegido del combobox
+    let tallas = $('#talla').val(); 
+    //abre el reporte en otra pagina y manda a llamar el dato del combobox
+    window.open('../../core/reportes/productosxTalla1.php?tallas='+tallas);
+}
+
+//funcion para que cargue el combobox del sucursal1.php
+function fillSelect3(api, id, selected)
+{
+    $.ajax({
+        url: api+'cargarSucursal',
+        type: 'post',
+        data: null,
+        datatype: 'json'
+    })
+.done(function(response){
+    console.log(response);
+    // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+    if (isJSONString(response)) {
+        const result = JSON.parse(response);
+        // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+        if (result.status) {
+            let content = '';
+            if (!selected) {
+                content += '<option value="" disabled selected>Seleccione una opción</option>';
+            }
+            result.dataset.forEach(function(row){
+                value = Object.values(row)[0];
+                text = Object.values(row)[1];
+                if (row.id_categoria != selected) {
+                    content += `<option value="${value}">${text}</option>`;
+                } else {
+                    content += `<option value="${value}" selected>${text}</option>`;
+                }
+            });
+            $('#' + id).html(content);
+        } else {
+            $('#' + id).html('<option value="">No hay opciones</option>');
+        }
+    } else {
+        console.log(response);
+    }
+})
+}
+//carga el combobox de las sucursales del reporte sucursales1.php
+function fillSelect4(api, id, selected)
+{
+    $.ajax({
+        url: api+'cargarSucursal',
+        type: 'post',
+        data: null,
+        datatype: 'json'
+    })
+.done(function(response){
+    console.log(response);
+    // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+    if (isJSONString(response)) {
+        const result = JSON.parse(response);
+        // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+        if (result.status) {
+            let content = '';
+            if (!selected) {
+                content += '<option value="" disabled selected>Seleccione una opción</option>';
+            }
+            result.dataset.forEach(function(row){
+                value = Object.values(row)[0];
+                text = Object.values(row)[1];
+                if (row.id_categoria != selected) {
+                    content += `<option value="${value}">${text}</option>`;
+                } else {
+                    content += `<option value="${value}" selected>${text}</option>`;
+                }
+            });
+            $('#' + id).html(content);
+        } else {
+            $('#' + id).html('<option value="">No hay opciones</option>');
+        }
+    } else {
+        console.log(response);
+    }
+})
+}
+//funcion para pasar el dato del combobox al reporte
+function reporteSucursal(){
+    //se obtiene el valor elegido del combobox
+    let sucursales = $('#sucursal').val(); 
+    //abre el reporte en otra pagina y manda a llamar el dato del combobox
+    window.open('../../core/reportes/sucursal1.php?sucursales='+sucursales);
+}
+
+
+//funcion para pasar el dato del combobox al reporte
+function ventasxSucursal(){
+    //se obtiene el valor elegido del combobox
+    let sucursales1 = $('#sucursal1').val(); 
+    //abre el reporte en otra pagina y manda a llamar el dato del combobox
+    window.open('../../core/reportes/sucursales1.php?sucursales1='+sucursales1);
+}

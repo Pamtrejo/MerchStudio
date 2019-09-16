@@ -1,7 +1,10 @@
+//Constante para establecer la ruta y parámetros de comunicación con la API
+const apiVendedor = '../../core/api/vendedor.php?site=dashboard&action=';
 //ESTE CODIGO SE EJECUTA CUANDO CARGA LA PAGINA 
 $(document).ready(() => {
     cargarTabla1()
     //CARGA LA INFORMACION DE LA API EN LA VISTA
+    fillSelect(apiVendedor + 'VendedorLista', 'vendedor', null);
 })
 
 function isJSONString(string)
@@ -18,8 +21,47 @@ function isJSONString(string)
     }
 }
 
-//Constante para establecer la ruta y parámetros de comunicación con la API
-const apiVendedor = '../../core/api/vendedor.php?site=dashboard&action=';
+//Funcion llenar select
+function fillSelect(api, id, selected) {
+    $.ajax({
+        url: api,
+        type: 'post',
+        data: null,
+        datatype: 'json'
+    })
+        .done(function (response) {
+            // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+            if (isJSONString(response)) {
+                const result = JSON.parse(response);
+                // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+                if (result.status) {
+                    let content = '';
+                    if (!selected) {
+                        content += '<option value="" disabled selected>Seleccione un vendedor</option>';
+                    }
+                    result.dataset.forEach(function (row) {
+                        value = Object.values(row)[0];
+                        text = Object.values(row)[1];
+                        if (row.IdVendedor != selected) {
+                            content += `<option value="${value}">${text}</option>`
+                            
+                        } else {
+                            content += `<option value="${value}" selected>${text}</option>`;
+                        }
+                    });
+                    $('#' + id).html(content);
+                } else {
+                    $('#' + id).html('<option value="">No hay opciones</option>');
+                }
+            } else {
+            }
+        })
+        .fail(function (jqXHR) {
+            // Se muestran en consola los posibles errores de la solicitud AJAX
+            console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+        });
+}
+
 
 var vendedor;
 //Función para obtener y mostrar los registros disponibles
@@ -300,6 +342,84 @@ $('#form-update').submit(function()
     })
     .fail(function(jqXHR){
         // Se muestran en consola los posibles errores de la solicitud AJAX
+        console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+    });
+})
+
+$('#form-vendedor').submit(function()
+{
+    event.preventDefault();
+    //Manda a llamar el id del combobox y las convierte en una variable mas
+    let vendedor = $('#vendedor').val();
+  $ .ajax({
+      url: apiVendedor + "vendedores",
+      type: 'post',
+      data: {
+          id : vendedor
+      },
+      datatype: 'json'
+  })
+  //Se establecen algunas variables que nos serviran mas adelante y en donde se mandaran a llamar los campos de la base
+  .done(function(data){
+          if(isJSONString(data)){
+            const result = JSON.parse(data);
+            if(result.status){
+                console.log(result.dataset);
+                var descripcion = [];
+                var venta = []; 
+
+                result.dataset.forEach(function(data){
+                  descripcion.push(data.Descripcion);
+                  venta.push(data.venta);
+                });
+
+                
+                var color = ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)' ]
+                var bordercolor = ['rgba(255, 99, 132, 1)','rgba(255, 99, 132, 1)']
+                 //Se verfica que el resultado sea en formato JSON
+                  //Aqui es en donde se hace un push para que las variable ya declaradas anteriormente manden a llamar los campos de la base
+                   
+                  //En esta parte se mandan a llamar ya los valores establecidos y los inserta en la grafica
+                 var chartdata = {
+                     labels: descripcion,
+                     datasets: [{
+                             label: 'Ventas por vendedor',
+                             backgroundColor: color,
+                             borderColor: bordercolor,
+                             borderWidth: 2,
+                             hoverBackgroundColor: color,
+                             hoverBorderColor: bordercolor,
+                             data: venta
+                        }]
+                 };  
+                 //Muestra el grafico y las diferentes opciones para modificarlo 
+                 var mostrar = $("#chartvendedor");
+                 var grafico = new Chart (mostrar,{
+                     type: 'bar',
+                     data: chartdata,
+                     options: {
+                         responsive: true,
+                         legend: {
+                          labels: {
+                           fontColor: "black",
+                           fontSize: 15
+                          }
+                         }
+                     }
+                 }); 
+     
+            }
+            else{
+                alert(result.exception);
+            }
+          }
+          else{
+            console.log(data);
+          }
+      })
+      //Si algo falla manda error
+      .fail(function(jqXHR){
+        //Se muestran en consola los posibles errores de la solicitud AJAX
         console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
     });
 })

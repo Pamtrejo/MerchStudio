@@ -1,7 +1,10 @@
+//Constante para establecer la ruta y parámetros de comunicación con la API
+const apiCliente = '../../core/api/cliente.php?site=dashboard&action=';
 //ESTE CODIGO SE EJECUTA CUANDO CARGA LA PAGINA 
 $(document).ready(() => {
     //CARGA LA INFORMACION DE LA API EN LA VISTA
     cargarTabla();
+    fillSelect(apiCliente + 'ClienteLista', 'cliente', null);
 })
 
 function isJSONString(string)
@@ -17,9 +20,48 @@ function isJSONString(string)
         return false;
     }
 }
+//select para grafico
+function fillSelect(api, id, selected) {
+    $.ajax({
+        url: api,
+        type: 'post',
+        data: null,
+        datatype: 'json'
+    })
+        .done(function (response) {
+            // Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+            if (isJSONString(response)) {
+                const result = JSON.parse(response);
+                // Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+                if (result.status) {
+                    let content = '';
+                    if (!selected) {
+                        content += '<option value="" disabled selected>Seleccione un cliente</option>';
+                    }
+                    result.dataset.forEach(function (row) {
+                        value = Object.values(row)[0];
+                        text = Object.values(row)[1];
+                        if (row.IdCliente != selected) {
+                            content += `<option value="${value}">${text}</option>`
+                            
+                        } else {
+                            content += `<option value="${value}" selected>${text}</option>`;
+                        }
+                    });
+                    $('#' + id).html(content);
+                } else {
+                    $('#' + id).html('<option value="">No hay opciones</option>');
+                }
+            } else {
+            }
 
-//Constante para establecer la ruta y parámetros de comunicación con la API
-const apiCliente = '../../core/api/cliente.php?site=dashboard&action=';
+        })
+        .fail(function (jqXHR) {
+            // Se muestran en consola los posibles errores de la solicitud AJAX
+            console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+        });
+}
+
 
 var cliente;
 //Función para obtener y mostrar los registros disponibles
@@ -275,6 +317,86 @@ $('#form-update').submit(function()
     })
     .fail(function(jqXHR){
         // Se muestran en consola los posibles errores de la solicitud AJAX
+        console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+    });
+})
+
+
+//grafico
+$('#form-cliente').submit(function()
+{
+    event.preventDefault();
+    //Manda a llamar el id del combobox y las convierte en una variable mas
+    let cliente = $('#cliente').val();
+  $ .ajax({
+      url: apiCliente + "cliente",
+      type: 'post',
+      data: {
+          id : cliente
+      },
+      datatype: 'json'
+  })
+  //Se establecen algunas variables que nos serviran mas adelante y en donde se mandaran a llamar los campos de la base
+  .done(function(data){
+          if(isJSONString(data)){
+            const result = JSON.parse(data);
+            if(result.status){
+                console.log(result.dataset);
+                var descripcion = [];
+                var vendido = []; 
+
+                result.dataset.forEach(function(data){
+                  descripcion.push(data.Descripcion);
+                  vendido.push(data.vendido);
+                });
+
+                
+                var color = ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)' ]
+                var bordercolor = ['rgba(255, 99, 132, 1)','rgba(255, 99, 132, 1)']
+                 //Se verfica que el resultado sea en formato JSON
+                  //Aqui es en donde se hace un push para que las variable ya declaradas anteriormente manden a llamar los campos de la base
+                   
+                  //En esta parte se mandan a llamar ya los valores establecidos y los inserta en la grafica
+                 var chartdata = {
+                     labels: descripcion,
+                     datasets: [{
+                             label: 'Ventas por cliente',
+                             backgroundColor: color,
+                             borderColor: bordercolor,
+                             borderWidth: 2,
+                             hoverBackgroundColor: color,
+                             hoverBorderColor: bordercolor,
+                             data: vendido
+                        }]
+                 };  
+                 //Muestra el grafico y las diferentes opciones para modificarlo 
+                 var mostrar = $("#chartcliente");
+                 var grafico = new Chart (mostrar,{
+                     type: 'line',
+                     data: chartdata,
+                     options: {
+                         responsive: true,
+                         legend: {
+                          labels: {
+                           fontColor: "black",
+                           fontSize: 15
+                          }
+                         }
+                     }
+                 }); 
+     
+            }
+            else{
+                alert(result.exception);
+            }
+          }
+          else{
+            console.log(data);
+          }
+      })
+      //Si algo falla manda error
+      .fail(function(jqXHR){
+        //Se muestran en consola los posibles errores de la solicitud AJAX
         console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
     });
 })

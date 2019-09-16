@@ -7,6 +7,8 @@ Commerce::headerTemplate('MerchStudio');
 <!--se crea el buscador-->
 <div class="container">
     <button type="button" onclick="cargarTabla1()" class="btn btn-dark">Visualizar vendedores</button>
+    <a href="../../core/reportes/ventasVendedor1.php" target="_blank" class="btn btn-dark pink">Reporte</a>
+
     <br>
     <br>
     <input type="search" id="buscar"> <button type="submit" class="btn btn-dark">Buscar</button>
@@ -107,6 +109,18 @@ Commerce::headerTemplate('MerchStudio');
         </div>
     </div>
 </div>
+
+
+<form id="form-vendedor" method="post">
+        <div class="row">
+          <div class="col-sm-6 offset-sm-3">
+            <select class="select" id="vendedor" value="">
+                  </select>
+            <button type="submit" class="btn green accent-4">Generar</button>
+            <canvas id="chartvendedor"></canvas>
+          </div>
+        </div>
+      </form>
 
     <br><br><br><br><br><br><br><br><br>
     <?php

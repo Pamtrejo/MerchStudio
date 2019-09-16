@@ -125,9 +125,56 @@ class Sucursal extends Validator
 		$sql = 'select c.IdCategoria, c.Categoria, sum(ps.Cantidad) cantidad from  productoxsucursal ps
 		inner join categoria c on c.IdCategoria = ps.IdCategoria 
 		WHERE ps.IdSucursal = ?
-		group by ps.IdCategoria;';
-		$params = array(1);
+		group by ps.IdCategoria';
+		$params = array($this->id);
 		return Database::getRows($sql, $params);
+	}
+
+	public function CategoriaLista()
+	{
+		$sql = 'SELECT * FROM categoria';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function Cantidad()
+	{
+		$sql = 'select s.NomSucursal Sucursal, sum(v.Cantidad) Cantidad, sum(v.Cantidad * pro.Precio) Total from detalleventa v
+		inner join productoxsucursal p
+		on v.IdProductoxSucursal = p.IdProductoxSucursal
+		inner join categoria c on c.IdCategoria = p.IdCategoria
+		inner join sucursal s on s.IdSucursal = p.IdSucursal
+		inner join producto pro on pro.IdProducto = p.IdProducto
+		where c.IdCategoria = ?
+		group by p.IdSucursal';
+		$params = array($this->id);
+		return Database::getRows($sql, $params);
+	}
+	
+	//reporte
+	public function ventasxSucursal($value)
+	{
+		$sql = 'SELECT factura.Fecha,producto.Diseno, detalleventa.Cantidad, detalleventa.Venta, sucursal.NomSucursal
+		from factura, producto, detalleventa, sucursal, productoxsucursal
+		where factura.IdFactura = detalleventa.IdFactura and producto.IdProducto = productoxsucursal.IdProducto 
+		and sucursal.IdSucursal = productoxsucursal.IdSucursal and sucursal.IdSucursal= ?
+		GROUP by factura.IdFactura
+		order by factura.Fecha';
+		$params = array($value);
+		return Database::getRows($sql,$params);
+	}
+	//muestra los porductos existentes en cada sucursal con su precio, talla, cantidad, descripcion y el nombre de la sucursal
+	public function productosxSucursal($value)
+	{
+		$sql = 'SELECT producto.Diseno, categoria.Categoria, producto.Precio, tallas.Talla, productoxsucursal.Cantidad, sucursal.NomSucursal
+		from producto, productoxsucursal, tallas, sucursal, categoria
+		WHERE productoxsucursal.IdProducto = producto.IdProducto AND tallas.IdTalla = productoxsucursal.IdTalla
+		and sucursal.IdSucursal = productoxsucursal.IdSucursal  AND sucursal.IdSucursal = ?  
+		and categoria.IdCategoria =   producto.IdCategoria
+		ORDER BY sucursal.NomSucursal';
+		$params = array($value);
+		return Database::getRows($sql,$params);
 	}
 }
 ?>
+

@@ -2,13 +2,36 @@
 require_once('../../core/helpers/database.php');
 require_once('../../core/helpers/validator.php');
 require_once('../../core/models/sucursal.php');
+require_once('../../core/models/tipoPago.php');
+require_once('../../core/models/tallas.php');
 
 if (isset($_GET['action'])) {
     session_start();
     $sucursal = new Sucursal;
+    $pago = new TipoPago;
+    $talla = new Talla;
     $result = array('status' => 0, 'message' => null, 'exception' => null);
 
     switch ($_GET['action']) {
+        //reporte
+        case 'cargarTalla':
+
+            if ($result['dataset'] = $talla->readTalla()){
+                $result['status'] = 1;
+            } else {
+                $result['exception'] = 'Error al cargar la talla';
+            }
+        break;
+        //reporte
+        case 'cargarTipoPago':
+        
+            if ($result['dataset'] = $pago->readTipoPago()){
+                $result['status'] = 1;
+            } else {
+                $result['exception'] = 'Error al cargar el tipo de pago';
+            }
+        break;
+        //reporte
         case 'cargarSucursal':
         
             if ($result['dataset'] = $sucursal->readSucursal()){
@@ -111,15 +134,31 @@ if (isset($_GET['action'])) {
 					$result['exception'] = 'Sucursal incorrecto';
 				}
                 break;
-                case 'SucursalLista':
+            case 'SucursalLista':
                 if ($result['dataset'] = $sucursal->ListaSucursal()) {
                     $result['status'] = 1;
                 } else {
                     $result['exception'] = 'No se pudo obtener la sucursal';
                 }
                 break;
-                case 'readCantidadProductoSucursal':
+            case 'readCantidadProductoSucursal':
+                $sucursal->setId($_POST['id']);
                 if ($result['dataset'] = $sucursal->CantidadProductoSucursal()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la cantidad';
+                }
+                break;
+            case 'CategoriaLista':
+                if ($result['dataset'] = $sucursal->CategoriaLista()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la sucursal';
+                }
+                break;
+            case 'Cantidad':
+                $sucursal->setId($_POST['id']);
+                if ($result['dataset'] = $sucursal->Cantidad()) {
                     $result['status'] = 1;
                 } else {
                     $result['exception'] = 'No se pudo obtener la cantidad';

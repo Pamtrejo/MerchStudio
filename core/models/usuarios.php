@@ -1,111 +1,66 @@
 <?php
-class usuarios extends Validator
+class Usuarios extends Validator
 {
+	//Declaración de propiedades
+	private $id = null;
+	private $nombres = null;
+	private $apellidos = null;
+	private $correo = null;
+	private $nomusuario = null;
+	private $contrasena = null;
+	private $vencimiento = null;
+	private $rol = null;
 
-    private $IdUsuario=null;
-    private $IdRol=null;
-    private $Nombre=null;
-    private $Apellido=null;
-    private $NomUsuario=null;
-    private $Contrasena=null;
-    private $Correo=null;
-
-    //Metodos get y set
-
-    public function setIdUsuario($value)
+	//Métodos para sobrecarga de propiedades
+	public function setId($value)
 	{
 		if ($this->validateId($value)) {
-			$this->IdUsuario = $value;
+			$this->id = $value;
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public function getIdUsuario()
+	public function getId()
 	{
-		return $this->IdUsuario;
+		return $this->id;
 	}
 
-    public function setRol($value)
+	public function setNombres($value)
 	{
-		if ($this->validateId($value)) {
-			$this->IdRol = $value;
+		if ($this->validateAlphabetic($value, 1, 50)) {
+			$this->nombres = $value;
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public function getRol()
+	public function getNombres()
 	{
-		return $this->IdRol;
-    }
-    
-    public function setNombre($value)
+		return $this->nombres;
+	}
+
+	public function setApellidos($value)
 	{
-		if ($this->validateId($value)) {
-			$this->Nombre = $value;
+		if ($this->validateAlphabetic($value, 1, 50)) {
+			$this->apellidos = $value;
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public function getNombre()
+	public function getApellidos()
 	{
-		return $this->Nombre;
-    }
-    
-    public function setApellido($value)
-	{
-		if ($this->validateId($value)) {
-			$this->Apellido = $value;
-			return true;
-		} else {
-			return false;
-		}
+		return $this->apellidos;
 	}
 
-	public function getApellido()
+	public function setCorreo($value)
 	{
-		return $this->Apellido;
-    }
-    
-    public function setNomUsuario($value)
-	{
-		if ($this->validateId($value)) {
-			$this->NomUsuario = $value;
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function getNomUsuario()
-	{
-		return $this->NomUsuario;
-    }
-    
-    public function setContrasena($value)
-	{
-		if ($this->validateId($value)) {
-			$this->Contrasena = $value;
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function getContrasena()
-	{
-		return $this->Contrasena;
-    }
-    
-    public function setCorreo($value)
-	{
-		if ($this->validateId($value)) {
-			$this->Correo = $value;
+		if ($this->validateEmail($value)) {
+			$this->correo = $value;
 			return true;
 		} else {
 			return false;
@@ -114,19 +69,86 @@ class usuarios extends Validator
 
 	public function getCorreo()
 	{
-		return $this->Correo;
-    }
+		return $this->correo;
+	}
+
+	public function setNomUsuario($value)
+	{
+		if ($this->validateAlphanumeric($value, 1, 50)) {
+			$this->nomusuario = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getNomUsuario()
+	{
+		return $this->nomusuario;
+	}
+
+	public function setContrasena($value)
+	{
+		if ($this->validatePassword($value)) {
+			$this->contrasena = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getContrasena()
+	{
+		return $this->contrasena;
+	}
+
+	public function setRol($value)
+	{
+		if ($this->validateId($value)) {
+			$this->rol = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getRol()
+	{
+		return $this->rol;
+	}
+
+	public function setVencimiento($value)
+	{
+		if ($value) {
+			$this->vencimiento = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getVencimiento()
+	{
+		return $this->vencimiento;
+	}
+
     
 
     //Metodos para manejar los SCRUD
 
-    public function checkAlias()
+    public function checkNomUsuario()
 	{
-		$sql = 'SELECT idusuario FROM usuario WHERE nomusuario = ?';
-		$params = array($this->NomUsuario);
+		$sql = 'SELECT IdUsuario, FechaVencimiento FROM usuario WHERE NomUsuario = ?';
+		$params = array($this->nomusuario);
 		$data = Database::getRow($sql, $params);
 		if ($data) {
-			$this->id = $data['idusuario'];
+			$this->id = $data['IdUsuario'];
+			$diferencia = date('Y-m-d H:i:s') - $data['FechaVencimiento'];
+			if ($diferencia < 90) {
+				$this->vencimiento = true;
+			} else {
+				$this->vencimiento = false;
+			}
 			return true;
 		} else {
 			return false;
@@ -136,9 +158,9 @@ class usuarios extends Validator
 	public function checkPassword()
 	{
 		$sql = 'SELECT contrasena FROM usuario WHERE idusuario = ?';
-		$params = array($this->IdUsuario);
+		$params = array($this->id);
 		$data = Database::getRow($sql, $params);
-		if (password_verify($this->Contrasena, $data['contrasena'])) {
+		if (password_verify($this->contrasena, $data['contrasena'])){
 			return true;
 		} else {
 			return false;
@@ -147,46 +169,46 @@ class usuarios extends Validator
 
 	public function changePassword()
 	{
-		$hash = password_hash($this->Contrasena, PASSWORD_DEFAULT);
+		$hash = password_hash($this->contrasena, PASSWORD_DEFAULT);
 		$sql = 'UPDATE usuario SET contrasena = ? WHERE idusuario = ?';
-		$params = array($hash, $this->IdUsuario);
+		$params = array($hash, $this->id);
 		return Database::executeRow($sql, $params);
 	}
 
 	// Metodos para manejar el SCRUD
 	public function readUsuarios()
 	{
-		$sql = 'SELECT idusuario, idrol,nombre, apellido, nomusuario, contrasena,correo FROM usuario ORDER BY apellido';
+		$sql = 'SELECT IdRol,Nombre,Apellido,NomUsuario,Contrasena,Correo,FechaVencimiento FROM usuario ORDER BY Apellido';
 		$params = array(null);
 		return Database::getRows($sql, $params);
 	}
 
 	public function searchUsuarios($value)
 	{
-		$sql = 'SELECT idusuario,idrol,nombre, apellido, nomusuario,contrasena, correo FROM usuario WHERE apellido LIKE ? OR nombre LIKE ? ORDER BY apellido';
-		$params = array("%$value%", "%$value%");
+		$sql = 'SELECT IdUsuario,IdRol,Nombre, Apellido, NomUsuario,Contrasena, Correo,FechaVencimiento FROM usuario WHERE Apellido LIKE ? OR Nombre LIKE ? ORDER BY Apellido';
+	 $params = array("%$value%", "%$value%");
 		return Database::getRows($sql, $params);
 	}
 
 	public function createUsuario()
 	{
-		$hash = password_hash($this->Contrasena, PASSWORD_DEFAULT);
-		$sql = 'INSERT INTO usuario(idrol,nombre, apellido, nomusuario,contrasena,correo) VALUES(?, ?, ?, ?, ?,?)';
-		$params = array($this->IdRol, $this->Nombre, $this->Apellido, $this->NomUsuario,$this->Contrasena,$this->Correo, $hash);
+		$hash = password_hash($this->contrasena, PASSWORD_DEFAULT);
+		$sql = 'INSERT INTO usuario(IdRol,Nombre,Apellido,NomUsuario,Contrasena,Correo,FechaVencimiento) VALUES(?, ?, ?, ?, ?,?,?)';
+		$params = array($this->rol, $this->nombres, $this->apellidos, $this->nomusuario,$hash,$this->correo,$this->vencimiento);
 		return Database::executeRow($sql, $params);
 	}
 
 	public function getUsuario()
 	{
-		$sql = 'SELECT idusuario,idrol,nombre, apellido, nomusuario,contrasena, correo FROM usuario WHERE idusuario = ?';
-		$params = array($this->IdUsuario);
+		$sql = 'SELECT IdRol,Nombre,Apellido,NomUsuario,Contrasena,Correo,FechaVencimiento FROM usuario WHERE IdUsuario = ?';
+		$params = array($this->id);
 		return Database::getRow($sql, $params);
 	}
 
 	public function updateUsuario()
 	{
-		$sql = 'UPDATE usuarios SET nombres_usuario = ?, apellidos_usuario = ?, correo_usuario = ?, alias_usuario = ? WHERE id_usuario = ?';
-		$params = array($this->nombres, $this->apellidos, $this->correo, $this->alias, $this->id);
+		$sql = 'UPDATE usuarios SET nombres_usuario = ?, apellidos_usuario = ?, correo = ?, nomusuario = ? WHERE id_usuario = ?';
+		$params = array($this->nombres, $this->apellidos, $this->correo, $this->nomusuario, $this->id);
 		return Database::executeRow($sql, $params);
 	}
 
@@ -202,6 +224,17 @@ class usuarios extends Validator
 		$sql = 'SELECT * FROM roles';
 		$params = array(null);
 		return Database::getRows($sql, $params);
+	}
+
+	//reporte
+	public function reporteUsuariosRol()
+	{
+		$sql = 'SELECT TipoRol,Nombre, Apellido, NomUsuario 
+		from usuario
+		INNER JOIN roles USING(IdRol)
+		ORDER BY TipoRol';
+		$params = array(null);
+		return Database::getRows($sql,$params);
 	}
 }
 ?>

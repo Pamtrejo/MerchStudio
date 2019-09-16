@@ -111,5 +111,47 @@ class Cliente extends Validator
 		$params = array($this->id);
 		return Database::executeRow($sql, $params);
 	}
+//Para grafico
+	public function ClienteLista()
+	{
+		$sql = 'SELECT * FROM cliente';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function cliente()
+	{
+		$sql = "SELECT C.Descripcion,cast(REPLACE(c.Precio,'$','') as decimal(3,2))*a.Cantidad  vendido FROM detalleventa a
+		inner join productoxsucursal b on  a.IdProductoxSucursal=b.IdProductoxSucursal
+		inner join producto c on b.IdProducto=c.IdProducto
+		WHERE a.IdCliente=?";
+		$params = array($this->id);
+		return Database::getRows($sql, $params);
+	}
+
+		//reporte
+		public function comprasxCliente()
+		{
+			$sql = 'SELECT cliente.NombreCliente, factura.Fecha, COUNT(detalleventa.IdDetalle) Compras
+			from cliente, factura, detalleventa
+			where cliente.IdCliente = detalleventa.IdCliente AND factura.IdFactura = detalleventa.IdFactura
+			GROUP by factura.Fecha
+			ORDER by factura.Fecha';
+			$params = array(null);
+			return Database::getRows($sql,$params);
+		}
+	
+		//reporte aparece las mayores ventas con el usuario, la fecha, la venta y la cantidad de productos comprados
+		public function ventatotalxCliente()
+		{
+			$sql = 'SELECT factura.IdFactura, cliente.NombreCliente, factura.Fecha, detalleventa.Venta
+			from factura, detalleventa, cliente
+			where factura.IdFactura = detalleventa.IdFactura and cliente.IdCliente = detalleventa.IdCliente and
+			Fecha BETWEEN date_add(curdate(), INTERVAL -30 DAY) 
+			AND CURDATE() group by factura.IdFactura
+			order by detalleventa.Venta';
+			$params = array(null);
+			return Database::getRows($sql, $params);
+		}
 }
 ?>

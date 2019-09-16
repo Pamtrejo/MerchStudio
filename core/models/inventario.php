@@ -228,4 +228,84 @@ class Inventario extends Validator
 		$params = array($this->idProducto, $this->idtalla, $this->idSucursal, $this->cantidad);
 		return Database::executeRow($sql, $params);
 	}
+
+	//Metodos para graficos
+	public function cantidadProductosCategoria()
+	{
+		$sql = 'SELECT Categoria, COUNT(IdProducto) cantidad 
+		FROM producto INNER JOIN categoria USING(IdCategoria) GROUP BY IdCategoria';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+
+	public function MontoporCategoria()
+	{
+		$sql = 'SELECT SUM(venta_total) cantidad , nombre_categoria  FROM `detalle_venta` INNER JOIN (productos) USING (id_producto) INNER JOIN (categorias) USING (id_categoria) GROUP BY id_categoria';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+
+	public function VentaporFecha()
+	{
+		$sql = 'SELECT COUNT(`IdVenta`) cantidad, `fecha` FROM venta GROUP BY day(fecha) LIMIT 3';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function TallasVendidas()
+	{
+		$sql = 'SELECT tallas.Talla, COUNT(detalleventa.IdProductoxSucursal)Cantidad
+		FROM tallas INNER JOIN productoxsucursal ON tallas.IdTalla = productoxsucursal.IdTalla
+		INNER JOIN detalleventa ON productoxsucursal.IdProductoxSucursal = detalleventa.IdProductoxSucursal
+		GROUP BY detalleventa.IdProductoxSucursal 
+		ORDER BY `Cantidad`  ASC LIMIT 3';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function CategoriasVendidas()
+	{
+		$sql = 'SELECT categoria.Categoria, COUNT(detalleventa.IdProductoxSucursal)Cantidad
+		FROM categoria INNER JOIN productoxsucursal ON categoria.IdCategoria = productoxsucursal.IdCategoria
+		INNER JOIN detalleventa ON productoxsucursal.IdProductoxSucursal = detalleventa.IdProductoxSucursal
+		GROUP BY detalleventa.IdProductoxSucursal
+		ORDER BY Cantidad DESC LIMIT 3';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	public function CategoriasVentas()
+	{
+		$sql = 'SELECT SUM(Venta) cantidad , Categoria  FROM `detalleventa` INNER JOIN (productoxsucursal)
+		USING (IdProductoxSucursal) INNER JOIN (categoria) 
+		USING (IdCategoria) GROUP BY IdCategoria
+		ORDER BY cantidad DESC';
+		$params = array(null);
+		return Database::getRows($sql, $params);
+	}
+
+	//reporte
+	public function productosxTalla($value)
+	{
+		$sql = 'SELECT  tallas.Talla, producto.Diseno, productoxsucursal.Cantidad, sucursal.NomSucursal
+		from producto, productoxsucursal, tallas, sucursal
+		where producto.IdProducto = productoxsucursal.IdProducto AND tallas.IdTalla = productoxsucursal.IdTalla 
+		and sucursal.IdSucursal = productoxsucursal.IdSucursal and productoxsucursal.IdTalla = ?';
+		$params = array($value);
+		return Database::getRows($sql,$params);
+	}
+	//reporte
+	public function ventasxPago($value)
+	{
+		$sql = 'SELECT pago.TipoPago, factura.Fecha, detalleventa.Venta
+		from pago, factura, detalleventa
+		where pago.IdPago = factura.IdPago and factura.IdFactura = detalleventa.IdFactura
+		and pago.IdPago= ?';
+		$params = array($value);
+		return Database::getRows($sql,$params);
+	}
+
+
 }
