@@ -4,7 +4,7 @@
 const apiUsuario = '../../core/api/usuarios.php?action=';
 $(document).ready(() => {
     //CARGA LA INFORMACION DE LA API EN LA VISTA
-    fillSelect(apiUsuario + 'ListaRol', 'create_rol', null);
+    fillSelect(apiUsuario + 'ListaRol', 'rol', null);
 })
 
 function fillSelect(api, id, selected) {

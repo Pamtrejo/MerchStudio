@@ -2,12 +2,10 @@
 require_once('../../core/helpers/database.php');
 require_once('../../core/helpers/validator.php');
 require_once('../../core/models/inventario.php');
-require_once('../../core/models/categorias.php');
 
 $accion = $_GET['action'];
 session_start();
 $inventario = new Inventario;
-$categoria = new Categorias;
 $result = array('status' => 0, 'exception' => '');
 //Se comprueba si existe una petición del sitio web y la acción a realizar, de lo contrario se muestra una página de error
 if (isset($_GET['site']) && isset($_GET['action'])) {
@@ -15,25 +13,94 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
     //Se verifica si existe una sesión iniciada como administrador para realizar las operaciones correspondientes
     if ($_GET['site'] == 'dashboard' || true) {
         switch ($_GET['action']) {
-            //reporte
-            case 'cargarCategoria';
-                if ($result['dataset'] = $categoria->ListaCategorias()){
+            case 'cargarSucursales':
+                if ($result['dataset'] = $inventario->cargarSucursalTodas()) {
                     $result['status'] = 1;
                 } else {
-                    $result['exception'] = 'Error al cargar la talla';
+                    $result['exception'] = 'Error al cargar camisetas por sucursal';
                 }
-                break;
+            break;
             case 'cargarCamisetasSucursal':
-                if ($inventario->establecerIdSucursal($_POST['idSucursal'])) {
-                    if ($result['dataset'] = $inventario->cargarCamisetasSucursal()) {
-                        $result['status'] = 1;
-                    } else {
-                        $result['exception'] = 'Error al cargar camisetas por sucursal';
+                if (isset($_POST['idSucursal'])) {
+                    if ($_POST['idSucursal'] != 'todo') {
+                        if ($inventario->establecerIdSucursal($_POST['idSucursal'])) {
+                            if ($result['dataset'] = $inventario->cargarCamisetasSucursal()) {
+                                $result['status'] = 1;
+                            } else {
+                                $result['exception'] = 'Error al cargar camisetas por sucursal';
+                            }
+                        } else {
+                            $result['exception'] = 'Codigo sucursal invalido';
+                        }
+                    }
+                    else {
+                        if ($result['dataset'] = $inventario->cargarCamisetasSucursalTodas()) {
+                            $result['status'] = 1;
+                        } else {
+                            $result['exception'] = 'Error al cargar camisetas por sucursal';
+                        }
                     }
                 } else {
-                    $result['exception'] = 'Codigo sucursal invalido';
+                    $result['exception'] = 'Valor vacío';
                 }
-                break;
+            break;
+            case 'cargarCamisetasTallas':
+                if (isset($_POST['idProducto']) && isset($_POST['idSucursal'])) {
+                    if ($_POST['idSucursal'] != 'todo') {
+                        if ($inventario->establecerIdSucursal($_POST['idSucursal'])) {
+                            if ($inventario->fijarIdProducto($_POST['idProducto'])) {
+                                if ($result['dataset'] = $inventario->cargarCamisetasTallas()) {
+                                    $result['status'] = 1;
+                                } else {
+                                    $result['exception'] = 'Error al cargar camisetas por sucursal';
+                                }
+                            } else {
+                                $result['exception'] = 'Codigo sucursal invalido';
+                            }
+                        } else {
+                            $result['exception'] = 'Codigo producto invalido';
+                        }
+                    }
+                    else {
+                        if ($inventario->fijarIdProducto($_POST['idProducto'])) {
+                            if ($result['dataset'] = $inventario->cargarCamisetasTallasT()) {
+                                $result['status'] = 1;
+                            } else {
+                                $result['exception'] = 'Error al cargar camisetas por sucursal';
+                            }
+                        } else {
+                            $result['exception'] = 'Codigo sucursal invalido';
+                        }
+                    }
+                } else {
+                    $result['exception'] = 'Valor vacío';
+                }
+            break;
+            case 'restar':
+                if (isset($_POST['id']) && isset($_POST['cantidad'])) {
+                    if (!empty($_POST['id'])  && !empty($_POST['cantidad']) ) {
+                        if ($inventario->establecerIdSucursal($_POST['id'])) {
+                            if ($_POST['cantidad'] > 0) {
+                                if ($inventario->fijarCantidad($_POST['cantidad'])) {
+                                    if ($result['dataset'] = $inventario->restar() ) {
+                                        $result['status'] = 1;
+                                    } else {
+                                        $result['exception'] = 'Error al cargar camisetas por sucursal';
+                                    }
+                                } else {
+                                    $result['exception'] = 'Codigo sucursal invalido';
+                                }
+                            }
+                        } else {
+                            $result['exception'] = 'Codigo sucursal invalido';
+                        }
+                    } else {
+                        $result['exception'] = 'Valor vacío';
+                    }
+                } else {
+                    $result['exception'] = 'Valor vacío';
+                }
+            break;
             case 'createProducto':
                 if ($inventario->fijarPrecio($_POST['create_precio'])) {
                     if ($inventario->fijarCategoria($_POST['create_categoria'])) {
@@ -75,8 +142,12 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
             case 'delete':
                 if ($inventario->fijarIdProducto($_POST['idproducto'])) {
                     if ($inventario->getProducto()) {
-                        if ($inventario->deleteProducto()) {
-                            $result['status'] = 1;
+                        if ($inventario->deleteProducto2()) {
+                            if ($inventario->deleteProducto()) {
+                                $result['status'] = 1;
+                            } else {
+                                $result['exception'] = 'Operacion Fallida';
+                            }
                         } else {
                             $result['exception'] = 'Operacion Fallida';
                         }
@@ -159,42 +230,6 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     $result['exception'] = 'Producto incorrecto';
                 }
                 break;
-            case 'cantidadProductosCategoria':
-                if ($result['dataset'] = $inventario->cantidadProductosCategoria()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['exception'] = 'No hay datos disponibles';
-                }
-                break;
-            case 'VentaporFecha':
-                if ($result['dataset'] = $inventario->VentaporFecha()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['exception'] = 'No hay datos disponibles';
-                }
-                break;
-            case 'TallasVendidas':
-                if ($result['dataset'] = $inventario->TallasVendidas()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['exception'] = 'No hay datos disponibles';
-                }
-                break;
-            case 'CategoriasVendidas':
-                if ($result['dataset'] = $inventario->CategoriasVendidas()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['exception'] = 'No hay datos disponibles';
-                }
-                break;
-            case 'CategoriasVentas':
-                if ($result['dataset'] = $inventario->CategoriasVentas()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['exception'] = 'No hay datos disponibles';
-                }
-                break;
-            
             default:
                 exit('Acción no disponible');
         }
@@ -204,15 +239,13 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
     print(json_encode($result));
     //Buscador
 } else if ($accion == "buscar") {
-    $buscar = $_GET["buscar"];
-    if ($inventario->establecerIdSucursal($_POST['sucursal'])) {
+    if (isset($_GET['buscar'])) {
+        $buscar = $_GET["buscar"];
         if ($result['dataset'] = $inventario->buscarCamisetaPorNombre($buscar)) {
             $result['status'] = 1;
         } else {
             $result['exception'] = 'No se encontro el diseno';
         }
-    } else {
-        $result['exception'] = 'Codigo sucursal invalido';
     }
     //Le vamos a decir que si el valor no es vacio entonces que me mande a buscar lo que le pido 
     print(json_encode($result));

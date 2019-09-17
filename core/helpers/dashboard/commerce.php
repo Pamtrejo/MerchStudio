@@ -20,14 +20,8 @@ class Commerce
             
             <body>
             <header>
-            <nav class="navbar navbar-dark fixed-top black flex-md-nowrap p-0 shadow">
-          <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><img src="../../resources/img/logo2.png" alt="" width="10px"  class="container"> </a>
-          <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-          <ul class="navbar-nav px-3">
-            <li class="nav-item text-nowrap">
-              <a class="nav-link" href="#">SALIR</a>
-            </li>
-          </ul>
+            <nav class="navbar  fixed-top  " style="background-image: linear-gradient(to right, #000000 0%, #000000 0%, #000000 0%, #151515 33%, #A4A4A4 66%, #000000 100%);>
+          <a class="navbar-brand container" href="#"> <img src="../../resources/img/logo.png" alt="" width="120"</a>  
         </nav>
         
         <div class="container-fluid">
@@ -48,53 +42,62 @@ class Commerce
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="sucursal.php">
                       <span data-feather="shopping-cart"></span>
                       Sucursales
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="vendedor.php">
                       <span data-feather="user"></span>
                       Vendedores
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="usuarios.php">
                       <span data-feather="users"></span>
                       Usuarios
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="cliente.php">
                       <span data-feather="user"></span>
                       Cliente
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="tallas.php">
                       <span data-feather="layers"></span>
                       Tallas  
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="roles.php">
                       <span data-feather="users"></span>
                       Roles  
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="categoria.php">
                       <span data-feather="layers"></span>
                       Categoria  
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="graficos.php">
                       <span data-feather="layers"></span>
                       Estadistica  
                     </a>
                   </li>
+                  <li class="nav-item">
+                  
+                    <a class="nav-link" onclick="signOff()" href="#">
+                      <span data-feather="log-out"></span>
+                      Cerrar sesión
+                    </a>
+                  </li>
+
+                 
                 </ul>
             </nav>
             </header>
@@ -113,9 +116,10 @@ class Commerce
         <script src="../../resources/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../../resources/js/sweetalert.min.js"></script>
         <script src="../../core/helpers/functions.js"></script>
+        <script src="../../core/controllers/dashboard/logout.js"></script>
         <script src =" ../../resources/js/feather.min.js "> </script>
         <script>feather.replace()</script>
-        <script src="../../core/controllers/public/'.$controller.'"></script>
+        <script src="../../core/controllers/dashboard/'.$controller.'"></script>
         </body>
 </html>
 		');

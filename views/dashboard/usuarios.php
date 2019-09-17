@@ -1,91 +1,151 @@
 <?php
-require_once('../../core/helpers/commerce.php');
+require_once('../../core/helpers/dashboard/commerce.php');
 Commerce::headerTemplate('MerchStudio');
 ?>
-   
-   <br><br><br><br><br><br><br><br>
-   
-    <div class="container">
-    <!--se crea el buscador-->
-    <div class="container">
-    <button type="button" onclick="cargarTabla()" class="btn btn-dark">Visualizar usuarios</button>
-    <br>
-    <br>
-    <input type="search" id="buscar"> <button type="submit" class="btn btn-dark">Buscar</button>
-    <a href="../../core/reportes/rol1.php" target="_blank" class="btn btn-dark pink">Reporte</a>
-    <a href="../../core/reportes/ventasDia1.php" target="_blank" class="btn btn-dark pink">Reporte</a>
-
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create">
-    Agregar Usuario nuevo
-    </button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Ingresar nuevo usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+<div class="container mt-5">
+    <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+        <div class="table-responsive-lg" style="width:100%">
+            <h1 class="text-center  mt-4 mb-4 letra">USUARIOS</h1>
+            <div class="row d-flex justify-content-center">
+                <div class="col-6 col-md-4 text-center">
+                    <button type="button" class="mr-lg-2 btn btn-dark" data-toggle="modal" data-target="#guardarusuario">
+                    <i data-feather="plus-circle"></i>
+                        
                     </button>
                 </div>
-                <div class="modal-crear" class="modal">
-                    <form method="post" id="form-crear" enctype="multipart/form-data">
+            </div>
+            <br>
+            <table id="categoria" class="table ">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="letrita">ROL</th>
+                        <th scope="col"  class="letrita">NOMBRE</th>
+                        <th scope="col" class="letrita">APELLIDO</th>
+                        <th scope="col" class="letrita">NOMBRE USUARIO</th>
+                        <th scope="col" class="letrita">CORREO</th>
+                        <th scope="col" class="text-center letrita">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-read-categoria"></tbody>
+            </table>
+        </div>
+    </div>
+ 
+<!-- Ventana para guardar Categoria -->
+<div class="modal fade" id="guardarusuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title letrita" id="exampleModalLabel">AGREGAR UN NUEVO USUARIO</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="form-create-categoria">
+                    <div class="form-group">
                         <div class="row">
-                            <div class="input-field col s12 m6">
-                                <input id="create_sucursal" type="text" name="create_sucursal" class="validate" required />
-                                <label for="create_sucursal" class="float-left">Nombre de la sucursal</label>
+                            <div class="col-6">
+                                <label for="recipient-name" class="col-form-label">Nombre:</label>
+                                <input type="text" id="name" name="nombre" class="form-control form-control-alternative" required onfocusout="validateAlphabetic('name',1,30)" autocomplete="off">
                             </div>
-                            <div class="input-field col s12 m6">
-                                <input id="create_direccion" type="text" name="create_direccion" class="validate"
-                                    required />
-                                <label for="create_direccion" class="float-left">Direccion</label>
+                            <div class="col-6">
+                                <label for="recipient-name" class="col-form-label">Apellido:</label>
+                                <input type="text" name="apellido" id="apellido" class="form-control form-control-alternative">
                             </div>
-
-                            <div class="input-field col s12 m6">
-                                <input id="create_telefono" type="text" name="create_telefono" class="validate" required />
-                                <label for="create_telefono" class="float-left">Telefono</label>
+                            <div class="col-6">
+                                <label for="recipient-name" class="col-form-label">Nombre de usuario:</label>
+                                <input type="text" name="usuario" id="usuario" class="form-control form-control-alternative">
                             </div>
+                            <div class="col-6">
+                                <label for="recipient-name" class="col-form-label">Correo:</label>
+                                <input type="text" name="email" id="email" class="form-control form-control-alternative">
+                            </div>
+                            <div class="col-6">
+                                        <label for="rol">Rol</label>
+                                        <select class="select" name="rol" id="rol" value=""></select>
+                                    </div>
+                                    <div class="form-group col-6">
+                                    <label for="autorSelect">Fecha de Creacion</label>
+                                    <input id="fecha" type="date" name="fecha" class="validate form-control" required placeholder="Fecha de Creacion">
+                                </div>
+                                
+                            <div class="col-6">
+                                <label for="recipient-name" class="col-form-label">Contraseña:</label>
+                                <input type="text" name="contrasena" id="contrasena" class="form-control form-control-alternative">
+                            </div>
+                            <div class="col-6">
+                                <label for="recipient-name" class="col-form-label">Confirmar contraseña:</label>
+                                <input type="text" name="confirmar" id="confirmar" class="form-control form-control-alternative">
+                            </div>
+                            
+                            
                         </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary" data-tooltip="form-crear">Agregar</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-dark">Guardar</button>
+                    </div>
                 </form>
-
             </div>
         </div>
     </div>
-
-
-    <!--se crea la tabla-->
-    <div class="table-responsive">
-    <table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Rol</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Apellido</th>
-      <th scope="col">Nombre de Usuario</th>
-      <th scope="col"> Correo</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody id="tbody-usuario"></tbody>
-</table>
-
-  </tbody>
-</table>
 </div>
-<br>
+<!-- Ventana para modificar Categoria -->
+<div class="modal fade" id="modificarCategoriaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Modificar Categoria</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" id="form-update-categoria">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Codigo:</label>
+                        <input name="id-update" type="text" class="form-control form-control-alternative" id="idCategoria" readonly>
 
-
-<br><br><br><br><br><br><br><br><br>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="recipient-name" class="col-form-label">Nombre:</label>
+                                <input name="nombres-update" type="text" class="form-control form-control-alternative" id="nombreCategoria">
+                            </div>
+                            <div class="col-6">
+                                <label for="recipient-name" class="col-form-label">Descuento:</label>
+                                <input name="descuento-update" type="text" class="form-control form-control-alternative" id="descuentoCategoria">
+                            </div>
+                            <div class="col-12">
+                                <label for="recipient-name" class="col-form-label">Descripción:</label>
+                                <textarea class="form-control" name="descripcion-update" id="descripcion-update" aria-label="With textarea"></textarea>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center my-4">
+                                <div id="imagen-update-container"></div>
+                            </div>
+                            <div class="col-12 mt-4">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Imagen:</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="imagen-update" id="imagen-update">
+                                        <input type="text" class="d-none" id="imagen-categoria" name="imagen-categoria">
+                                        <label class="custom-file-label" for="inputGroupFile01">.gif, .png, .jpg</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-warning">Modificar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
 <?php
 Commerce::footerTemplate('usuarios.js');
 ?>

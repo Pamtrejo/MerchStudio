@@ -7,15 +7,16 @@ Commerce::headerTemplate('MerchStudio');
 
 <!--se crea el buscador-->
 <div class="container">
-    <button type="button" class="btn btn-dark">Ver todas las sucursales</button>
-    <button type="button" onclick="cargarTabla(1)" class="btn btn-dark">San Benito</button>
-    <button type="button" onclick="cargarTabla(2)" class="btn btn-dark">Galerias</button>
-    <button type="button" onclick="cargarTabla(3)" class="btn btn-dark">Plaza Mundo</button>
-    <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#Modal4">Reporte1</button>
-
+    <div class="row">
+        <div class="mr-2">
+            <button type="button" onclick="cargarTabla('todo')" class="btn btn-dark">Ver todas las sucursales</button>
+        </div>
+        <div id="sucursalesButton">
+        </div>
+    </div>
     <br>
     <br>
-    <input type="search" id="buscar"> <a class=" text-dark" href="#"><i class="fas fa-search fa-lg"></i></a>
+    <input type="search" id="buscar" placeholder="Buscar Producto"> <a class=" text-dark" href="#"><i class="fas fa-search fa-lg"></i></a>
 
     
     <!-- Boton para abrir el modal-->
@@ -28,36 +29,7 @@ Commerce::headerTemplate('MerchStudio');
     <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#exampleCenter">
         <a class=" text-white" href="#"><i class="fas fa-edit fa-lg"></i></a>
     </button>
-    <!-- Modal del reporte-->
-    <div class="modal fade" id="Modal4" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Elegir la categoria</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-crear" class="modal">
-                <form method="post" id="form-crear" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="input col s12 m6">
-                                <select id="categoria" name="categoria">
-                                </select>
-                                <label class="float-left"> Categorias</label>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" onclick="reporteCategoria()" class="btn btn-primary" data-tooltip="form-crear">Abrir reporte</button>
-                </div>
-                </form>
-        </div>
-        </div>
-    </div>
-
+    
     
     <!-- Modal  para poder agregar un nuevo producto-->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -193,11 +165,11 @@ Commerce::headerTemplate('MerchStudio');
                             </div>
                         </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-dark" data-tooltip="crear">Agregar</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-dark" data-tooltip="crear">Agregar</button>
+                    </div>
                 </form>
 
             </div>
@@ -217,19 +189,45 @@ Commerce::headerTemplate('MerchStudio');
                     <th scope="col">Precio</th>
                     <th scope="col">Descripcion</th>
                     <th scope="col">Sucursal</th>
-                    <th scope="col">Cantidad</th>
+                    <th scope="col">Cantidad Total</th>
+                    <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody id="tbody-inventario"></tbody>
         </table>
-
-        </tbody>
-        </table>
     </div>
+    
     <br>
-
+    <div class="modal fade" id="verMas" tabindex="-1" role="dialog" aria-labelledby="verMasLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ver tallas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Diseño</th>
+                                    <th scope="col">Talla</th>
+                                    <th scope="col">Sucursal</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-inventario-mas"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <br><br><br><br><br><br><br><br><br>

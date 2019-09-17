@@ -13,7 +13,7 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
         switch ($_GET['action']) {
             case 'logout':
                 if (session_destroy()) {
-                    header('location: ../../views/dashboard/');
+                    header('location: ../../views/public/');
                 } else {
                     header('location: ../../views/dashboard/main.php');
                 }
@@ -261,6 +261,13 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     $result['exception'] = 'Rol incorrecto';
                 }
                 break;
+                case 'ListaRol':
+                if ($result['dataset'] = $usuario->ListaRol()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la sucursal';
+                }
+                break;
                 case 'login':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setNomUsuario($_POST['alias'])) {
@@ -272,11 +279,6 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                                 $result['status'] = 1;
                                 $_SESSION['tiempo'] = time();
                             } else {
-                                $contrasena='';
-                                       foreach  (array_keys($_POST) as $field) {
-                        // list($name, $type) = explode(':', $index);
-                        $contrasena=$contrasena.$field.' ' ;
-                    }
                                 $result['exception'] = 'Clave inexistente'.$contrasena;
                             }
                         } else {
@@ -287,11 +289,6 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                         $result['exception'] = 'Nombre de usuario inexistente';
                     }
                 } else {
-                    $Stringnombre='';
-                                       foreach  (array_keys($_POST) as $field) {
-                        // list($name, $type) = explode(':', $index);
-                        $Stringnombre=$Stringnombre.$field.' ' ;
-                    }
                     $result['exception'] = 'Nombre de usuario incorrecto'.$Stringnombre;
                 }
                 break;

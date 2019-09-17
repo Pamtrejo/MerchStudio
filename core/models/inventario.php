@@ -145,27 +145,75 @@ class Inventario extends Validator
 	//Metodos para manejar el CRUD
 	public function cargarCamisetasSucursal()
 	{
-		$sql = "SELECT productoxsucursal.IdProductoxSucursal, producto.idproducto, producto.Diseno, producto.Descripcion, producto.Precio, tallas.Talla, sucursal.NomSucursal, cantidad
-		from producto LEFT JOIN productoxsucursal ON productoxsucursal.IdProducto = producto.IdProducto
-		AND productoxsucursal.IdSucursal = ?
-		LEFT JOIN tallas ON productoxsucursal.IdTalla = tallas.IdTalla
-		LEFT JOIN sucursal ON productoxsucursal.IdSucursal = sucursal.IdSucursal
-		order BY producto.idproducto asc";
+		$sql = "SELECT IdProductoxSucursal, productoxsucursal.IdProducto, productoxsucursal.IdTalla , 
+		producto.Diseno, producto.Precio , producto.Descripcion, productoxsucursal.IdSucursal,
+		sucursal.NomSucursal, productoxsucursal.Cantidad as 'cantidad', 
+		tallas.Talla
+		FROM `productoxsucursal` INNER JOIN producto USING(IdProducto) 
+		INNER JOIN tallas USING(IdTalla) INNER JOIN sucursal USING(IdSucursal)
+		WHERE productoxsucursal.IdSucursal = ?
+		ORDER BY productoxsucursal.IdProducto, productoxsucursal.IdTalla ASC";
 		$params = array($this->idSucursal);
 		return Database::getRows($sql, $params);
 	}
+	public function cargarCamisetasSucursalTodas()
+	{
+		$sql = "SELECT IdProductoxSucursal, productoxsucursal.IdProducto, productoxsucursal.IdTalla , 
+		producto.Diseno, producto.Precio , producto.Descripcion, productoxsucursal.IdSucursal,
+		sucursal.NomSucursal, productoxsucursal.Cantidad as 'cantidad', 
+		tallas.Talla
+		FROM `productoxsucursal` INNER JOIN producto USING(IdProducto) 
+		INNER JOIN tallas USING(IdTalla) INNER JOIN sucursal USING(IdSucursal)
+		ORDER BY productoxsucursal.IdProducto, productoxsucursal.IdTalla ASC";
+		$params = array();
+		return Database::getRows($sql, $params);
+	}
+	public function cargarSucursalTodas()
+	{
+		$sql = "SELECT IdSucursal, NomSucursal FROM sucursal ORDER BY IdSucursal ASC";
+		$params = array();
+		return Database::getRows($sql, $params);
+	}
 
+	public function cargarCamisetasTallas()
+	{
+		$sql = "SELECT IdProductoxSucursal, productoxsucursal.IdProducto, productoxsucursal.IdTalla , 
+		producto.Diseno, producto.Precio , producto.Descripcion, productoxsucursal.IdSucursal,
+		sucursal.NomSucursal, SUM(productoxsucursal.Cantidad) as 'cantidad', 
+		tallas.Talla
+		FROM `productoxsucursal` INNER JOIN producto USING(IdProducto) 
+		INNER JOIN tallas USING(IdTalla) INNER JOIN sucursal USING(IdSucursal)
+		WHERE productoxsucursal.IdSucursal = ? and productoxsucursal.IdProducto = ?
+		GROUP BY tallas.IdTalla 
+		ORDER BY productoxsucursal.IdProducto, tallas.Talla  ASC";
+		$params = array($this->idSucursal,$this->idProducto);
+		return Database::getRows($sql, $params);
+	}
+	public function cargarCamisetasTallasT()
+	{
+		$sql = "SELECT IdProductoxSucursal, productoxsucursal.IdProducto, productoxsucursal.IdTalla , 
+		producto.Diseno, producto.Precio , producto.Descripcion, productoxsucursal.IdSucursal,
+		sucursal.NomSucursal, SUM(productoxsucursal.Cantidad) as 'cantidad', 
+		tallas.Talla
+		FROM `productoxsucursal` INNER JOIN producto USING(IdProducto) 
+		INNER JOIN tallas USING(IdTalla) INNER JOIN sucursal USING(IdSucursal)
+		WHERE productoxsucursal.IdProducto = ?
+		GROUP BY tallas.IdTalla 
+		ORDER BY productoxsucursal.IdProducto, tallas.Talla  ASC";
+		$params = array($this->idProducto);
+		return Database::getRows($sql, $params);
+	}
 	public function buscarCamisetaPorNombre($buscar)
 	{
-		$sql = "SELECT productoxsucursal.IdProductoxSucursal, producto.idproducto, producto.Diseno, producto.Descripcion, producto.Precio, tallas.Talla, sucursal.NomSucursal, cantidad
-		from producto LEFT JOIN productoxsucursal ON productoxsucursal.IdProducto = producto.IdProducto
-		AND productoxsucursal.IdSucursal = ?
-		LEFT JOIN tallas ON productoxsucursal.IdTalla = tallas.IdTalla
-		LEFT JOIN sucursal ON productoxsucursal.IdSucursal = sucursal.IdSucursal
-		WHERE REPLACE(producto.Diseno, ' ', '') like ?
-		OR REPLACE(producto.Descripcion, ' ', '') like ?
-		order BY producto.idproducto asc";
-		$params = array($this->idSucursal, '%' . $buscar . '%', '%' . $buscar . '%');
+		$sql = "SELECT IdProductoxSucursal, productoxsucursal.IdProducto, productoxsucursal.IdTalla , 
+		producto.Diseno, producto.Precio , producto.Descripcion, productoxsucursal.IdSucursal,
+		sucursal.NomSucursal, productoxsucursal.Cantidad as 'cantidad', 
+		tallas.Talla
+		FROM `productoxsucursal` INNER JOIN producto USING(IdProducto) 
+		INNER JOIN tallas USING(IdTalla) INNER JOIN sucursal USING(IdSucursal)
+		WHERE producto.Diseno like ?
+		ORDER BY productoxsucursal.IdProducto, productoxsucursal.IdTalla ASC";
+		$params = array('%' . $buscar . '%');
 		return Database::getRows($sql, $params);
 	}
 
@@ -193,6 +241,18 @@ class Inventario extends Validator
 		$params = array($this->idProducto);
 		return Database::executeRow($sql, $params);
 	}
+	public function deleteProducto2()
+	{
+		$sql = 'DELETE FROM productoxsucursal WHERE idproducto = ?';
+		$params = array($this->idProducto);
+		return Database::executeRow($sql, $params);
+	}
+	public function restar()
+	{
+		$sql = 'UPDATE productoxsucursal SET cantidad = cantidad - ? WHERE IdProductoxSucursal = ?';
+		$params = array($this->cantidad, $this->idSucursal);
+		return Database::executeRow($sql, $params);
+	}
 
 	public function updateProducto()
 	{
@@ -203,7 +263,7 @@ class Inventario extends Validator
 
 	public function ListaProducto()
 	{
-		$sql = 'SELECT IdCategoria, Diseno FROM  producto';
+		$sql = 'SELECT IdProducto, Diseno FROM  producto';
 		$params = array(null);
 		return Database::getRows($sql, $params);
 	}
@@ -228,84 +288,4 @@ class Inventario extends Validator
 		$params = array($this->idProducto, $this->idtalla, $this->idSucursal, $this->cantidad);
 		return Database::executeRow($sql, $params);
 	}
-
-	//Metodos para graficos
-	public function cantidadProductosCategoria()
-	{
-		$sql = 'SELECT Categoria, COUNT(IdProducto) cantidad 
-		FROM producto INNER JOIN categoria USING(IdCategoria) GROUP BY IdCategoria';
-		$params = array(null);
-		return Database::getRows($sql, $params);
-	}
-
-
-	public function MontoporCategoria()
-	{
-		$sql = 'SELECT SUM(venta_total) cantidad , nombre_categoria  FROM `detalle_venta` INNER JOIN (productos) USING (id_producto) INNER JOIN (categorias) USING (id_categoria) GROUP BY id_categoria';
-		$params = array(null);
-		return Database::getRows($sql, $params);
-	}
-
-
-	public function VentaporFecha()
-	{
-		$sql = 'SELECT COUNT(`IdVenta`) cantidad, `fecha` FROM venta GROUP BY day(fecha) LIMIT 3';
-		$params = array(null);
-		return Database::getRows($sql, $params);
-	}
-
-	public function TallasVendidas()
-	{
-		$sql = 'SELECT tallas.Talla, COUNT(detalleventa.IdProductoxSucursal)Cantidad
-		FROM tallas INNER JOIN productoxsucursal ON tallas.IdTalla = productoxsucursal.IdTalla
-		INNER JOIN detalleventa ON productoxsucursal.IdProductoxSucursal = detalleventa.IdProductoxSucursal
-		GROUP BY detalleventa.IdProductoxSucursal 
-		ORDER BY `Cantidad`  ASC LIMIT 3';
-		$params = array(null);
-		return Database::getRows($sql, $params);
-	}
-
-	public function CategoriasVendidas()
-	{
-		$sql = 'SELECT categoria.Categoria, COUNT(detalleventa.IdProductoxSucursal)Cantidad
-		FROM categoria INNER JOIN productoxsucursal ON categoria.IdCategoria = productoxsucursal.IdCategoria
-		INNER JOIN detalleventa ON productoxsucursal.IdProductoxSucursal = detalleventa.IdProductoxSucursal
-		GROUP BY detalleventa.IdProductoxSucursal
-		ORDER BY Cantidad DESC LIMIT 3';
-		$params = array(null);
-		return Database::getRows($sql, $params);
-	}
-
-	public function CategoriasVentas()
-	{
-		$sql = 'SELECT SUM(Venta) cantidad , Categoria  FROM `detalleventa` INNER JOIN (productoxsucursal)
-		USING (IdProductoxSucursal) INNER JOIN (categoria) 
-		USING (IdCategoria) GROUP BY IdCategoria
-		ORDER BY cantidad DESC';
-		$params = array(null);
-		return Database::getRows($sql, $params);
-	}
-
-	//reporte
-	public function productosxTalla($value)
-	{
-		$sql = 'SELECT  tallas.Talla, producto.Diseno, productoxsucursal.Cantidad, sucursal.NomSucursal
-		from producto, productoxsucursal, tallas, sucursal
-		where producto.IdProducto = productoxsucursal.IdProducto AND tallas.IdTalla = productoxsucursal.IdTalla 
-		and sucursal.IdSucursal = productoxsucursal.IdSucursal and productoxsucursal.IdTalla = ?';
-		$params = array($value);
-		return Database::getRows($sql,$params);
-	}
-	//reporte
-	public function ventasxPago($value)
-	{
-		$sql = 'SELECT pago.TipoPago, factura.Fecha, detalleventa.Venta
-		from pago, factura, detalleventa
-		where pago.IdPago = factura.IdPago and factura.IdFactura = detalleventa.IdFactura
-		and pago.IdPago= ?';
-		$params = array($value);
-		return Database::getRows($sql,$params);
-	}
-
-
 }

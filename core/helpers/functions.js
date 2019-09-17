@@ -59,4 +59,3 @@ function sweetAlert(type, text, url)
 }
 
 
-    
