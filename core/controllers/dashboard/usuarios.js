@@ -1,13 +1,23 @@
-
-
 //Constante para establecer la ruta y parámetros de comunicación con la API
-const apiUsuario = '../../core/api/usuarios.php?action=';
+const apiUsuario = '../../core/api/usuarios.php?site=dashboard&action=';
 $(document).ready(() => {
     //CARGA LA INFORMACION DE LA API EN LA VISTA
-    fillSelect(apiUsuario + 'ListaRol', 'rol', null);
+    llenarSelect(apiUsuario + 'ListaRol', 'rol', null);
 })
+function isJSONString(string) {
+    try {
+        if (string != "[]") {
+            JSON.parse(string);
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        return false;
+    }
+}
 
-function fillSelect(api, id, selected) {
+function llenarSelect(api, id, selected) {
     $.ajax({
         url: api,
         type: 'post',
@@ -22,12 +32,12 @@ function fillSelect(api, id, selected) {
                 if (result.status) {
                     let content = '';
                     if (!selected) {
-                        content += '<option value="" disabled selected>Seleccione una opción</option>';
+                        content += '<option value="" disabled selected>Seleccione un rol</option>';
                     }
                     result.dataset.forEach(function (row) {
                         value = Object.values(row)[0];
                         text = Object.values(row)[1];
-                        if (row.idrol != selected) {
+                        if (row.IdRol != selected) {
                             content += `<option value="${value}">${text}</option>`
                             
                         } else {
@@ -39,7 +49,6 @@ function fillSelect(api, id, selected) {
                     $('#' + id).html('<option value="">No hay opciones</option>');
                 }
             } else {
-                console.log(response);
             }
         })
         .fail(function (jqXHR) {
@@ -47,7 +56,6 @@ function fillSelect(api, id, selected) {
             console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
         });
 }
-
 function checkUsuarios()
 {
     $.ajax({
@@ -102,3 +110,35 @@ $('#form-register').submit(function()
         console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
     });
 });
+
+$('#crear_usuario').submit(function()
+{
+    event.preventDefault();
+    $.ajax({
+        url: apiUsuario + 'create',
+        type: 'post',
+        data: $('#crear_usuario').serialize(),
+        datatype: 'json'
+    })
+    .done(function(response){
+        //Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+        if (isJSONString(response)) {
+            const result = JSON.parse(response);
+            //Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+            if (result.status) {
+                $('#crear_usuario')[0].reset();
+                $('#guardarusuario').modal('hide');
+                sweetAlert(1, 'Usuario creado correctamente', null);
+                showTable();
+            } else {
+                sweetAlert(2, result.exception, null);
+            }
+        } else {
+            console.log(response);
+        }
+    })
+    .fail(function(jqXHR){
+        //Se muestran en consola los posibles errores de la solicitud AJAX
+        console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+    });
+})

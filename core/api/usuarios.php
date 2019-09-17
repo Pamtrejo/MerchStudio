@@ -2,7 +2,6 @@
 require_once('../../core/helpers/database.php');
 require_once('../../core/helpers/validator.php');
 require_once('../../core/models/usuarios.php');
-
 //Se comprueba si existe una petición del sitio web y la acción a realizar, de lo contrario se muestra una página de error
 if (isset($_GET['site']) && isset($_GET['action'])) {
     session_start();
@@ -13,7 +12,7 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
         switch ($_GET['action']) {
             case 'logout':
                 if (session_destroy()) {
-                    header('location: ../../views/public/');
+                    header('location: ../../views/dashboard/');
                 } else {
                     header('location: ../../views/dashboard/main.php');
                 }
@@ -113,24 +112,32 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     $result['exception'] = 'Ingrese un valor para buscar';
                 }
                 break;
-            case 'create':
+                case 'create':
                 $_POST = $usuario->validateForm($_POST);
-                if ($usuario->setNombres($_POST['nombres'])) {
-                    if ($usuario->setApellidos($_POST['create_apellidos'])) {
-                        if ($usuario->setCorreo($_POST['create_correo'])) {
-                            if ($usuario->setAlias($_POST['create_alias'])) {
-                                if ($_POST['contrasena'] == $_POST['confirmar']) {
-                                    if ($usuario->setClave($_POST['contrasena'])) {
-                                        if ($usuario->createUsuario()) {
-                                            $result['status'] = 1;
+                if ($usuario->setNombres($_POST['nombre'])) {
+                    if ($usuario->setApellidos($_POST['apellido'])) {
+                        if ($usuario->setCorreo($_POST['email'])) {
+                            if ($usuario->setNomUsuario($_POST['usuario'])) {
+                                if ($usuario->setRol($_POST['rol'])) {
+                                    if ($usuario->setVencimiento($_POST['fecha'])) {
+                                        if ($_POST['contrasena'] == $_POST['confirmar']) {
+                                            if ($usuario->setContrasena($_POST['contrasena'])) {
+                                                if ($usuario->createUsuario()) {
+                                                    $result['status'] = 1;
+                                                } else {
+                                                    $result['exception'] = 'Operación fallida';
+                                                }
+                                            } else {
+                                                $result['exception'] = 'Clave menor a 8 caracteres';
+                                            }
                                         } else {
-                                            $result['exception'] = 'Operación fallida';
+                                            $result['exception'] = 'Claves diferentes';
                                         }
                                     } else {
-                                        $result['exception'] = 'Clave menor a 8 caracteres';
+                                        $result['exception'] = 'Fecha incorrecta';
                                     }
                                 } else {
-                                    $result['exception'] = 'Claves diferentes';
+                                    $result['exception'] = 'Rol incorrecto';
                                 }
                             } else {
                                 $result['exception'] = 'Alias incorrecto';
@@ -207,6 +214,13 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     $result['exception'] = 'No se puede eliminar a sí mismo';
                 }
                 break;
+                case 'ListaRol':
+                if ($result['dataset'] = $usuario->ListaRol()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['exception'] = 'No se pudo obtener la sucursal';
+                }
+                break;
             default:
                 exit('Acción no disponible login');
         }
@@ -261,20 +275,14 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     $result['exception'] = 'Rol incorrecto';
                 }
                 break;
-                case 'ListaRol':
-                if ($result['dataset'] = $usuario->ListaRol()) {
-                    $result['status'] = 1;
-                } else {
-                    $result['exception'] = 'No se pudo obtener la sucursal';
-                }
-                break;
+                
                 case 'login':
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setNomUsuario($_POST['alias'])) {
                     if ($usuario->checkNomUsuario()) {
                         if ($usuario->setContrasena($_POST['contrasena'])) {
                             if ($usuario->checkPassword()) {
-                                $_SESSION['IdUsuario'] = $usuario->getId();
+                                $_SESSION['idUsuario'] = $usuario->getId();
                                 $_SESSION['usuario'] = $usuario->getNomUsuario();
                                 $result['status'] = 1;
                                 $_SESSION['tiempo'] = time();
@@ -293,7 +301,7 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                 }
                 break;
             default:
-                exit('Acción no disponible');
+                exit('Acción no disponible..');
         }
     } else {
         exit('Acceso no disponible');

@@ -3,7 +3,7 @@ require_once('../../core/helpers/dashboard/commerce.php');
 Commerce::headerTemplate('MerchStudio');
 ?>
 <div class="container mt-5">
-    <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+    <div class="row shadow-sm p-3 mb-5 bg-secondary rounded">
         <div class="table-responsive-lg" style="width:100%">
             <h1 class="text-center  mt-4 mb-4 letra">USUARIOS</h1>
             <div class="row d-flex justify-content-center">
@@ -42,12 +42,12 @@ Commerce::headerTemplate('MerchStudio');
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" id="form-create-categoria">
+                <form method="POST" id="crear_usuario">
                     <div class="form-group">
                         <div class="row">
                             <div class="col-6">
                                 <label for="recipient-name" class="col-form-label">Nombre:</label>
-                                <input type="text" id="name" name="nombre" class="form-control form-control-alternative" required onfocusout="validateAlphabetic('name',1,30)" autocomplete="off">
+                                <input type="text" id="nombre" name="nombre" class="form-control form-control-alternative" required autocomplete="off">
                             </div>
                             <div class="col-6">
                                 <label for="recipient-name" class="col-form-label">Apellido:</label>
@@ -61,10 +61,12 @@ Commerce::headerTemplate('MerchStudio');
                                 <label for="recipient-name" class="col-form-label">Correo:</label>
                                 <input type="text" name="email" id="email" class="form-control form-control-alternative">
                             </div>
+
                             <div class="col-6">
-                                        <label for="rol">Rol</label>
-                                        <select class="select" name="rol" id="rol" value=""></select>
-                                    </div>
+                                <label for="recipient-name" class="col-form-label">Rol:</label>
+                                <select id="rol" name="rol" class="form-control form-control-alternative">
+                                </select>
+                            </div>
                                     <div class="form-group col-6">
                                     <label for="autorSelect">Fecha de Creacion</label>
                                     <input id="fecha" type="date" name="fecha" class="validate form-control" required placeholder="Fecha de Creacion">
@@ -72,19 +74,19 @@ Commerce::headerTemplate('MerchStudio');
                                 
                             <div class="col-6">
                                 <label for="recipient-name" class="col-form-label">Contraseña:</label>
-                                <input type="text" name="contrasena" id="contrasena" class="form-control form-control-alternative">
+                                <input type="password" name="contrasena" id="contrasena" class="form-control form-control-alternative">
                             </div>
                             <div class="col-6">
                                 <label for="recipient-name" class="col-form-label">Confirmar contraseña:</label>
-                                <input type="text" name="confirmar" id="confirmar" class="form-control form-control-alternative">
+                                <input type="password" name="confirmar" id="confirmar" class="form-control form-control-alternative">
                             </div>
                             
                             
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-dark">Guardar</button>
+                        <button type="button" class="btn btn-secondary" onclick="estado(false)" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-dark" onclick="estado(true)">Guardar</button>
                     </div>
                 </form>
             </div>
@@ -120,21 +122,8 @@ Commerce::headerTemplate('MerchStudio');
                                 <label for="recipient-name" class="col-form-label">Descripción:</label>
                                 <textarea class="form-control" name="descripcion-update" id="descripcion-update" aria-label="With textarea"></textarea>
                             </div>
-                            <div class="col-12 d-flex justify-content-center my-4">
-                                <div id="imagen-update-container"></div>
-                            </div>
-                            <div class="col-12 mt-4">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Imagen:</span>
-                                    </div>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="imagen-update" id="imagen-update">
-                                        <input type="text" class="d-none" id="imagen-categoria" name="imagen-categoria">
-                                        <label class="custom-file-label" for="inputGroupFile01">.gif, .png, .jpg</label>
-                                    </div>
-                                </div>
-                            </div>
+                            
+                            
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

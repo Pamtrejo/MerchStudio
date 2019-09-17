@@ -80,7 +80,6 @@ Commerce::headerTemplate('MerchStudio');
           <table class="table">
                <thead class="thead-dark">
                     <tr>
-
                          <th scope="col">Sucursal</th>
                          <th scope="col">Direccion</th>
                          <th scope="col">Telefono</th>

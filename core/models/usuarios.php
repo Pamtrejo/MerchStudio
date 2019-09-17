@@ -11,6 +11,7 @@ class Usuarios extends Validator
 	private $vencimiento = null;
 	private $rol = null;
 
+	
 	//Métodos para sobrecarga de propiedades
 	public function setId($value)
 	{
@@ -205,6 +206,13 @@ class Usuarios extends Validator
 		return Database::getRow($sql, $params);
 	}
 
+	public function getAtributos($id)
+	{
+		$sql = 'SELECT atributos FROM roles inner join usuario USING(idrol) where idusuario = ? limit 0,1';
+		$params = array($id);
+		return Database::getRow($sql, $params);
+	}
+
 	public function updateUsuario()
 	{
 		$sql = 'UPDATE usuarios SET nombres_usuario = ?, apellidos_usuario = ?, correo = ?, nomusuario = ? WHERE id_usuario = ?';
@@ -225,7 +233,6 @@ class Usuarios extends Validator
 		$params = array(null);
 		return Database::getRows($sql, $params);
 	}
-
 	//reporte
 	public function reporteUsuariosRol()
 	{
