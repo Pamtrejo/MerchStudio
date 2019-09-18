@@ -13,6 +13,7 @@ class Usuarios extends Validator
 	private $contrasena = null;
 	private $vencimiento = null;
 	private $rol = null;
+	private $codigoValidacion = null;
 
 	
 	//Métodos para sobrecarga de propiedades
@@ -136,6 +137,16 @@ class Usuarios extends Validator
 		return $this->vencimiento;
 	}
 
+	public function setCodigo($value)
+	{
+		if ($this->validateId($value)) {
+			$this->codigoValidacion = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	//metodos para poder hacer lo de la doble autenticacion 
 	public function iniciarSesion(){
         $retorno=0;
@@ -145,12 +156,16 @@ class Usuarios extends Validator
         if(!$existe){
 
             $random=rand(10000,99999);
-            $sql = 'INSERT INTO `doblefactor`(`IDFactor`, `Usuario`, `Codigo`, `SesionActiva`, `Bloqueo`, `FechaDesbloqueo`, `FechaCreacion`) VALUES (null,?,?,?,?,?,?)';
+           
+		   if( $this->enviarEmail($random)){
+			$sql = 'INSERT INTO `doblefactor`(`IDFactor`, `Usuario`, `Codigo`, `SesionActiva`, `Bloqueo`, `FechaDesbloqueo`, `FechaCreacion`) VALUES (null,?,?,?,?,?,?)';
             $params = array($this->id,$random,0,0,null,date('Y-m-d G:i:s'));
             $retorno=Database::executeRow($sql, $params);
-            $this->enviarEmail($random);
+		   }else{
+			   return $retorno;
+		   }
         }else{
-            $retorno=-1;
+            $retorno=1;
 
         }
         
@@ -175,43 +190,46 @@ class Usuarios extends Validator
         
     }
     private function enviarEmail($Codigo){
-
-		require_once('../../libraries/PHPMailer.php');    
+		require_once('../../libraries/Exception.php');
+		require_once('../../libraries/PHPMailer.php');  
+		require_once('../../libraries/SMTP.php');  
         $mail = new PHPMailer();
 		//indico a la clase que use SMTP
 		//permite modo debug para ver mensajes de las cosas que van ocurriendo
-		$mail-­>SMTPDebug(0);
-        $mail­->IsSMTP();
-        
+		$mail->isSMTP();
+		$mail->SMTPDebug = 0;
+       
         //Debo de hacer autenticación SMTP
-       	$mail­>SMTPAuth(true);
-        $mail­>SMTPSecure  ("ssl");
+		$mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'tls';
         //indico el servidor de Gmail para SMTP
-        $mail­>Host("smtp.gmail.com");
+        $mail->Host = 'smtp.gmail.com';
         //indico el puerto que usa Gmail
-        $mail­>Port(465);
+        $mail->Port = 587;
         //indico un usuario / clave de un usuario de gmail
-        $mail­>Username("panayelyaguilar@gmail.com");
-        $mail­>Password("flaudersitococo");
-        $mail­>SetFrom('panayelyaguilar@gmail.com', 'Merch Studio');
-        //$mail­>AddReplyTo($this->correo);
-        $mail­>Subject("Envío de codigo ".$Codigo);
-        $mail­>MsgHTML("Este es el codigo para ingresar ".$Codigo);
+        $mail->Username = "panayelyaguilar@gmail.com";
+        $mail->Password = "flaudersitococo";
+        $mail->setFrom('panayelyaguilar@gmail.com', 'Merch Studio');
+		//$mail­>AddReplyTo($this->correo);
+		$mail->Subject = 'Envío de codigo'.$Codigo;
+		$mail->msgHTML('Este es el codigo para ingresar '.$Codigo);
         //indico destinatario
-        $address = $this->correo;
-        $mail­>AddAddress($address, $this->nombres);
-        if(!$mail­>Send()) {
-        echo "Error al enviar: " . $mail­>ErrorInfo;
-        } else {
-        echo "Mensaje enviado!";
-        }
-        
-        
+		$address = $this->correo;
+		$mail->addAddress($address, $this->nombres);
+		if ($mail->send()) {
+			return true;
+		} else {
+			return false;
+		}
 
     }
 
 
-
+	public function validarCodigo() {
+		$sql = 'SELECT Codigo FROM doblefactor WHERE Usuario = ?';
+		$params = array($this->id);
+		return Database::getRow($sql, $params);
+	}
 
 
     //Metodos para manejar los SCRUD
@@ -234,6 +252,13 @@ class Usuarios extends Validator
 		} else {
 			return false;
 		}
+	}
+
+	public function checkUsuario()
+	{
+		$sql = 'SELECT * FROM usuario WHERE IdUsuario = ?';
+		$params = array($this->id);
+		return Database::getRow($sql, $params);
 	}
 
 	public function checkPassword()

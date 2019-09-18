@@ -2,8 +2,8 @@
 # | Custom error messages/pages                                        |
 # ----------------------------------------------------------------------
 
-ErrorDocument 404 /girltime2.0/Girltime/resources/pages/error404.html
-ErrorDocument 403 /girltime2.0/Girltime/resources/pages/error403.html
+ErrorDocument 404 /MerchStudio-1/resources/pages/error404.html
+ErrorDocument 403 /MerchStudio-1/resources/pages/error403.html
 
 # ----------------------------------------------------------------------
 # | Error prevention                                                   |

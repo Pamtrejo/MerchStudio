@@ -49,7 +49,7 @@ $('#form-sesion').submit(function()
             const dataset = JSON.parse(response);
             //Se comprueba si la respuesta es satisfactoria, sino se muestra la excepción
             if (dataset.status) {
-                sweetAlert(1, 'Autenticación correcta', 'main.php');
+                sweetAlert(1, 'Autenticación correcta', `autenticacion.php?idUsuario=${dataset.dataset}`);
             } else {
                 if (dataset.cuenta) {
                     sweetAlert(2, dataset.exception, 'contrasena.php');
@@ -69,3 +69,32 @@ $('#form-sesion').submit(function()
     
 })
 
+function autenticacion(){
+    let codigo = $('#codigo').val()
+    let url = new URL(window.location.href)
+    let idUsuario = url.searchParams.get('idUsuario')
+    $.ajax({
+        url: apiSesion + 'validarcodigo',
+        type: 'post',
+        data: {codigo, idUsuario},
+        datatype: 'json'
+    })
+    .done(function(response){
+        //Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+        if (isJSONString(response)) {
+            const dataset = JSON.parse(response);
+            //Se comprueba si la respuesta es satisfactoria, sino se muestra la excepción
+            if (dataset.status) {
+                sweetAlert(1, 'Autenticación correcta', 'main.php');
+            } else {
+                sweetAlert(2, dataset.exception, null);
+            }
+        } else {
+            console.log(response);
+        }
+    })
+    .fail(function(jqXHR){
+        //Se muestran en consola los posibles errores de la solicitud AJAX
+        console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+    });
+}

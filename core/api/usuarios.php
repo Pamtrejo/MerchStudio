@@ -284,15 +284,13 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     if ($usuario->checkNomUsuario()) {
                         if ($usuario->setContrasena($_POST['contrasena'])) {
                             if ($usuario->checkPassword()) {
-                               $_SESSION['idUsuario'] = $usuario->getId();
-                                $_SESSION['usuario'] = $usuario->getNomUsuario();
-                                $result['status'] = 1;
-                                $_SESSION['tiempo'] = time();
-                               //if($usuario->iniciarSesion()){
+                              // $_SESSION['idUsuario'] = $usuario->getId();
+                               if($usuario->iniciarSesion()){
+                                    $result['dataset'] = $usuario->getId();
                                     $result['status']=1;
-                               //}else{
-                                  // $result['exception']='Enviar correo fallido';
-                              // }
+                               }else{
+                                   $result['exception']='Enviar correo fallido';
+                               }
                             } else {
                                 $result['exception'] = 'Clave inexistente'.$contrasena;
                             }
@@ -305,6 +303,29 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     }
                 } else {
                     $result['exception'] = 'Nombre de usuario incorrecto'.$Stringnombre;
+                }
+                break;
+                case 'validarcodigo':
+                if ($usuario->setId($_POST['idUsuario'])) {
+                    if ($usuario->setCodigo($_POST['codigo'])) {
+                        $codigo = $usuario->validarCodigo();
+                        if ($codigo['Codigo'] == $_POST['codigo']) {
+                            if ($infoUsuario = $usuario->checkUsuario()) {
+                                // aqui agregar las sesiones
+                                $_SESSION['idUsuario'] = $usuario->getId();
+                                $result['status'] = 1;
+                            } else {
+                                $result['exception']= 'Error al obtener informacion de usuario';
+                            }
+
+                        } else {
+                            $result['exception'] = 'Codigo de autenticacion no es igual al de la base de datos';
+                        }
+                    } else {
+                        $result['exception'] = 'Codigo de autenticacion incorrecto';
+                    }
+                } else {    
+                    $result['exception'] = 'Codigo de usuario incorrecto';
                 }
                 break;
             default:

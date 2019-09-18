@@ -25,7 +25,7 @@
         <div class="col-12 col-md-6" style="margin-top: 10%;">
             <div class="card">
                 <div class="card-body">
-                    <form class="row" id="form-session">
+                    <form class="row" id="form-autenticacion">
                         <div class="col-12 d-flex justify-content-center align-items-center py-4" style="flex-direction: column;">
                             <h1>Ingrese el codigo que fue enviado</h1>
                 
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-12 col-md-10 offset-md-1">
                             <div class="row d-flex justify-content-center">
-                                <button onclick="enviarCodigo()" type="button" class="btn btn-primary p-3">Enviar</button>
+                                <button onclick="autenticacion()" type="button" class="btn btn-primary p-3">Enviar</button>
                             </div>
                             
                         </div>
