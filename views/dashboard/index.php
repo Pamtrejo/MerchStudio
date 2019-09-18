@@ -22,7 +22,7 @@
     <main>
     <div class="container ">
     <div class="row">
-        <form method="post" id="form-sesion" class="form-signin">
+        <form method="post" id="form-sesion" class="form-signin" autocomplete="off">
         <div class="mx-auto" style="width: 150px;">
 <img src="../../resources/img/logo.png" alt="" width="150" height="65" class="img-circle"> 
 </div> <br>

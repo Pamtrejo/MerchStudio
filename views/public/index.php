@@ -30,7 +30,7 @@
   </div>
   <div class="card">
 
-  <form method="post" id="form-sesion" class="form-signin">
+  <form method="post" id="form-sesion" class="form-signin" autocomplete="off">
   <h1>Inicia sesion o registrate</h1>
             <div >
                 <input id="alias" type="text" name="alias" class="validate form-control" required placeholder="Nombre de usuario"/>

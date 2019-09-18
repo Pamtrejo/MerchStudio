@@ -1,4 +1,7 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+
 class Usuarios extends Validator
 {
 	//Declaración de propiedades
@@ -136,16 +139,16 @@ class Usuarios extends Validator
 	//metodos para poder hacer lo de la doble autenticacion 
 	public function iniciarSesion(){
         $retorno=0;
-        $sql = 'SELECT `IDFactor` FROM `doblefactor` WHERE `Usuario`=? and `Codigo`=?';
+        $sql = 'SELECT `IDFactor` FROM `doblefactor` WHERE `Usuario`=? ';
         $params = array($this->id);
-        $existe= Database::executeRow($sql, $params);
-        if(existe==0){
+        $existe= Database::getRow($sql, $params);
+        if(!$existe){
 
             $random=rand(10000,99999);
-            $sql = 'INSERT INTO `doblefactor`(`IDFactor`, `Usuario`, `Codigo`, `SesionActiva`, `Bloqueo`, `FechaDesbloqueo`, `FechaCreacion`) VALUES (?,?,?,?,?,?,?)';
-            $params = array($this->id,$this->id,$random,0,0,null);
+            $sql = 'INSERT INTO `doblefactor`(`IDFactor`, `Usuario`, `Codigo`, `SesionActiva`, `Bloqueo`, `FechaDesbloqueo`, `FechaCreacion`) VALUES (null,?,?,?,?,?,?)';
+            $params = array($this->id,$random,0,0,null,date('Y-m-d G:i:s'));
             $retorno=Database::executeRow($sql, $params);
-            enviarEmail($random);
+            $this->enviarEmail($random);
         }else{
             $retorno=-1;
 
@@ -158,7 +161,7 @@ class Usuarios extends Validator
         $retorno=0;
         $sql = 'SELECT `IDFactor` FROM `doblefactor` WHERE `Usuario`=? and `Codigo`=?';
         $params = array($this->id,$Codigo);
-        $retorno= Database::executeRow($sql, $params);
+        $retorno= Database::getRow($sql, $params);
         return $retorno;
         
     }
@@ -173,25 +176,26 @@ class Usuarios extends Validator
     }
     private function enviarEmail($Codigo){
 
-        require_once('../class.phpmailer.php');
+		require_once('../../libraries/PHPMailer.php');    
         $mail = new PHPMailer();
-        //indico a la clase que use SMTP
-        $mail­>IsSMTP();
-        //permite modo debug para ver mensajes de las cosas que van ocurriendo
-      //  $mail­>SMTPDebug =2;
+		//indico a la clase que use SMTP
+		//permite modo debug para ver mensajes de las cosas que van ocurriendo
+		$mail-­>SMTPDebug(0);
+        $mail­->IsSMTP();
+        
         //Debo de hacer autenticación SMTP
-       // $mail­>SMTPAuth = true;
-      //  $mail­>SMTPSecure = "ssl";
+       	$mail­>SMTPAuth(true);
+        $mail­>SMTPSecure  ("ssl");
         //indico el servidor de Gmail para SMTP
-       // $mail­>Host = "smtp.gmail.com";
+        $mail­>Host("smtp.gmail.com");
         //indico el puerto que usa Gmail
-       // $mail­>Port = 465;
+        $mail­>Port(465);
         //indico un usuario / clave de un usuario de gmail
-       // $mail­>Username = "tu_correo_electronico_gmail@gmail.com";
-       // $mail­>Password = "tu clave";
-        $mail­>SetFrom('noreply@merchstudio.com', 'Merch Studio');
-        $mail­>AddReplyTo("'noreply@merchstudio.com', 'Merch Studio'");
-        //$mail­>Subject = "Envío de codigo ".$Codigo;
+        $mail­>Username("panayelyaguilar@gmail.com");
+        $mail­>Password("flaudersitococo");
+        $mail­>SetFrom('panayelyaguilar@gmail.com', 'Merch Studio');
+        //$mail­>AddReplyTo($this->correo);
+        $mail­>Subject("Envío de codigo ".$Codigo);
         $mail­>MsgHTML("Este es el codigo para ingresar ".$Codigo);
         //indico destinatario
         $address = $this->correo;
@@ -214,11 +218,12 @@ class Usuarios extends Validator
 
     public function checkNomUsuario()
 	{
-		$sql = 'SELECT IdUsuario, FechaVencimiento FROM usuario WHERE NomUsuario = ?';
+		$sql = 'SELECT IdUsuario,Correo, FechaVencimiento FROM usuario WHERE NomUsuario = ?';
 		$params = array($this->nomusuario);
 		$data = Database::getRow($sql, $params);
 		if ($data) {
 			$this->id = $data['IdUsuario'];
+			$this->correo = $data['Correo'];
 			$diferencia = date('Y-m-d H:i:s') - $data['FechaVencimiento'];
 			if ($diferencia < 90) {
 				$this->vencimiento = true;

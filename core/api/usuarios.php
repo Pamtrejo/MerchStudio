@@ -1,7 +1,9 @@
 <?php
+require_once('../../libraries/PHPMailer.php');
 require_once('../../core/helpers/database.php');
 require_once('../../core/helpers/validator.php');
 require_once('../../core/models/usuarios.php');
+
 //Se comprueba si existe una petición del sitio web y la acción a realizar, de lo contrario se muestra una página de error
 if (isset($_GET['site']) && isset($_GET['action'])) {
     session_start();
@@ -282,10 +284,15 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     if ($usuario->checkNomUsuario()) {
                         if ($usuario->setContrasena($_POST['contrasena'])) {
                             if ($usuario->checkPassword()) {
-                                $_SESSION['idUsuario'] = $usuario->getId();
+                               $_SESSION['idUsuario'] = $usuario->getId();
                                 $_SESSION['usuario'] = $usuario->getNomUsuario();
                                 $result['status'] = 1;
                                 $_SESSION['tiempo'] = time();
+                               //if($usuario->iniciarSesion()){
+                                    $result['status']=1;
+                               //}else{
+                                  // $result['exception']='Enviar correo fallido';
+                              // }
                             } else {
                                 $result['exception'] = 'Clave inexistente'.$contrasena;
                             }
