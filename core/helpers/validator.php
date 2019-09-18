@@ -30,6 +30,36 @@ class Validator
 		return $error;
 	}
 
+	public function validateRecaptcha($token){
+		$url = "https://www.google.com/recaptcha/api/siteverify";
+		$data = [
+			'secret' => "6Leja7UUAAAAAEKDBrc4SHi8sJ1Gqhp1L4wdE-Gk",
+			'response' => $token,
+			'remoteip' => '127.0.0.1'
+		];
+		$options = array(
+		    'http' => array(
+		      'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		      'method'  => 'POST',
+		      'content' => http_build_query($data)
+			),
+			'ssl'=>array(
+				'verify_peer'=>false,
+				'verify_peer_name'=>false,
+			)
+		  );
+		  $context = stream_context_create($options);
+		  $response = file_get_contents($url, false, $context);
+		  $res = json_decode($response);
+
+		  if($res){
+			  return true;
+		  }
+		  else{
+			  return false;
+		  }
+	}
+
 	public function validateForm($fields)
 	{
 		foreach ($fields as $index => $value) {

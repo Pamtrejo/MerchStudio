@@ -40,23 +40,7 @@
 </div>
     </main>
     <footer>
-        <div class=" bg-dark">
-            <ul class="nav ">
-                <li class="nav-item">
-                    <div class="mx-auto" style="width: 550px;">
-                        <a class="nav-link active text-white" href=""></a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-white letrita" href="crear.php"> CREA TU DISEÑO </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-white letrita" href="index.php">INICIO </a>
-                </li>
-            </ul>
-        </div>
+        
         <div class="bg-light">
             <div class="mx-auto" style="width: 400px;">
                 <p class="text-dark ">© 2019 by MPG. Proudly created with bootstrap</p>

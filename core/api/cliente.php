@@ -36,26 +36,86 @@ if (isset($_GET['action'])) {
             }
             break;
             case 'create':
-            $_POST = $cliente->validateForm($_POST);
-            if ($cliente->setNombre($_POST['create_nombre'])) {
-                if($cliente->setDui($_POST['create_dui'])){
-                    if($cliente->setDireccion($_POST['create_direccion'])){
-                        if ($cliente->createCliente()) {
-                            $result['status'] = 1;
-                            $result['message'] = 'Cliente creado';
+            if($cliente->validateRecaptcha($token)){
+                $_POST = $cliente->validateForm($_POST);
+                if ($cliente->setNombre($_POST['create_nombre'])) {
+                    if($cliente->setDui($_POST['create_dui'])){
+                        if($cliente->setDireccion($_POST['create_direccion'])){
+                            if ($cliente->createCliente()) {
+                                $result['status'] = 1;
+                                $result['message'] = 'Cliente creado';
+                            } else {
+                                $result['exception'] = 'Operación fallida';
+                            }
                         } else {
-                            $result['exception'] = 'Operación fallida';
+                            $result['exception'] = 'Direccion incorrecta';
                         }
                     } else {
-                        $result['exception'] = 'Direccion incorrecta';
+                        $result['exception'] = 'Dui incorrecto';
                     }
                 } else {
-                    $result['exception'] = 'Dui incorrecto';
+                    $result['exception'] = 'Cliente incorrecto';
                 }
-            } else {
-                $result['exception'] = 'Cliente incorrecto';
             }
             break;
+            case 'login':
+            $_POST = $cliente->validateForm($_POST);
+            if ($cliente->setNomUsuario($_POST['alias'])) {
+                if ($cliente->checkNomUsuario()) {
+                    if ($cliente->setContrasena($_POST['contrasena'])) {
+                        if ($cliente->checkPassword()) {
+                            $_SESSION['idCliente'] = $cliente->getId();
+                            $_SESSION['usuario'] = $cliente->getNomUsuario();
+                            $result['status'] = 1;
+                            $_SESSION['tiempo'] = time();
+                        } else {
+                            $result['exception'] = 'Clave inexistente';
+                        }
+                    } else {
+                        
+                        $result['exception'] = 'Contraseña menor a 8 caracteres';
+                    }
+                } else {
+                    $result['exception'] = 'Nombre de usuario inexistente';
+                }
+            } else {
+                $result['exception'] = 'Nombre de usuario incorrecto';
+            }
+            break;
+            case 'register':
+                $_POST = $cliente->validateForm($_POST);
+                    if ($cliente->setNombre($_POST['nombres'])) {
+                        if ($cliente->setNomUsuario($_POST['usuario'])) {
+                            if ($cliente->setCorreo($_POST['correo'])) {
+                                    if ($cliente->setVencimiento($_POST['fecha'])) {
+                                        if ($_POST['contrasena'] == $_POST['confirmar']) {
+                                            if ($cliente->setContrasena($_POST['contrasena'])) {
+                                                if ($cliente->createCliente()) {
+                                                    $result['status'] = 1;
+                                                } else {
+                                                    $result['exception'] = 'Operación fallida';
+                                                }
+                                            } else {
+                                                $result['exception'] = 'Clave menor a 8 caracteres';
+                                            }
+                                        } else {
+                                            $result['exception'] = 'Claves diferentes';
+                                        }
+                                    } else {
+                                        $result['exception'] = 'Fecha incorrecta';
+                                    }
+                                
+                            } else {
+                                $result['exception'] = 'Correo incorrecto';
+                            }
+                        } else {
+                            $result['exception'] = 'Nombre usuario incorrectos';
+                        }
+                    } else {
+                        $result['exception'] = 'Nombre incorrectos';
+                    }
+                
+                break;
             case 'get':
                 if ($cliente->setId($_POST['IdCliente'])) {
                     if ($result['dataset'] = $cliente->getCliente1()) {

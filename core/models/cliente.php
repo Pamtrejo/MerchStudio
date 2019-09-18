@@ -5,7 +5,10 @@ class Cliente extends Validator
 	private $id = null;
     private $nombre = null;
     private $dui = null;
-    private $direccion = null;
+	private $correo = null;
+	private $nomusuario = null;
+	private $contrasena = null;
+	private $vencimiento = null;
 
 	// Métodos para sobrecarga de propiedades
 	public function setId($value)
@@ -17,10 +20,67 @@ class Cliente extends Validator
 			return false;
 		}
 	}
-
+  
 	public function getId()
 	{
 		return $this->id;
+	}
+	public function setVencimiento($value)
+	{
+		if ($value) {
+			$this->vencimiento = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getVencimiento()
+	{
+		return $this->vencimiento;
+	}
+
+	public function setContrasena($value)
+	{
+		if ($this->validatePassword($value)) {
+			$this->contrasena = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getContrasena()
+	{
+		return $this->contrasena;
+	}
+	public function setNomUsuario($value)
+	{
+		if ($this->validateAlphanumeric($value, 1, 50)) {
+			$this->nomusuario = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getNomUsuario()
+	{
+		return $this->nomusuario;
+	}
+	public function setCorreo($value)
+	{
+		if ($this->validateEmail($value)) {
+			$this->correo = $value;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getCorreo()
+	{
+		return $this->correo;
 	}
 
     public function setNombre($value)
@@ -72,11 +132,41 @@ class Cliente extends Validator
 	// Metodos para el manejo del SCRUD
 	public function readCliente()
 	{
-		$sql = 'SELECT IdCliente, NombreCliente, DUI, Direccion  FROM cliente ORDER BY NombreCliente';
+		$sql = 'SELECT IdCliente, NombreCliente, DUI, Direccion,Correo,NomUsuario,Contrasena,FechaVencimiento  FROM cliente ORDER BY NombreCliente';
 		$params = array(null);
 		return Database::getRows($sql, $params);
 	}
 
+	public function checkPassword()
+	{
+		$sql = 'SELECT contrasena FROM cliente WHERE idcliente = ?';
+		$params = array($this->id);
+		$data = Database::getRow($sql, $params);
+		if (password_verify($this->contrasena, $data['contrasena'])){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function checkNomUsuario()
+	{
+		$sql = 'SELECT IdCliente, FechaVencimiento FROM cliente WHERE NomUsuario = ?';
+		$params = array($this->nomusuario);
+		$data = Database::getRow($sql, $params);
+		if ($data) {
+			$this->id = $data['IdCliente'];
+			$diferencia = date('Y-m-d H:i:s') - $data['FechaVencimiento'];
+			if ($diferencia < 90) {
+				$this->vencimiento = true;
+			} else {
+				$this->vencimiento = false;
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
 	public function searchCliente($value)
 	{
 		$sql = 'SELECT * FROM cliente WHERE NombreCliente LIKE ? ORDER BY NombreCliente';
@@ -86,8 +176,9 @@ class Cliente extends Validator
 
 	public function createCliente()
 	{
-		$sql = 'INSERT INTO cliente(IdCliente, NombreCliente, DUI, Direccion) VALUES(?, ?, ?, ?)';
-		$params = array($this->id, $this->nombre, $this->dui, $this->direccion);
+		$hash = password_hash($this->contrasena, PASSWORD_DEFAULT);
+		$sql = 'INSERT INTO cliente(IdCliente, NombreCliente,Correo,NomUsuario,Contrasena,FechaVencimiento) VALUES(?, ?, ?, ?,?,?)';
+		$params = array($this->id, $this->nombre,$this->correo,$this->nomusuario,$hash,$this->vencimiento);
 		return Database::executeRow($sql, $params);
 	}
 
