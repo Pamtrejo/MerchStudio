@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-09-2019 a las 03:01:58
+-- Tiempo de generación: 18-09-2019 a las 06:15:05
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -129,34 +129,41 @@ CREATE TABLE `cliente` (
   `IdCliente` int(11) NOT NULL,
   `NombreCliente` varchar(100) NOT NULL,
   `DUI` varchar(11) DEFAULT NULL,
-  `Direccion` varchar(1000) NOT NULL
+  `Direccion` varchar(1000) DEFAULT NULL,
+  `Correo` varchar(100) NOT NULL,
+  `NomUsuario` varchar(100) NOT NULL,
+  `Contrasena` varchar(100) NOT NULL,
+  `FechaVencimiento` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `cliente`
 --
 
-INSERT INTO `cliente` (`IdCliente`, `NombreCliente`, `DUI`, `Direccion`) VALUES
-(1, 'ACIEN ZURUTA ROSA MARIA', '098767541', 'cal'),
-(2, 'ALBUSAC TAMARGO DANIEL ', '12345456-7', 'AV. INDEPENDENCIA NO. 241 COL. CENTRO TUXTEPEC'),
-(3, 'ALONSO BECERRA JOSE', '09876543-3', 'AV. INDEPENDENCIA NO. 779	COL. CENTRO TUXTEPEC'),
-(4, 'AMAT MENA SUSANA ', '09876543-2', 'AV. 20 DE NOVIEMBRE NO.1024	COL.CENTRO'),
-(5, 'AMATE GARRIDO IRENE ', '29876543-1', 'CARRETERA A LOMA ALTA S/N.	LOMAS DEL PEDREGAL TUXTEPEC	'),
-(6, 'APARICIO GARCIA MAGDALENA ', '39876542-1', 'AV. 20 DE NOVIEMBRE NO. 1060	COL. CENTRO TUXTEPEC'),
-(7, 'BENAYAS PEREZ NATALIA', '49876532-1', 'CALLE ZARAGOZA NO. 1010	COL. LA PIRAGUA TUXTEPEC'),
-(8, 'BERNABE CASANOVA FRANCISCO CESAR', '59876432-1', 'CALLE MATAMOROS NO. 310	COL. CENTRO TUXTEPEC'),
-(9, 'BERNAL RUIZ ENCARNACION ', '69875432-1', 'AV. 20 DE NOVIEMBRE NO.859-B	COL. CENTRO'),
-(10, 'CACERES CONTRERAS MARIA DEL MAR', '79865432-1', 'AV. 20 DE NOVIEMBRE NO 1053	COL. CENTRO TUXTEPEC'),
-(11, 'CAMPOS VIQUE MARIA BELEN ', '89765432-1', 'BLVD. BENITO JUAREZ NO. 1466-A	FRACC. LOS ANGELES TUXTEPEC'),
-(12, 'CARREÑO NAVARRO MONICA ', '98765432-1', 'CALLE MATAMOROS NO.280	COL. CENTRO TUXTEPEC'),
-(13, 'CARRERA BENITEZ SUSANA ', '81234567-9', 'AV. INDEPENDENCIA NO. 545	COL. CENTRO TUXTEPEC'),
-(14, 'CASAS GARCIA MARIA ESPERANZA ', '71234568-9', 'AV. INDEPENDENCIA NO. 1282-A	COL.CENTRO TUXTEPEC'),
-(15, 'CASTELLS GALLEGO MARAI DEL TISCAR ', '61234578-9', 'CALLE MATAMOROS NO. 127	COL. CENTRO TUXTEPEC'),
-(16, 'CASTILLO ALARCON ISABEL', '51234678-9', 'AV.INDEPENDENCIA NO.1010	COL.CENTRO TUXTEPEC'),
-(17, 'CASTILLO GALDEANO ELENA MARIA ', '41235678-9', 'AV. 5 DE MAYO NO. 1652	LA PIRAGUA'),
-(18, 'CASTILLO OLLER FRANCISCO JAVIER ', '31245678-9', 'AV. 5 DE MAYO NO. 1108	COL.CENTRO TUXTEPEC'),
-(19, 'CONTRERAS CARREÑO ADOLFINA ', '21345678-9', 'AV. INDEPENDENCIA NO. 748	COL. CENTRO TUXTEPEC'),
-(20, 'CORDOBA PASCUAL DOLORES MARIA ', '12345678-9', 'AV. INDEPENDENCIA NO. 985-A	COL. CENTRO TUXTEPEC');
+INSERT INTO `cliente` (`IdCliente`, `NombreCliente`, `DUI`, `Direccion`, `Correo`, `NomUsuario`, `Contrasena`, `FechaVencimiento`) VALUES
+(1, 'ACIEN ZURUTA ROSA MARIA', '098767541', 'cal', '', '', '', '0000-00-00'),
+(2, 'ALBUSAC TAMARGO DANIEL ', '12345456-7', 'AV. INDEPENDENCIA NO. 241 COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(3, 'ALONSO BECERRA JOSE', '09876543-3', 'AV. INDEPENDENCIA NO. 779	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(4, 'AMAT MENA SUSANA ', '09876543-2', 'AV. 20 DE NOVIEMBRE NO.1024	COL.CENTRO', '', '', '', '0000-00-00'),
+(5, 'AMATE GARRIDO IRENE ', '29876543-1', 'CARRETERA A LOMA ALTA S/N.	LOMAS DEL PEDREGAL TUXTEPEC	', '', '', '', '0000-00-00'),
+(6, 'APARICIO GARCIA MAGDALENA ', '39876542-1', 'AV. 20 DE NOVIEMBRE NO. 1060	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(7, 'BENAYAS PEREZ NATALIA', '49876532-1', 'CALLE ZARAGOZA NO. 1010	COL. LA PIRAGUA TUXTEPEC', '', '', '', '0000-00-00'),
+(8, 'BERNABE CASANOVA FRANCISCO CESAR', '59876432-1', 'CALLE MATAMOROS NO. 310	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(9, 'BERNAL RUIZ ENCARNACION ', '69875432-1', 'AV. 20 DE NOVIEMBRE NO.859-B	COL. CENTRO', '', '', '', '0000-00-00'),
+(10, 'CACERES CONTRERAS MARIA DEL MAR', '79865432-1', 'AV. 20 DE NOVIEMBRE NO 1053	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(11, 'CAMPOS VIQUE MARIA BELEN ', '89765432-1', 'BLVD. BENITO JUAREZ NO. 1466-A	FRACC. LOS ANGELES TUXTEPEC', '', '', '', '0000-00-00'),
+(12, 'CARREÑO NAVARRO MONICA ', '98765432-1', 'CALLE MATAMOROS NO.280	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(13, 'CARRERA BENITEZ SUSANA ', '81234567-9', 'AV. INDEPENDENCIA NO. 545	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(14, 'CASAS GARCIA MARIA ESPERANZA ', '71234568-9', 'AV. INDEPENDENCIA NO. 1282-A	COL.CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(15, 'CASTELLS GALLEGO MARAI DEL TISCAR ', '61234578-9', 'CALLE MATAMOROS NO. 127	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(16, 'CASTILLO ALARCON ISABEL', '51234678-9', 'AV.INDEPENDENCIA NO.1010	COL.CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(17, 'CASTILLO GALDEANO ELENA MARIA ', '41235678-9', 'AV. 5 DE MAYO NO. 1652	LA PIRAGUA', '', '', '', '0000-00-00'),
+(18, 'CASTILLO OLLER FRANCISCO JAVIER ', '31245678-9', 'AV. 5 DE MAYO NO. 1108	COL.CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(19, 'CONTRERAS CARREÑO ADOLFINA ', '21345678-9', 'AV. INDEPENDENCIA NO. 748	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(20, 'CORDOBA PASCUAL DOLORES MARIA ', '12345678-9', 'AV. INDEPENDENCIA NO. 985-A	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
+(21, 'Pamela', NULL, NULL, 'panayelyaguilar@gmail.com', 'Pam', '123456789', '2019-09-17'),
+(22, 'Pamela', NULL, NULL, 'panayelyaguilar@gmail.com', 'Pam', '123456789', '2019-09-17'),
+(23, 'Fernada Avendano', NULL, NULL, 'fer@gmail.com', 'Fer', '$2y$10$/Ce9zNbQNYLZ3rycgXyavO6.rvew/xJ8iVTxwAFgUPhl77ViIZhCq', '2019-09-17');
 
 -- --------------------------------------------------------
 
@@ -219,6 +226,30 @@ DELIMITER $$
 CREATE TRIGGER `Restar producto` AFTER INSERT ON `detalleventa` FOR EACH ROW UPDATE productoxsucursal SET Cantidad = Cantidad-New.Cantidad WHERE IdProductoxsucursal = new.IdProductoxsucursal
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `doblefactor`
+--
+
+CREATE TABLE `doblefactor` (
+  `IDFactor` int(11) NOT NULL,
+  `Usuario` int(11) NOT NULL,
+  `Codigo` float NOT NULL,
+  `SesionActiva` int(11) NOT NULL,
+  `Bloqueo` int(11) NOT NULL,
+  `FechaDesbloqueo` datetime DEFAULT NULL,
+  `FechaCreacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `doblefactor`
+--
+
+INSERT INTO `doblefactor` (`IDFactor`, `Usuario`, `Codigo`, `SesionActiva`, `Bloqueo`, `FechaDesbloqueo`, `FechaCreacion`) VALUES
+(1, 1, 0, 1, 0, '0000-00-00 00:00:00', '2019-09-17 11:29:00'),
+(2, 1, -87568, 1, 0, '0000-00-00 00:00:00', '2019-09-17 11:29:00');
 
 -- --------------------------------------------------------
 
@@ -328,7 +359,6 @@ INSERT INTO `producto` (`IdProducto`, `Precio`, `IdCategoria`, `Diseno`, `Descri
 (8, '10.00 ', 1, 'bolo', 'Bolo'),
 (9, '10.00 ', 1, 'cheat', 'Cheat day'),
 (10, '10.00 ', 1, 'ciudades1', 'Ciudades 1'),
-(11, '10.00 ', 1, 'ciudades2', 'Ciudades 2'),
 (12, '10.00 ', 1, 'copa', 'Copa mundial'),
 (13, '10.00 ', 1, 'costa', 'Costa del sol'),
 (14, '10.00 ', 1, 'desayuno', 'Desayunos t?picos'),
@@ -404,8 +434,7 @@ INSERT INTO `producto` (`IdProducto`, `Precio`, `IdCategoria`, `Diseno`, `Descri
 (84, '1.00', 2, 'sorpresa', 'Sorpresita infantil'),
 (85, '1.00', 2, 'sticker', 'Sticker '),
 (86, '0.25', 2, 'sticker soya', 'Stciker Soya City'),
-(87, '0.25', 2, 'vinil', 'Vinil'),
-(88, '4', 1, 'regalia', 'camisa regalia');
+(87, '0.25', 2, 'vinil', 'Vinil');
 
 --
 -- Disparadores `producto`
@@ -460,12 +489,11 @@ INSERT INTO `productoxsucursal` (`IdProductoxSucursal`, `IdProducto`, `IdTalla`,
 (23, 1, 6, 1, 2, 10),
 (24, 2, 10, 1, 3, 15),
 (25, 2, 8, 1, 3, 15),
-(26, 11, 7, 1, 3, 20),
 (27, 1, 11, 1, 2, 70),
 (28, 1, 1, 1, 2, 78),
 (29, 2, 7, 3, 2, 5),
 (30, 2, 1, 1, 2, 5),
-(31, 88, 2, 1, 0, 8);
+(32, 1, 17, 3, 0, 48);
 
 -- --------------------------------------------------------
 
@@ -485,10 +513,13 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`IdRol`, `TipoRol`, `atributos`, `Activo`) VALUES
-(1, 'Administrador', '', 0),
-(2, 'Vendedor', '', 0),
-(3, 'Cliente', '', 0),
-(4, 'SuperUsuario', '', 0);
+(1, 'Administrador', '111111111', 1),
+(2, 'Gerente', '111101101', 1),
+(3, 'Vendedor', '110000000', 1),
+(6, 'Vendedor', '110100000', 0),
+(7, 'Pame', '110101000', 0),
+(8, 'Pame', '110101000', 0),
+(9, 'Vendedor', '110000000', 0);
 
 -- --------------------------------------------------------
 
@@ -562,15 +593,18 @@ CREATE TABLE `usuario` (
   `NomUsuario` varchar(10) NOT NULL,
   `Contrasena` varchar(100) NOT NULL,
   `Correo` varchar(50) NOT NULL,
-  `FechaVencimiento` date DEFAULT NULL
+  `FechaVencimiento` date DEFAULT NULL,
+  `autenticacion` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`IdUsuario`, `IdRol`, `Nombre`, `Apellido`, `NomUsuario`, `Contrasena`, `Correo`, `FechaVencimiento`) VALUES
-(1, 1, 'Pamela  Nayely', 'Aguilar Trejo', 'Pam', '$2y$10$qoKBsgR3utYAFlpb4h2ure5dhJTMYZAVQywu7pjjqk5jaKa2dz0gy', 'panayelyaguilar@gmail.com', '2019-09-15');
+INSERT INTO `usuario` (`IdUsuario`, `IdRol`, `Nombre`, `Apellido`, `NomUsuario`, `Contrasena`, `Correo`, `FechaVencimiento`, `autenticacion`) VALUES
+(1, 1, 'Pamela  Nayely', 'Aguilar Trejo', 'Pam', '$2y$10$qoKBsgR3utYAFlpb4h2ure5dhJTMYZAVQywu7pjjqk5jaKa2dz0gy', 'panayelyaguilar@gmail.com', '2019-09-15', ''),
+(2, 2, 'Fer', 'Avendano', 'Fer12', '$2y$10$pIZY.grojaaDZrPDhKOH8.2glWIX3kN3qv0S.IwrwcISweqNDD.n.', 'fer@gmail.com', '2019-09-17', ''),
+(3, 3, 'Guillermo', 'Guerra', 'Guille28', '$2y$10$Y2JpkyyT8kPFmFPTKrHDU..htcmLBPlQliXdTuFHIs7DXlk8Q6nSy', 'guille@gmail.com', '2019-09-17', '');
 
 -- --------------------------------------------------------
 
@@ -667,6 +701,12 @@ ALTER TABLE `detalleventa`
   ADD KEY `IdProductoxSucursal` (`IdProductoxSucursal`),
   ADD KEY `IdCliente` (`IdCliente`),
   ADD KEY `IdVendedor` (`IdVendedor`);
+
+--
+-- Indices de la tabla `doblefactor`
+--
+ALTER TABLE `doblefactor`
+  ADD PRIMARY KEY (`IDFactor`);
 
 --
 -- Indices de la tabla `factura`
@@ -769,7 +809,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT de la tabla `crear`
 --
@@ -780,6 +820,11 @@ ALTER TABLE `crear`
 --
 ALTER TABLE `detalleventa`
   MODIFY `IdDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT de la tabla `doblefactor`
+--
+ALTER TABLE `doblefactor`
+  MODIFY `IDFactor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
@@ -804,17 +849,17 @@ ALTER TABLE `pago`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- AUTO_INCREMENT de la tabla `productoxsucursal`
 --
 ALTER TABLE `productoxsucursal`
-  MODIFY `IdProductoxSucursal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `IdProductoxSucursal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `IdRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IdRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `sucursal`
 --
@@ -829,7 +874,7 @@ ALTER TABLE `tallas`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `vendedor`
 --
