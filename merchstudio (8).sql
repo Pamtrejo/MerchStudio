@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-09-2019 a las 06:15:05
+-- Tiempo de generación: 22-10-2019 a las 19:09:59
 -- Versión del servidor: 10.1.21-MariaDB
--- Versión de PHP: 5.6.30
+-- Versión de PHP: 7.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -83,7 +83,20 @@ INSERT INTO `bitacora` (`IdBitacora`, `Fecha`, `Accion`) VALUES
 (7, '2019-06-13', 'Se ingreso'),
 (8, '2019-06-14', 'Se ingreso'),
 (9, '2019-06-14', 'Se ingreso'),
-(10, '2019-09-14', 'Se ingreso');
+(10, '2019-09-14', 'Se ingreso'),
+(11, '2019-09-28', 'Se ingreso'),
+(12, '2019-09-28', 'Se ingreso'),
+(13, '2019-09-28', 'Se ingreso'),
+(14, '2019-09-28', 'Se ingreso'),
+(15, '2019-09-28', 'Se ingreso'),
+(16, '2019-09-28', 'Se ingreso'),
+(17, '2019-09-28', 'Se ingreso'),
+(18, '2019-09-28', 'Se ingreso'),
+(19, '2019-09-28', 'Se ingreso'),
+(20, '2019-09-28', 'Se ingreso'),
+(21, '2019-09-28', 'Se ingreso'),
+(22, '2019-09-28', 'Se ingreso'),
+(23, '2019-09-29', 'Se ingreso');
 
 -- --------------------------------------------------------
 
@@ -117,7 +130,9 @@ INSERT INTO `categoria` (`IdCategoria`, `Categoria`, `Descripcion`) VALUES
 (13, 'Zapatias', 'No hay'),
 (14, 'Pantalones', 'No hay'),
 (15, 'Blusas', 'No hay'),
-(16, 'Piezas', 'No hay');
+(16, 'Piezas', 'No hay'),
+(17, 'r', 'r'),
+(18, 'E', 'e');
 
 -- --------------------------------------------------------
 
@@ -141,7 +156,7 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`IdCliente`, `NombreCliente`, `DUI`, `Direccion`, `Correo`, `NomUsuario`, `Contrasena`, `FechaVencimiento`) VALUES
-(1, 'ACIEN ZURUTA ROSA MARIA', '098767541', 'cal', '', '', '', '0000-00-00'),
+(1, 'ACIEN ZURUTA ROSA MARIA', '098767542', 'cal', '', '', '', '0000-00-00'),
 (2, 'ALBUSAC TAMARGO DANIEL ', '12345456-7', 'AV. INDEPENDENCIA NO. 241 COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
 (3, 'ALONSO BECERRA JOSE', '09876543-3', 'AV. INDEPENDENCIA NO. 779	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
 (4, 'AMAT MENA SUSANA ', '09876543-2', 'AV. 20 DE NOVIEMBRE NO.1024	COL.CENTRO', '', '', '', '0000-00-00'),
@@ -155,7 +170,6 @@ INSERT INTO `cliente` (`IdCliente`, `NombreCliente`, `DUI`, `Direccion`, `Correo
 (12, 'CARREÑO NAVARRO MONICA ', '98765432-1', 'CALLE MATAMOROS NO.280	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
 (13, 'CARRERA BENITEZ SUSANA ', '81234567-9', 'AV. INDEPENDENCIA NO. 545	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
 (14, 'CASAS GARCIA MARIA ESPERANZA ', '71234568-9', 'AV. INDEPENDENCIA NO. 1282-A	COL.CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
-(15, 'CASTELLS GALLEGO MARAI DEL TISCAR ', '61234578-9', 'CALLE MATAMOROS NO. 127	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
 (16, 'CASTILLO ALARCON ISABEL', '51234678-9', 'AV.INDEPENDENCIA NO.1010	COL.CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
 (17, 'CASTILLO GALDEANO ELENA MARIA ', '41235678-9', 'AV. 5 DE MAYO NO. 1652	LA PIRAGUA', '', '', '', '0000-00-00'),
 (18, 'CASTILLO OLLER FRANCISCO JAVIER ', '31245678-9', 'AV. 5 DE MAYO NO. 1108	COL.CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
@@ -163,7 +177,11 @@ INSERT INTO `cliente` (`IdCliente`, `NombreCliente`, `DUI`, `Direccion`, `Correo
 (20, 'CORDOBA PASCUAL DOLORES MARIA ', '12345678-9', 'AV. INDEPENDENCIA NO. 985-A	COL. CENTRO TUXTEPEC', '', '', '', '0000-00-00'),
 (21, 'Pamela', NULL, NULL, 'panayelyaguilar@gmail.com', 'Pam', '123456789', '2019-09-17'),
 (22, 'Pamela', NULL, NULL, 'panayelyaguilar@gmail.com', 'Pam', '123456789', '2019-09-17'),
-(23, 'Fernada Avendano', NULL, NULL, 'fer@gmail.com', 'Fer', '$2y$10$/Ce9zNbQNYLZ3rycgXyavO6.rvew/xJ8iVTxwAFgUPhl77ViIZhCq', '2019-09-17');
+(23, 'Fernada Avendano', NULL, NULL, 'fer@gmail.com', 'Fer', '$2y$10$/Ce9zNbQNYLZ3rycgXyavO6.rvew/xJ8iVTxwAFgUPhl77ViIZhCq', '2019-09-17'),
+(24, 'Pamela', NULL, NULL, 'panayelyaguilar@gmail.com', 'Pam', '$2y$10$M6yqf3y/H7h8niAXkxRGo.k/0NDC19gWNwffzAJJ.7yV0fJ8rS6AG', '2019-09-24'),
+(25, 'Pamela', NULL, NULL, 'panayelyaguilar@gmail.com', 'Pame', '$2y$10$UMc07wbStdtD/8mTlVVXKO1L5Oy99627wBnqcLu0pWKB7.69vqBxq', '2019-09-24'),
+(26, 'Pamela', NULL, NULL, 'panayeyaguilar@gmail.com', 'Pamelita', '$2y$10$91l3.mAPm37k4.L6vT1l7ORqvCr8YjBm1HOl7H4.wHB9/rZBPlGHO', '2019-09-27'),
+(27, 'Pamela', NULL, NULL, 'panayelyaguilar@gmail.com', 'Pamee', '$2y$10$usv2td9QdvBWjQo3A68NrOYTZDsjJm/hNEOdHoev72RLaDRT4h9vm', '2019-09-28');
 
 -- --------------------------------------------------------
 
@@ -216,7 +234,6 @@ INSERT INTO `detalleventa` (`IdDetalle`, `IdFactura`, `IdProductoxSucursal`, `Id
 (6, 6, 2, 6, 5, 2, 100),
 (7, 7, 2, 7, 6, 3, 250),
 (8, 8, 3, 1, 7, 3, 360),
-(9, 9, 3, 2, 8, 3, 400),
 (10, 10, 1, 3, 7, 3, 800);
 
 --
@@ -248,8 +265,10 @@ CREATE TABLE `doblefactor` (
 --
 
 INSERT INTO `doblefactor` (`IDFactor`, `Usuario`, `Codigo`, `SesionActiva`, `Bloqueo`, `FechaDesbloqueo`, `FechaCreacion`) VALUES
-(1, 1, 0, 1, 0, '0000-00-00 00:00:00', '2019-09-17 11:29:00'),
-(2, 1, -87568, 1, 0, '0000-00-00 00:00:00', '2019-09-17 11:29:00');
+(5, 11, 18917, 0, 0, NULL, '2019-10-23 00:08:12'),
+(6, 15, 57135, 0, 0, NULL, '2019-10-23 00:09:28'),
+(7, 16, 77330, 0, 0, NULL, '2019-10-23 00:22:39'),
+(8, 17, 98531, 0, 0, NULL, '2019-10-23 01:06:51');
 
 -- --------------------------------------------------------
 
@@ -283,34 +302,9 @@ INSERT INTO `factura` (`IdFactura`, `Fecha`, `Iva`, `Total`, `TipoFactura`, `IdV
 (9, '2019-05-09', 10, 25, 'Credito', 6, 2),
 (10, '2019-05-10', 10, 25, 'Credito', 2, 2),
 (11, '2019-05-11', 10, 25, 'Credito', 2, 2),
-(12, '2019-05-12', 10, 25, 'Credito', 8, 1),
 (13, '2019-05-13', 10, 25, 'Credito', 10, 1),
 (14, '2019-05-14', 10, 25, 'Credito', 7, 1),
 (15, '2019-08-14', 10, 15, 'Credito', 4, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `menu`
---
-
-CREATE TABLE `menu` (
-  `IdMenu` int(11) NOT NULL,
-  `Nombre` varchar(20) NOT NULL,
-  `Estado` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `menuxrol`
---
-
-CREATE TABLE `menuxrol` (
-  `IdMenuRol` int(11) NOT NULL,
-  `IdRol` int(11) NOT NULL,
-  `IdMenu` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -350,7 +344,7 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`IdProducto`, `Precio`, `IdCategoria`, `Diseno`, `Descripcion`) VALUES
-(1, '15.00', 11, '1821', '0000'),
+(1, '15.00', 11, '1821', 'hola'),
 (2, '10.00 ', 1, 'always', 'Always Hungry'),
 (4, '12.00 ', 1, 'basic', 'Basic Box'),
 (5, '15.00 ', 1, 'batallon', 'Batall?n Semita'),
@@ -430,11 +424,15 @@ INSERT INTO `producto` (`IdProducto`, `Precio`, `IdCategoria`, `Diseno`, `Descri
 (80, '5.00', 2, 'porta lentes', 'Porta Lente'),
 (81, '5.00', 2, 'porta vaso', 'Porta Vaso'),
 (82, '10.00', 2, 'pulsera', 'Pulsera'),
-(83, '0.50', 2, 'ranita', 'Ranita Juguete'),
 (84, '1.00', 2, 'sorpresa', 'Sorpresita infantil'),
 (85, '1.00', 2, 'sticker', 'Sticker '),
 (86, '0.25', 2, 'sticker soya', 'Stciker Soya City'),
-(87, '0.25', 2, 'vinil', 'Vinil');
+(87, '0.25', 2, 'vinil', 'Vinil'),
+(96, '7', 15, 'Camiseta mini', 'Solo camiseta'),
+(97, '9', 9, 'Camisa pequeña', 'Camisa niño '),
+(98, '10', 2, 'Nuevo nuevo', 'Nuevo'),
+(99, '12', 4, 'New', 'Nuevo producto'),
+(100, '12', 1, 'nueva', 'Camisa nueva');
 
 --
 -- Disparadores `producto`
@@ -467,7 +465,6 @@ INSERT INTO `productoxsucursal` (`IdProductoxSucursal`, `IdProducto`, `IdTalla`,
 (1, 86, 11, 1, 3, 8),
 (2, 87, 12, 2, 1, 1),
 (3, 73, 13, 3, 2, 4),
-(4, 83, 14, 1, 1, 10),
 (5, 78, 15, 2, 2, 10),
 (6, 70, 16, 3, 1, 10),
 (7, 84, 17, 1, 1, 10),
@@ -489,11 +486,26 @@ INSERT INTO `productoxsucursal` (`IdProductoxSucursal`, `IdProducto`, `IdTalla`,
 (23, 1, 6, 1, 2, 10),
 (24, 2, 10, 1, 3, 15),
 (25, 2, 8, 1, 3, 15),
-(27, 1, 11, 1, 2, 70),
-(28, 1, 1, 1, 2, 78),
+(27, 1, 11, 1, 2, 60),
+(28, 1, 1, 1, 2, 75),
 (29, 2, 7, 3, 2, 5),
 (30, 2, 1, 1, 2, 5),
-(32, 1, 17, 3, 0, 48);
+(32, 1, 17, 3, 0, -2),
+(33, 87, 17, 1, 0, -5),
+(34, 87, 16, 1, 0, 100),
+(35, 86, 17, 2, 0, 5),
+(36, 96, 7, 1, 0, 4),
+(37, 4, 7, 2, 0, 4),
+(38, 4, 7, 1, 0, 4),
+(39, 97, 11, 1, 0, 8),
+(40, 97, 14, 2, 0, 5),
+(41, 98, 1, 1, 0, 3),
+(42, 98, 1, 3, 0, 10),
+(43, 98, 1, 3, 0, 10),
+(44, 80, 17, 1, 0, 7),
+(45, 99, 1, 1, 0, 2),
+(46, 86, 15, 2, 0, 25),
+(47, 100, 13, 1, 0, 7);
 
 -- --------------------------------------------------------
 
@@ -514,12 +526,9 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`IdRol`, `TipoRol`, `atributos`, `Activo`) VALUES
 (1, 'Administrador', '111111111', 1),
-(2, 'Gerente', '111101101', 1),
+(2, 'Gerente', '111001001', 1),
 (3, 'Vendedor', '110000000', 1),
-(6, 'Vendedor', '110100000', 0),
-(7, 'Pame', '110101000', 0),
-(8, 'Pame', '110101000', 0),
-(9, 'Vendedor', '110000000', 0);
+(8, 'X', '101000100', 0);
 
 -- --------------------------------------------------------
 
@@ -541,8 +550,8 @@ CREATE TABLE `sucursal` (
 
 INSERT INTO `sucursal` (`IdSucursal`, `NomSucursal`, `Direccion`, `Telefono`, `EsBodega`) VALUES
 (1, 'Merch San Benito', 'Col. San Benito, Av. La Revolución, #159A San Salvador, San Benito', 25630852, 0),
-(2, 'Merch Galerias', 'Centro Comercial Galeria 2Do nivel, frente a Tigo y Capilla San Jose', 26609834, 0),
-(3, 'Merch Metro centro', '11', 23456534, 0);
+(2, 'Merch Galerias', 'Centro Comercial Galeria 2Do nivel', 26609834, 0),
+(3, 'Merch Plaza mundo', 'Centro Comercial Metrocentro', 23456534, 0);
 
 -- --------------------------------------------------------
 
@@ -561,7 +570,7 @@ CREATE TABLE `tallas` (
 
 INSERT INTO `tallas` (`IdTalla`, `Talla`) VALUES
 (1, 'Unica'),
-(2, 'XS'),
+(2, 'XSS'),
 (3, 'S'),
 (4, 'M'),
 (5, 'L'),
@@ -602,9 +611,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`IdUsuario`, `IdRol`, `Nombre`, `Apellido`, `NomUsuario`, `Contrasena`, `Correo`, `FechaVencimiento`, `autenticacion`) VALUES
-(1, 1, 'Pamela  Nayely', 'Aguilar Trejo', 'Pam', '$2y$10$qoKBsgR3utYAFlpb4h2ure5dhJTMYZAVQywu7pjjqk5jaKa2dz0gy', 'panayelyaguilar@gmail.com', '2019-09-15', ''),
-(2, 2, 'Fer', 'Avendano', 'Fer12', '$2y$10$pIZY.grojaaDZrPDhKOH8.2glWIX3kN3qv0S.IwrwcISweqNDD.n.', 'fer@gmail.com', '2019-09-17', ''),
-(3, 3, 'Guillermo', 'Guerra', 'Guille28', '$2y$10$Y2JpkyyT8kPFmFPTKrHDU..htcmLBPlQliXdTuFHIs7DXlk8Q6nSy', 'guille@gmail.com', '2019-09-17', '');
+(16, 1, 'Fer', 'Fernandiña', 'Fer', '$2y$10$rPWOQB4IiNJUTmazRjH0guogKYMGLGBBKhb6bex5aFcZRPOwXs1EC', 'panayelyaguilar@gmail.com', '2019-10-22', ''),
+(17, 2, 'Nelson', 'Murcia', 'Nelson', '$2y$10$s68jhCGDKmSAln.nNO56Lu2fWHeCW5kJt8fbM9XLD8vhhjywDkYjK', 'nelson_murcia@ricaldone.edu.sv', '2019-10-22', '');
 
 -- --------------------------------------------------------
 
@@ -624,13 +632,12 @@ CREATE TABLE `vendedor` (
 
 INSERT INTO `vendedor` (`IdVendedor`, `NombreVendedor`, `Telefono`) VALUES
 (1, 'MATEO BENITEZ JUAN', 23351011),
-(2, 'JOSEFINA ENRIQUEZ PEÑA', 13004180),
+(2, 'JOSEFINA ENRIQUEZ PEÑA', 13004189),
 (3, 'Acevedo Mejía Enrique', 20202021),
 (4, 'Acevedo Ruiz Carolina', 69897927),
 (5, 'Acosta Gámez Celina', 88311123),
 (6, 'Aguilar ?orantes', 74783415),
 (7, 'María Ofelia', 72516285),
-(8, 'Loranca Marcela', 72335101),
 (9, 'Aguilar Pérez', 62130041),
 (10, 'Licona Salomon', 65598761);
 
@@ -717,20 +724,6 @@ ALTER TABLE `factura`
   ADD KEY `IdPago` (`IdPago`);
 
 --
--- Indices de la tabla `menu`
---
-ALTER TABLE `menu`
-  ADD PRIMARY KEY (`IdMenu`);
-
---
--- Indices de la tabla `menuxrol`
---
-ALTER TABLE `menuxrol`
-  ADD PRIMARY KEY (`IdMenuRol`),
-  ADD KEY `IdRol` (`IdRol`,`IdMenu`),
-  ADD KEY `IdMenu` (`IdMenu`);
-
---
 -- Indices de la tabla `pago`
 --
 ALTER TABLE `pago`
@@ -782,7 +775,8 @@ ALTER TABLE `usuario`
 -- Indices de la tabla `vendedor`
 --
 ALTER TABLE `vendedor`
-  ADD PRIMARY KEY (`IdVendedor`);
+  ADD PRIMARY KEY (`IdVendedor`),
+  ADD UNIQUE KEY `Telefono` (`Telefono`);
 
 --
 -- Indices de la tabla `venta`
@@ -799,17 +793,17 @@ ALTER TABLE `venta`
 -- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `IdBitacora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `IdBitacora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `IdCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `IdCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT de la tabla `crear`
 --
@@ -824,22 +818,12 @@ ALTER TABLE `detalleventa`
 -- AUTO_INCREMENT de la tabla `doblefactor`
 --
 ALTER TABLE `doblefactor`
-  MODIFY `IDFactor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IDFactor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
   MODIFY `IdFactura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
---
--- AUTO_INCREMENT de la tabla `menu`
---
-ALTER TABLE `menu`
-  MODIFY `IdMenu` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT de la tabla `menuxrol`
---
-ALTER TABLE `menuxrol`
-  MODIFY `IdMenuRol` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `pago`
 --
@@ -849,17 +833,17 @@ ALTER TABLE `pago`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 --
 -- AUTO_INCREMENT de la tabla `productoxsucursal`
 --
 ALTER TABLE `productoxsucursal`
-  MODIFY `IdProductoxSucursal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `IdProductoxSucursal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `IdRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `IdRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `sucursal`
 --
@@ -874,7 +858,7 @@ ALTER TABLE `tallas`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT de la tabla `vendedor`
 --
@@ -904,13 +888,6 @@ ALTER TABLE `detalleventa`
 ALTER TABLE `factura`
   ADD CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`IdVendedor`) REFERENCES `vendedor` (`IdVendedor`),
   ADD CONSTRAINT `factura_ibfk_2` FOREIGN KEY (`IdPago`) REFERENCES `pago` (`IdPago`);
-
---
--- Filtros para la tabla `menuxrol`
---
-ALTER TABLE `menuxrol`
-  ADD CONSTRAINT `menuxrol_ibfk_1` FOREIGN KEY (`IdRol`) REFERENCES `roles` (`IdRol`),
-  ADD CONSTRAINT `menuxrol_ibfk_2` FOREIGN KEY (`IdMenu`) REFERENCES `menu` (`IdMenu`);
 
 --
 -- Filtros para la tabla `producto`

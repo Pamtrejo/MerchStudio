@@ -12,6 +12,9 @@ Commerce::headerTemplate('MerchStudio');
                     <i data-feather="plus-circle"></i>
                         
                     </button>
+                    <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#modal12">
+                     Cambiar contrasena
+                     </button>
                 </div>
             </div>
             <br>
@@ -93,6 +96,55 @@ Commerce::headerTemplate('MerchStudio');
         </div>
     </div>
 </div>
+<!-- Modal cambiar contrasena-->
+<div class="modal fade" id="modal12" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <h5 class="modal-title" id="exampleModalCenterTitle">Cambiar contrasena</h5>
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                         </button>
+                    </div>
+                    <div class="modal1" class="modal">
+                         <form method="post" id="form-password" enctype="multipart/form-data">
+                              <div class="row">
+                                   <div class="input-field col s12 m6">
+                                        <input id="clave1" type="password" name="clave1" class="validate"
+                                             required />
+                                        <label for="clave1" class="float-left">Clave actual</label>
+                                   </div>
+                                   <div class="input-field col s12 m6">
+                                        <input id="clave2" type="password" name="clave2"
+                                             class="validate" required />
+                                        <label for="clave2" class="float-left">Confirmar clave actual</label>
+                                   </div>
+
+                                   <div class="input-field col s12 m6">
+                                        <input id="clave_nueva_1" type="password" name="clave_nueva_1" class="validate"
+                                             required />
+                                        <label for="clave_nueva_1" class="float-left">Clave nueva</label>
+                                   </div>
+                                    
+                                   <div class="input-field col s12 m6">
+                                        <input id="clave_nueva_2" type="password" name="clave_nueva_2" class="validate"
+                                             required />
+                                        <label for="clave_nueva_2" class="float-left">Confirmar clave nueva</label>
+                                   </div>
+
+                              </div>
+
+                    </div>
+                    <div class="modal-footer">
+                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                         <button type="submit" class="btn btn-primary" data-tooltip="form-password">Cambiar</button>
+                    </div>
+                    </form>
+
+               </div>
+          </div>
+     </div>
 <!-- Ventana para modificar Categoria -->
 <div class="modal fade" id="modificarCategoriaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

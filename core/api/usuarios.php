@@ -63,14 +63,16 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                     $result['exception'] = 'Usuario incorrecto';
                 }
                 break;
-            case 'password':
+                case 'password':
                 if ($usuario->setId($_SESSION['idUsuario'])) {
-                    $_POST = $usuario->validateForm($_POST);
-                    if ($_POST['contrasena'] == $_POST['confirmar']) {
-                        if ($usuario->setContrasena($_POST['contrasena'])) {
+                $_POST = $usuario->validateForm($_POST);
+                    //el contrasena y v=confirmar es como se llaman los campos en el modal
+                    if ($_POST['clave1'] == $_POST['clave2']) {
+                        if ($usuario->setContrasena($_POST['clave1'])) {
                             if ($usuario->checkPassword()) {
                                 if ($_POST['clave_nueva_1'] == $_POST['clave_nueva_2']) {
-                                    if ($usuario->setClave($_POST['clave_nueva_1'])) {
+                                    if($_POST['clave1']!=$_POST['clave_nueva_1']){
+                                    if ($usuario->setContrasena($_POST['clave_nueva_1'])) {
                                         if ($usuario->changePassword()) {
                                             $result['status'] = 1;
                                         } else {
@@ -80,6 +82,10 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                                         $result['exception'] = 'Clave nueva menor a 6 caracteres';
                                     }
                                 } else {
+                                    $result['exception'] = 'La nueva clave no puede ser igual a la clave anterior';
+                                }
+                            }
+                                else {
                                     $result['exception'] = 'Claves nuevas diferentes';
                                 }
                             } else {

@@ -135,7 +135,7 @@ class Cliente extends Validator
 		$sql = 'SELECT IdCliente, NombreCliente, DUI, Direccion,Correo,NomUsuario,Contrasena,FechaVencimiento  FROM cliente ORDER BY NombreCliente';
 		$params = array(null);
 		return Database::getRows($sql, $params);
-	}
+	}z
 
 	public function checkPassword()
 	{

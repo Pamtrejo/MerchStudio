@@ -142,3 +142,37 @@ $('#crear_usuario').submit(function()
         console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
     });
 })
+
+//Función para cambiar la contraseña del usuario que ha iniciado sesión
+$('#form-password').submit(function()
+{
+    event.preventDefault();
+    $.ajax({
+        url: apiUsuario + 'password',
+        type: 'post',
+        data: $('#form-password').serialize(),
+        datatype: 'json'
+    })
+    .done(function(response){
+        //Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
+        if (isJSONString(response)) {
+            const result = JSON.parse(response);
+            //Se comprueba si el resultado es satisfactorio, sino se muestra la excepción
+            if (result.status) {
+                $('#modal1').modal('close');
+                sweetAlert(1, 'Contraseña cambiada correctamente', 'main.php');
+                
+            } else {
+                sweetAlert(2, result.exception, null);
+                console.log('hola')
+            }
+        } else {
+            console.log(response);
+            console.log('hola')
+        }
+    })
+    .fail(function(jqXHR){
+        //Se muestran en consola los posibles errores de la solicitud AJAX
+        console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
+    });
+})
